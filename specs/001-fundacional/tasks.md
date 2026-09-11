@@ -5,7 +5,7 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
 
 ## Domain
 
-- [ ] **T1 — Enums y entidad `Account`** (RF-2, RF-3, RF-5)
+- [x] **T1 — Enums y entidad `Account`** (RF-2, RF-3, RF-5)
   `domain/entities/account_role.dart`, `account_status.dart`,
   `organization_info.dart`, `account.dart`. Unit tests: construir una
   `Account` válida por cada rol; `organization` debe ser `null` si el rol
@@ -13,13 +13,13 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
   Hecho cuando: `flutter test test/domain/entities/account_test.dart`
   pasa.
 
-- [ ] **T2 — Catálogo de cursos** (RF-2)
+- [x] **T2 — Catálogo de cursos** (RF-2)
   `domain/entities/course_catalog.dart` con una lista const provisional
   de cursos DCC (ver Dudas abiertas de `spec.md`). Unit test: la lista no
   está vacía y no tiene ids duplicados.
   Hecho cuando: test de `course_catalog_test.dart` pasa.
 
-- [ ] **T3 — Interfaces de repositorio** (RF-6 a RF-12)
+- [x] **T3 — Interfaces de repositorio** (RF-6 a RF-12)
   `domain/repositories/auth_repository.dart`,
   `account_repository.dart` — solo interfaces, sin implementación. Sin
   test propio (no hay comportamiento que probar todavía).
