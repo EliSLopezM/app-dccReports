@@ -9,3 +9,9 @@ class DuplicateAccountException implements Exception {}
 class InsufficientReviewPermissionException implements Exception {}
 
 class AccountNotFoundException implements Exception {}
+
+class AuthUnexpectedException implements Exception {
+  AuthUnexpectedException([this.message = 'Ocurrió un error inesperado.']);
+
+  final String message;
+}

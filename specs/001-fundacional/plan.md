@@ -76,14 +76,16 @@ pide administrar el catálogo desde el panel).
   aunque se agreguen Firestore Rules más adelante (constitución, hoy
   permisivas por ser solo emulador), la regla de negocio ya vive en
   `data/`, no solo en la UI.
-- **Login por correo o teléfono**: mismo patrón que AmiPets
-  (`country_code_picker` ya no hace falta si se resuelve con
-  `firebase_auth` signInWithEmailAndPassword para ambos casos,
-  normalizando el teléfono a un email sintético `+57...@phone.dccbogota.app`
-  solo si Firebase Auth de teléfono con contraseña no es directo —
-  **a confirmar en la Tarea 1** contra la versión real de `firebase_auth`
-  disponible; si requiere SMS/OTP en vez de contraseña, se ajusta esta
-  spec con una Enmienda antes de seguir, porque cambiaría RF-9/RF-10).
+- **Login por correo o teléfono, resuelto (T4/T5)**: Firebase Auth no
+  soporta teléfono+contraseña de forma nativa (su auth por teléfono es
+  con OTP/SMS, fuera de alcance de esta spec). Se resuelve con
+  correo+contraseña por debajo: si el usuario se registra/loguea con
+  teléfono, se normaliza a un correo sintético
+  `<solo dígitos>@phone.dccbogota.app` para `firebase_auth`, mientras el
+  teléfono real queda guardado tal cual en `accounts.phone`. Alternativa
+  descartada: Firebase Phone Auth (OTP) — requiere flujo de verificación
+  por SMS que nadie pidió todavía; se puede migrar después sin tocar el
+  documento `accounts` si hace falta.
 - **Noticias/Capacítate/Prepárate como stubs** ("Próximamente") en esta
   spec — solo existen para que RF-4 tenga algo real que mostrar a una
   cuenta pendiente. Contenido real: spec futura (ver

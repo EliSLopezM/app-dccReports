@@ -27,25 +27,25 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
 
 ## Data
 
-- [ ] **T4 — `FirebaseAuthRepository`: registro** (RF-2)
+- [x] **T4 — `FirebaseAuthRepository`: registro** (RF-2)
   Implementa `register(...)` creando el usuario en Firebase Auth
   (emulador) y el documento `accounts/{uid}` con `status: pending`. Test
   contra el emulador de Auth + `fake_cloud_firestore`.
   Hecho cuando: test de registro exitoso y de correo duplicado
   (RF caso límite) pasan.
 
-- [ ] **T5 — `FirebaseAuthRepository`: login** (RF-9, RF-10)
+- [x] **T5 — `FirebaseAuthRepository`: login** (RF-9, RF-10)
   Implementa `login(identifier, password)` aceptando correo o teléfono.
   Tests: login correcto, login con credenciales incorrectas (mensaje
   genérico).
   Hecho cuando: ambos tests pasan.
 
-- [ ] **T6 — `FirestoreAccountRepository`: lectura** (RF-4, RF-11, RF-12)
+- [x] **T6 — `FirestoreAccountRepository`: lectura** (RF-4, RF-11, RF-12)
   `watchAccount(uid)`, `watchAllAccounts()`, `watchPendingAccounts()`.
   Tests con `fake_cloud_firestore` sembrando cuentas de los 3 estados.
   Hecho cuando: tests de lectura pasan.
 
-- [ ] **T7 — `FirestoreAccountRepository`: aprobar/rechazar** (RF-6,
+- [x] **T7 — `FirestoreAccountRepository`: aprobar/rechazar** (RF-6,
   RF-7, RF-8)
   `approve(reviewerRole, accountId)`, `reject(reviewerRole, accountId,
   reason?)`. Tests: Admin aprueba a un funcionario (OK), Funcionario
