@@ -66,12 +66,12 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
   funcionario/líder funcionario. Widget tests para ambas ramas.
   Hecho cuando: los widget tests de T9 pasan.
 
-- [ ] **T10 — `LoginScreen`** (RF-9, RF-10)
+- [x] **T10 — `LoginScreen`** (RF-9, RF-10)
   Formulario correo/teléfono + contraseña, muestra el error genérico de
   T5. Widget test de ambos casos con un fake `AuthRepository`.
   Hecho cuando: los widget tests de T10 pasan.
 
-- [ ] **T11 — `PendingApprovalScreen`** (RF-4)
+- [x] **T11 — `PendingApprovalScreen`** (RF-4)
   Muestra estado "pendiente" y accesos únicamente a Noticias/Capacítate/
   Prepárate (stubs "Próximamente" nuevos en esta tarea). Widget test:
   no hay navegación a Home/Panel visible.
