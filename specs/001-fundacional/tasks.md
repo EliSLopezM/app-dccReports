@@ -95,7 +95,7 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
 
 ## Wiring final
 
-- [ ] **T15 — Firebase real en `main.dart`**
+- [x] **T15 — Firebase real en `main.dart`**
   `Firebase.initializeApp` apuntando al emulador en modo debug (mismo
   patrón que AmiPets: `10.0.2.2` en Android, `localhost` en el resto),
   inyecta `FirebaseAuthRepository`/`FirestoreAccountRepository` reales
