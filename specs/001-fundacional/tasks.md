@@ -55,12 +55,12 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
 
 ## Presentation
 
-- [ ] **T8 — Tema DCC** (RF-1)
+- [x] **T8 — Tema DCC** (RF-1)
   `app/theme.dart` con los colores institucionales. Widget test: los
   `ColorScheme`/botones usan esos colores.
   Hecho cuando: test de tema pasa.
 
-- [ ] **T9 — `RegisterScreen`** (RF-2, RF-3)
+- [x] **T9 — `RegisterScreen`** (RF-2, RF-3)
   Formulario con selector de rol, checkboxes de cursos (del catálogo T2),
   y campos de organización que solo aparecen si el rol es
   funcionario/líder funcionario. Widget tests para ambas ramas.
