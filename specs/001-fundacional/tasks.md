@@ -88,7 +88,7 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
   con una cuenta de cada rol.
   Hecho cuando: el widget test de T13 pasa.
 
-- [ ] **T14 — `HomeShell` con navegación por rol**
+- [x] **T14 — `HomeShell` con navegación por rol**
   Shell post-login: Admin/Funcionario/Líder funcionario ven acceso al
   panel (T12); voluntario/líder no. Widget test de ambos casos.
   Hecho cuando: el widget test de T14 pasa.
