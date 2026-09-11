@@ -5,19 +5,19 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
 
 ## Domain
 
-- [ ] **T1 — `EmergencyDateFilter`** (RF-1, RF-2)
+- [x] **T1 — `EmergencyDateFilter`** (RF-1, RF-2)
   `domain/entities/date_filter.dart`: enum + `cutoff(DateTime now)` por
   valor. Unit tests: cada valor calcula el corte esperado (ej. `today`
   → medianoche del mismo día; `lastYear` → un año atrás).
   Hecho cuando: los tests de `date_filter_test.dart` pasan.
 
-- [ ] **T2 — Ampliar `EmergencyType` con `recommendations`** (RF-4)
+- [x] **T2 — Ampliar `EmergencyType` con `recommendations`** (RF-4)
   Agregar `List<String> recommendations` a cada entrada de
   `kEmergencyTypeCatalog` con el texto provisional de plan.md. Unit
   test: cada tipo tiene al menos una recomendación.
   Hecho cuando: el test pasa.
 
-- [ ] **T3 — Ampliar `EmergencyReportRepository`** (RF-1)
+- [x] **T3 — Ampliar `EmergencyReportRepository`** (RF-1)
   Agregar `watchActiveReports({required DateTime since})` a la interfaz.
   Sin test propio (solo interfaz).
   Hecho cuando: `flutter analyze` no marca nada en `domain/`.
