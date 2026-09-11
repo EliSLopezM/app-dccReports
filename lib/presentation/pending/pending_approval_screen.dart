@@ -1,0 +1,61 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../domain/entities/account_status.dart';
+import '../../domain/repositories/auth_repository.dart';
+import '../content/capacitate_stub_screen.dart';
+import '../content/news_stub_screen.dart';
+import '../content/preparate_stub_screen.dart';
+
+/// RF-4: mientras la cuenta está pendiente (o fue rechazada), solo se
+/// puede navegar a Noticias/Capacítate/Prepárate — nada de mapa,
+/// emergencias, chats ni panel.
+class PendingApprovalScreen extends StatelessWidget {
+  const PendingApprovalScreen({super.key, required this.status});
+
+  final AccountStatus status;
+
+  @override
+  Widget build(BuildContext context) {
+    final message = status == AccountStatus.rejected
+        ? 'Tu solicitud fue rechazada. Puedes registrarte de nuevo si crees que fue un error.'
+        : 'Tu cuenta está pendiente de aprobación por un administrador de la DCC.';
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('DCC-BOGOTA')),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          Text(message, key: const Key('pending-status-message')),
+          const SizedBox(height: 24),
+          ListTile(
+            leading: const Icon(Icons.newspaper),
+            title: const Text('Noticias'),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const NewsStubScreen()),
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.school),
+            title: const Text('Capacítate'),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const CapacitateStubScreen()),
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.health_and_safety),
+            title: const Text('Prepárate'),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const PreparateStubScreen()),
+            ),
+          ),
+          const SizedBox(height: 24),
+          TextButton(
+            onPressed: () => context.read<AuthRepository>().logout(),
+            child: const Text('Cerrar sesión'),
+          ),
+        ],
+      ),
+    );
+  }
+}

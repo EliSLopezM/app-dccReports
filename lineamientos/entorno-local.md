@@ -48,6 +48,51 @@ documentos de Firestore y archivos de Storage a mano mientras se prueba un
 flujo (por ejemplo, aprobar un usuario nuevo desde el panel admin, o ver
 un reporte anónimo antes de que exista la UI que lo lista).
 
+## Crear la cuenta Admin (semilla manual, RF-5)
+
+El rol Admin no se pide desde el formulario de registro (a propósito —
+ver `specs/001-fundacional/plan.md`). Para tener con qué aprobar las
+primeras cuentas:
+
+1. Con el emulador corriendo, abre la UI en <http://localhost:4000>.
+2. Pestaña **Authentication** → "Add user" → crea el usuario con tu
+   correo (o el correo sintético `<dígitos>@phone.dccbogota.app` si vas a
+   usar teléfono) y una contraseña. Copia el **User UID** generado.
+3. Pestaña **Firestore** → colección `accounts` → "Add document" → usa
+   ese mismo UID como id del documento, con estos campos:
+   ```json
+   {
+     "name": "Tu nombre",
+     "email": "tu-correo@example.com",
+     "phone": null,
+     "role": "admin",
+     "status": "approved",
+     "activeCourseIds": [],
+     "organization": null,
+     "createdAt": <timestamp actual>,
+     "reviewedBy": null,
+     "reviewedAt": null
+   }
+   ```
+4. Ya puedes iniciar sesión en la app con ese correo/contraseña y verás
+   acceso al Panel.
+
+## Recorrido de prueba completo (T16 de la spec 001)
+
+Con el emulador corriendo y la cuenta Admin ya sembrada:
+
+1. `flutter run` en un emulador/dispositivo Android.
+2. Regístrate como voluntario de prueba → debe quedar en "pendiente"
+   (solo ves Noticias/Capacítate/Prepárate).
+3. Cierra sesión, entra con la cuenta Admin, ve a Panel, aprueba esa
+   cuenta.
+4. Cierra sesión, vuelve a entrar con la cuenta del voluntario → debe
+   entrar directo a Home.
+5. (Opcional) repite el registro con un rol funcionario/líder
+   funcionario para confirmar que pide organización, y que una cuenta
+   Funcionario normal (no Admin) no puede aprobarla (RF-7) — solo Admin
+   ve los botones de aprobar/rechazar en esa fila del Panel.
+
 ## Mapa: Google Maps
 
 Mientras no haya una API key real, el mapa mostrará un placeholder (mismo

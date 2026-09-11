@@ -77,8 +77,12 @@ propia entrevista de clarificación antes de escribirse como `spec.md`.
 
 ## Funcionalidades por spec
 
-_Todavía no hay specs completadas — este repo se acaba de crear. Se irán
-listando aquí a medida que se cierren, igual que en `amipets`._
+| Spec | Nombre | Estado |
+|---|---|---|
+| [001](../specs/001-fundacional/spec.md) | Fundacional (tema, auth, roles, registro, panel de aprobación) | Código completo (T1-T15) y en verde; falta el recorrido manual en un emulador Android real (T16) antes de mergear a `main` |
+
+Se irán agregando filas a medida que se cierren specs, igual que en
+`amipets`.
 
 ## Estructura del repositorio
 
@@ -135,6 +139,16 @@ Guía paso a paso del entorno local (Firebase Emulator Suite, etc.) en
 
 ## Qué falta
 
-Todo — el repositorio se acaba de crear. Próximo paso: cerrar la spec 001
-(ver `docs/brief-inicial.md` para el alcance completo y el orden de specs
-propuesto).
+La spec 001 (rama `spec/001-fundacional`) tiene su código completo:
+tema DCC, registro con rol/cursos/organización, login por correo o
+teléfono, panel de aprobación (con la restricción RF-7 reforzada en
+`data`, no solo en la UI), y el wiring real a Firebase en `main.dart`.
+`flutter analyze`, `flutter test` (suite completa) y `flutter build apk
+--debug` pasan en verde. Solo falta **T16**: el recorrido manual en un
+emulador/dispositivo Android real (crear la cuenta Admin, registrar un
+voluntario, aprobarlo, iniciar sesión) — instrucciones paso a paso en
+[`entorno-local.md`](entorno-local.md). Una vez confirmado T16, la rama
+se puede mergear a `main` con PR.
+
+Todo lo demás (specs 002-009) está pendiente — ver
+`docs/brief-inicial.md` para el alcance completo y el orden propuesto.
