@@ -1,0 +1,13 @@
+rules_version = '2';
+
+// Reglas solo para el Firebase Local Emulator Suite (proyecto demo-dccbogota,
+// sin backend real). Permisivas a propósito para agilizar el prototipo;
+// se endurecen antes de conectar un proyecto de Firebase real (ver
+// docs/constitution.md, principio 12).
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}
