@@ -5,14 +5,14 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
 
 ## Domain
 
-- [ ] **T1 — Entidades: `ReportStatus`, catálogo de tipos, `EmergencyReport`** (RF-2, RF-4, RF-5, RF-6)
+- [x] **T1 — Entidades: `ReportStatus`, catálogo de tipos, `EmergencyReport`** (RF-2, RF-4, RF-5, RF-6)
   `domain/entities/report_status.dart`, `emergency_type_catalog.dart`,
   `reporter_evidence.dart`, `emergency_report.dart`. Unit tests: crear un
   reporte válido con y sin nombre/teléfono; estado inicial siempre
   `pending`.
   Hecho cuando: `flutter test test/domain/entities/emergency_report_test.dart` pasa.
 
-- [ ] **T2 — Interfaz `EmergencyReportRepository` + excepciones** (RF-7, RF-8, RF-9, RF-12)
+- [x] **T2 — Interfaz `EmergencyReportRepository` + excepciones** (RF-7, RF-8, RF-9, RF-12)
   `domain/repositories/emergency_report_repository.dart`, más
   `SpamLimitExceededException` en `domain/exceptions.dart`. Sin test
   propio (solo interfaz).
@@ -20,7 +20,7 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
 
 ## Data
 
-- [ ] **T3 — `DeviceIdProvider`** (RF-4)
+- [x] **T3 — `DeviceIdProvider`** (RF-4)
   `data/device/device_id_provider.dart`: genera un uuid la primera vez,
   lo persiste en `shared_preferences`, lo reutiliza después. Tests con
   `SharedPreferences.setMockInitialValues`.

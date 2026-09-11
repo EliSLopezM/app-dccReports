@@ -15,3 +15,13 @@ class AuthUnexpectedException implements Exception {
 
   final String message;
 }
+
+/// RF-3: un reporte con menos de 2 fotos, o sin título/dirección/tipo.
+class InvalidReportException implements Exception {
+  InvalidReportException(this.message);
+
+  final String message;
+}
+
+/// RF-7: el mismo deviceId superó el límite de reportes por hora.
+class SpamLimitExceededException implements Exception {}
