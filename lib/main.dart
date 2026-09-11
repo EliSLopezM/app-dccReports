@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,8 +12,10 @@ import 'app/auth_gate.dart';
 import 'app/theme.dart';
 import 'data/firebase/firebase_auth_repository_impl.dart';
 import 'data/firebase/firestore_account_repository_impl.dart';
+import 'data/firebase/firestore_emergency_report_repository_impl.dart';
 import 'domain/repositories/account_repository.dart';
 import 'domain/repositories/auth_repository.dart';
+import 'domain/repositories/emergency_report_repository.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -26,9 +29,16 @@ Future<void> main() async {
     final host = Platform.isAndroid ? '10.0.2.2' : 'localhost';
     await FirebaseAuth.instance.useAuthEmulator(host, 9099);
     FirebaseFirestore.instance.useFirestoreEmulator(host, 8080);
+    await FirebaseStorage.instance.useStorageEmulator(host, 9199);
   }
 
   runApp(const DccApp());
+}
+
+Future<String> _uploadReportPhoto(String reportId, String localPath, int index) async {
+  final ref = FirebaseStorage.instance.ref('report_photos/$reportId/$index.jpg');
+  await ref.putFile(File(localPath));
+  return ref.getDownloadURL();
 }
 
 class DccApp extends StatelessWidget {
@@ -46,6 +56,12 @@ class DccApp extends StatelessWidget {
         ),
         Provider<AccountRepository>(
           create: (_) => FirestoreAccountRepositoryImpl(FirebaseFirestore.instance),
+        ),
+        Provider<EmergencyReportRepository>(
+          create: (_) => FirestoreEmergencyReportRepositoryImpl(
+            FirebaseFirestore.instance,
+            uploadPhoto: _uploadReportPhoto,
+          ),
         ),
       ],
       child: MaterialApp(

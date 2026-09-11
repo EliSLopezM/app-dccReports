@@ -78,7 +78,7 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
 
 ## Wiring final
 
-- [ ] **T11 — Providers + puntos de entrada en `main.dart`/`AuthGate`/`HomeShell`**
+- [x] **T11 — Providers + puntos de entrada en `main.dart`/`AuthGate`/`HomeShell`**
   Agrega `EmergencyReportRepository` a los `Provider`s de `main.dart`;
   botón "Reportar una emergencia" alcanzable sin sesión (ej. desde
   `LoginScreen`, ya que `AuthGate` hoy solo ofrece Login si no hay
