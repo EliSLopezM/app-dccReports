@@ -114,6 +114,18 @@ class FirestoreEmergencyReportRepositoryImpl implements EmergencyReportRepositor
   }
 
   @override
+  Stream<List<EmergencyReport>> watchActiveReports({required DateTime since}) {
+    return _reports
+        .where('status', isEqualTo: ReportStatus.activa.name)
+        .where('createdAt', isGreaterThanOrEqualTo: Timestamp.fromDate(since))
+        .snapshots()
+        .map(
+          (snapshot) =>
+              snapshot.docs.map((doc) => reportFromFirestore(doc.id, doc.data())).toList(),
+        );
+  }
+
+  @override
   Future<void> updateStatus({
     required String reviewerId,
     required String reportId,

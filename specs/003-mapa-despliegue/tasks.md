@@ -24,7 +24,7 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
 
 ## Data
 
-- [ ] **T4 — `watchActiveReports` en `FirestoreEmergencyReportRepositoryImpl`** (RF-1)
+- [x] **T4 — `watchActiveReports` en `FirestoreEmergencyReportRepositoryImpl`** (RF-1)
   Filtra por `status == activa` y `createdAt >= since`. Tests con
   `fake_cloud_firestore`: reportes dentro y fuera del rango, y un
   reporte "pending"/"verdadera" que nunca debe aparecer aunque esté en
