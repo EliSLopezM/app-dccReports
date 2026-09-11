@@ -104,12 +104,19 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
   Hecho cuando: `flutter analyze` y `flutter test` (suite completa) pasan
   en verde.
 
-- [ ] **T16 — Boot-check manual + semilla de Admin**
+- [ ] **T16 — Boot-check manual + semilla de Admin** (pendiente — requiere
+  emulador/dispositivo Android real, fuera del entorno de este agente)
   Con el emulador corriendo (`firebase emulators:start`): crear a mano el
   usuario Admin (Auth + documento `accounts/{uid}` con `role: admin,
-  status: approved`, documentado en `lineamientos/entorno-local.md`),
-  correr la app en un emulador Android, registrar un voluntario de
-  prueba, confirmar que queda bloqueado en Pending, loguear como Admin,
-  aprobarlo, loguear como el voluntario y confirmar acceso a Home.
-  Captura de pantalla del resultado.
-  Hecho cuando: el recorrido completo funciona y queda una captura.
+  status: approved`) siguiendo el paso a paso de
+  `lineamientos/entorno-local.md` ("Crear la cuenta Admin" y "Recorrido
+  de prueba completo"), correr la app en un emulador Android, registrar
+  un voluntario de prueba, confirmar que queda bloqueado en Pending,
+  loguear como Admin, aprobarlo, loguear como el voluntario y confirmar
+  acceso a Home.
+  Verificado en su lugar: `flutter build apk --debug` compila sin
+  errores (confirma que Firebase/Android/Gradle están bien conectados
+  sin necesitar `google-services.json`, gracias a `FirebaseOptions`
+  explícitas).
+  Hecho cuando: el recorrido completo funciona en un emulador/dispositivo
+  real y queda una captura.
