@@ -42,15 +42,10 @@ class FirestoreAccountRepositoryImpl implements AccountRepository {
 
   /// RF-7: solo Admin revisa cuentas de rango funcionario/liderFuncionario.
   Future<void> _assertCanReview(AccountRole reviewerRole, String accountId) async {
-    if (!reviewerRole.canReviewAccounts) {
-      throw InsufficientReviewPermissionException();
-    }
     final target = await _accounts.doc(accountId).get();
     if (!target.exists) throw AccountNotFoundException();
     final targetRole = AccountRole.values.byName(target.data()!['role'] as String);
-    final targetIsHighRank =
-        targetRole == AccountRole.funcionario || targetRole == AccountRole.liderFuncionario;
-    if (targetIsHighRank && reviewerRole != AccountRole.admin) {
+    if (!canReview(reviewerRole: reviewerRole, targetRole: targetRole)) {
       throw InsufficientReviewPermissionException();
     }
   }

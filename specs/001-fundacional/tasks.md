@@ -77,13 +77,13 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
   no hay navegación a Home/Panel visible.
   Hecho cuando: el widget test de T11 pasa.
 
-- [ ] **T12 — `PanelAccountsListScreen`** (RF-11)
+- [x] **T12 — `PanelAccountsListScreen`** (RF-11)
   Lista todas las cuentas con filtro por estado; oculta
   aprobar/rechazar en filas de funcionario/líder funcionario si quien
   mira no es Admin (RF-7 en UI). Widget test con `fake_cloud_firestore`.
   Hecho cuando: el widget test de T12 pasa, incluida la fila oculta.
 
-- [ ] **T13 — `AccountDetailScreen`** (RF-12)
+- [x] **T13 — `AccountDetailScreen`** (RF-12)
   Detalle de una cuenta: rol, cursos, organización, estado. Widget test
   con una cuenta de cada rol.
   Hecho cuando: el widget test de T13 pasa.
