@@ -26,27 +26,27 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
   `SharedPreferences.setMockInitialValues`.
   Hecho cuando: test de "mismo id en dos llamadas" pasa.
 
-- [ ] **T4 — `FirestoreEmergencyReportRepositoryImpl`: enviar reporte** (RF-2, RF-3, RF-6)
+- [x] **T4 — `FirestoreEmergencyReportRepositoryImpl`: enviar reporte** (RF-2, RF-3, RF-6)
   `submit(...)` sube fotos a Storage (función de subida inyectada, mismo
   patrón que amipets) y crea el documento con `status: pending`. Tests
   con `fake_cloud_firestore`: reporte con 2+ fotos pasa; con menos de 2
   lanza excepción.
   Hecho cuando: ambos tests pasan.
 
-- [ ] **T5 — Antispam por dispositivo** (RF-7)
+- [x] **T5 — Antispam por dispositivo** (RF-7)
   Antes de crear el reporte, cuenta cuántos tiene ese `deviceId` en la
   última hora; si son 3 o más, lanza `SpamLimitExceededException`. Tests:
   3 reportes seguidos pasan, el 4to lanza la excepción; pasada la hora
   (con un reloj inyectable `now`), se permite de nuevo.
   Hecho cuando: los 3 tests pasan.
 
-- [ ] **T6 — Lectura: todos los reportes y por dispositivo/teléfono** (RF-8, RF-12)
+- [x] **T6 — Lectura: todos los reportes y por dispositivo/teléfono** (RF-8, RF-12)
   `watchAllReports()`, `watchReportsByDevice(deviceId)`,
   `watchReportsByPhone(phone)`. Tests con `fake_cloud_firestore`
   sembrando reportes de varios dispositivos.
   Hecho cuando: los tests de lectura pasan.
 
-- [ ] **T7 — Cambiar estado** (RF-9, RF-10)
+- [x] **T7 — Cambiar estado** (RF-9, RF-10)
   `updateStatus(reviewerId, reportId, newStatus)`. Test: pasa de
   `pending` a `activa`, y de `activa` a `falsaControlada` (no es de un
   solo sentido, ver Casos límite de spec.md).
