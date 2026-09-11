@@ -54,20 +54,20 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
 
 ## Presentation
 
-- [ ] **T8 — `PublicReportScreen`** (RF-1, RF-2, RF-3, RF-5)
+- [x] **T8 — `PublicReportScreen`** (RF-1, RF-2, RF-3, RF-5)
   Formulario sin `AuthRepository`: título, dirección, tipo (dropdown del
   catálogo), selector de fotos (mínimo 2, `image_picker`), nombre/
   teléfono opcionales. Widget tests: envío válido; bloqueo con 1 foto;
   bloqueo con campos vacíos; envío sin nombre/teléfono no se bloquea.
   Hecho cuando: los 4 widget tests pasan.
 
-- [ ] **T9 — `PanelReportsListScreen`** (RF-8)
+- [x] **T9 — `PanelReportsListScreen`** (RF-8)
   Lista de reportes con filtro por estado (mismo patrón que
   `PanelAccountsListScreen`), visible solo para Revisores. Widget test
   con `fake_cloud_firestore`.
   Hecho cuando: el widget test pasa.
 
-- [ ] **T10 — `ReportDetailScreen`** (RF-8, RF-9, RF-11)
+- [x] **T10 — `ReportDetailScreen`** (RF-8, RF-9, RF-11)
   Detalle: fotos, tipo, dirección, evidencia del reportante
   (nombre/teléfono/deviceId), botones para cambiar de estado, y acceso a
   "ver historial de este dispositivo/teléfono" (RF-12). Widget test:
