@@ -80,6 +80,7 @@ propia entrevista de clarificación antes de escribirse como `spec.md`.
 | Spec | Nombre | Estado |
 |---|---|---|
 | [001](../specs/001-fundacional/spec.md) | Fundacional (tema, auth, roles, registro, panel de aprobación) | Código completo (T1-T15) y en verde; falta el recorrido manual en un emulador Android real (T16) antes de mergear a `main` |
+| [002](../specs/002-reporte-publico/spec.md) | Reporte público de emergencias y moderación | Código completo (T1-T11) y en verde; falta el recorrido manual (T12). Rama apilada sobre `spec/001-fundacional` |
 
 Se irán agregando filas a medida que se cierren specs, igual que en
 `amipets`.
@@ -150,5 +151,17 @@ voluntario, aprobarlo, iniciar sesión) — instrucciones paso a paso en
 [`entorno-local.md`](entorno-local.md). Una vez confirmado T16, la rama
 se puede mergear a `main` con PR.
 
-Todo lo demás (specs 002-009) está pendiente — ver
+La spec 002 (rama `spec/002-reporte-publico`, apilada sobre
+`spec/001-fundacional`) también tiene su código completo: formulario
+público sin login, antispam por dispositivo, y moderación de reportes
+desde el panel (verdadera/activa/falsa controlada/en desarrollo). Mismo
+estado: todo en verde salvo **T12**, el recorrido manual — también
+documentado en [`entorno-local.md`](entorno-local.md).
+
+Como las specs 001 y 002 están apiladas (002 nace de 001, que todavía no
+está en `main`), el orden recomendado para mergear es: probar T16 →
+mergear 001 a `main` → probar T12 → mergear 002 a `main` (o revisar
+ambas juntas si se prefiere).
+
+Todo lo demás (specs 003-009) está pendiente — ver
 `docs/brief-inicial.md` para el alcance completo y el orden propuesto.

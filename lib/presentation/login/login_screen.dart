@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../domain/exceptions.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../register/register_screen.dart';
+import '../report/public_report_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -91,6 +92,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 MaterialPageRoute(builder: (_) => const RegisterScreen()),
               ),
               child: const Text('¿No tienes cuenta? Regístrate'),
+            ),
+            const Divider(height: 32),
+            // RF-1: alcanzable sin sesión, para cualquier persona.
+            OutlinedButton.icon(
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const PublicReportScreen()),
+              ),
+              icon: const Icon(Icons.report),
+              label: const Text('Reportar una emergencia'),
             ),
           ],
         ),

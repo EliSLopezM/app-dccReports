@@ -8,6 +8,7 @@ import '../content/capacitate_stub_screen.dart';
 import '../content/news_stub_screen.dart';
 import '../content/preparate_stub_screen.dart';
 import '../panel/panel_accounts_list_screen.dart';
+import '../panel/panel_reports_list_screen.dart';
 
 /// Shell post-login. RF-11: solo Admin/Funcionario/Líder funcionario ven
 /// acceso al panel (mismo `canReviewAccounts` que RF-6/RF-7).
@@ -55,7 +56,7 @@ class HomeShell extends StatelessWidget {
               MaterialPageRoute(builder: (_) => const PreparateStubScreen()),
             ),
           ),
-          if (account.role.canReviewAccounts)
+          if (account.role.canReviewAccounts) ...[
             ListTile(
               key: const Key('panel-access'),
               leading: const Icon(Icons.admin_panel_settings),
@@ -69,6 +70,17 @@ class HomeShell extends StatelessWidget {
                 ),
               ),
             ),
+            ListTile(
+              key: const Key('reports-access'),
+              leading: const Icon(Icons.report),
+              title: const Text('Reportes'),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => PanelReportsListScreen(reviewerId: account.id),
+                ),
+              ),
+            ),
+          ],
         ],
       ),
     );

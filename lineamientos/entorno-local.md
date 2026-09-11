@@ -93,6 +93,22 @@ Con el emulador corriendo y la cuenta Admin ya sembrada:
    Funcionario normal (no Admin) no puede aprobarla (RF-7) — solo Admin
    ve los botones de aprobar/rechazar en esa fila del Panel.
 
+## Recorrido de prueba completo (T12 de la spec 002)
+
+Con el emulador corriendo (incluido Storage, puerto 9199):
+
+1. Desde la pantalla de Login (sin iniciar sesión), toca "Reportar una
+   emergencia", completa título/dirección/tipo, agrega 2 fotos, y
+   envíalo sin dar nombre ni teléfono.
+2. Entra con una cuenta Revisora (Admin/Funcionario/Líder funcionario) →
+   Reportes → debe aparecer "pendiente" con la evidencia (nombre/
+   teléfono en blanco, pero con un `deviceId`).
+3. Cámbialo a "Activa" y confirma que el estado se actualiza en la
+   lista.
+4. Desde el mismo dispositivo, envía 3 reportes más seguidos (ya son 4
+   en la última hora) → el cuarto debe bloquearse con el mensaje de
+   antispam (RF-7).
+
 ## Mapa: Google Maps
 
 Mientras no haya una API key real, el mapa mostrará un placeholder (mismo

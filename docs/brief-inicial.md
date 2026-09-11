@@ -169,28 +169,35 @@ Desprendido de las secciones anteriores, agrupando por lo que se puede
 construir y probar de forma independiente. Sujeto a que el dueño del
 producto confirme o reordene antes de arrancar la spec 001:
 
-1. **Fundacional**: tema/paleta DCC, estructura de navegación base, auth
-   (login solo para autorizados) + roles + registro (cursos, rol,
-   organización si aplica) + flujo de aprobación de usuarios desde el
-   panel embebido.
-2. **Reporte público sin login**: formulario público, antispam, evidencia
-   del reportante, llegada al panel para autorización.
-3. **Panel admin — moderación**: autorizar/rechazar reportes, catalogar
-   verdadera/activa/falsa controlada/en desarrollo, ver perfiles de
-   usuarios.
-4. **Mapa y despliegue**: mapa con emergencias autorizadas, filtros por
-   fecha, notificación tipo campana según cercanía de grupo/comité, detalle
-   de emergencia con recomendaciones por tipo.
-5. **Grupos/comités y chats**: alta de grupo/comité con delegado, chat
+1. **Fundacional** (spec 001, código completo): tema/paleta DCC,
+   estructura de navegación base, auth (login solo para autorizados) +
+   roles + registro (cursos, rol, organización si aplica) + flujo de
+   aprobación de usuarios desde el panel embebido.
+2. **Reporte público y moderación** (spec 002, código completo — junta lo
+   que aquí se había separado en "reporte público" y "panel admin —
+   moderación", mismo patrón que la spec 001 con registro+aprobación):
+   formulario público sin login, antispam por dispositivo, evidencia del
+   reportante, y su catalogación desde el panel
+   (verdadera/activa/falsa controlada/en desarrollo).
+3. **Mapa y despliegue**: mapa con emergencias autorizadas (estado
+   "activa" de la spec 002), filtros por fecha, notificación tipo campana
+   según cercanía de grupo/comité, detalle de emergencia con
+   recomendaciones por tipo.
+4. **Grupos/comités y chats**: alta de grupo/comité con delegado, chat
    por defecto del grupo, chat general por departamento, creación/borrado
    de chats por el funcionario (máx. 5).
-6. **Ciclo de vida de la emergencia**: "Ir", punto de encuentro (reglas de
+5. **Ciclo de vida de la emergencia**: "Ir", punto de encuentro (reglas de
    voluntario vs. líder/funcionario), "Ya llegué", solicitud de ambulancia
    + llamada, finalización (foto/nivel/razón) y tiempos en el perfil.
-7. **Perfiles y logros**: historial de participación, logros, cursos y rol
+6. **Perfiles y logros**: historial de participación, logros, cursos y rol
    visibles.
-8. **Noticias, Capacítate, Prepárate**: las tres secciones de contenido.
-9. **Legal**: políticas/términos + descarga en PDF.
+7. **Noticias, Capacítate, Prepárate**: las tres secciones de contenido.
+8. **Legal**: políticas/términos + descarga en PDF.
+
+Ver perfiles de usuarios actuales (mencionado en la sección 8 del brief)
+ya quedó cubierto por el panel de la spec 001; ver perfiles de
+voluntarios con logros/tiempos de participación es parte de la spec de
+Perfiles y logros de arriba.
 
 Cada una de estas, al arrancar, pasa primero por la entrevista de
 clarificación de la spec (preguntas una a una) antes de escribirse como
