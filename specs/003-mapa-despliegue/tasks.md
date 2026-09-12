@@ -42,7 +42,7 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
   nueva consulta; con 0 resultados se ve el estado vacío.
   Hecho cuando: los widget tests pasan.
 
-- [ ] **T6 — `EmergencyDetailScreen`** (RF-3, RF-4)
+- [x] **T6 — `EmergencyDetailScreen`** (RF-3, RF-4)
   Tipo, dirección, fotos, y las recomendaciones de `kEmergencyTypeCatalog`
   para ese tipo. Widget test: cambia las recomendaciones mostradas según
   `emergencyTypeId`.
