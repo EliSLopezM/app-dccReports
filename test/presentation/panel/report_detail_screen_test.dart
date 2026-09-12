@@ -19,6 +19,8 @@ class _FakeEmergencyReportRepository implements EmergencyReportRepository {
     String? reporterName,
     String? reporterPhone,
     required String deviceId,
+    double? latitude,
+    double? longitude,
   }) async =>
       'id';
 
@@ -30,6 +32,10 @@ class _FakeEmergencyReportRepository implements EmergencyReportRepository {
 
   @override
   Stream<List<EmergencyReport>> watchReportsByPhone(String phone) => Stream.value(const []);
+
+  @override
+  Stream<List<EmergencyReport>> watchActiveReports({required DateTime since}) =>
+      Stream.value(const []);
 
   @override
   Future<void> updateStatus({

@@ -179,10 +179,11 @@ producto confirme o reordene antes de arrancar la spec 001:
    formulario público sin login, antispam por dispositivo, evidencia del
    reportante, y su catalogación desde el panel
    (verdadera/activa/falsa controlada/en desarrollo).
-3. **Mapa y despliegue**: mapa con emergencias autorizadas (estado
-   "activa" de la spec 002), filtros por fecha, notificación tipo campana
-   según cercanía de grupo/comité, detalle de emergencia con
-   recomendaciones por tipo.
+3. **Mapa y despliegue** (spec 003, código completo): mapa con
+   emergencias en estado "activa" (spec 002), filtros por fecha, campana
+   con conteo/lista de activas (sin dirigirse todavía solo a los
+   grupos/comités cercanos — eso lo amplía la spec 004), y detalle de
+   emergencia con recomendaciones por tipo.
 4. **Grupos/comités y chats**: alta de grupo/comité con delegado, chat
    por defecto del grupo, chat general por departamento, creación/borrado
    de chats por el funcionario (máx. 5).

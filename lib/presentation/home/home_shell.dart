@@ -7,6 +7,8 @@ import '../../domain/repositories/auth_repository.dart';
 import '../content/capacitate_stub_screen.dart';
 import '../content/news_stub_screen.dart';
 import '../content/preparate_stub_screen.dart';
+import '../map/map_screen.dart';
+import '../notifications/active_reports_bell.dart';
 import '../panel/panel_accounts_list_screen.dart';
 import '../panel/panel_reports_list_screen.dart';
 
@@ -23,6 +25,7 @@ class HomeShell extends StatelessWidget {
       appBar: AppBar(
         title: const Text('DCC-BOGOTA'),
         actions: [
+          const ActiveReportsBell(),
           IconButton(
             icon: const Icon(Icons.logout),
             tooltip: 'Cerrar sesión',
@@ -35,6 +38,14 @@ class HomeShell extends StatelessWidget {
         children: [
           Text('Hola, ${account.name}', style: Theme.of(context).textTheme.titleLarge),
           const SizedBox(height: 24),
+          ListTile(
+            key: const Key('map-access'),
+            leading: const Icon(Icons.map),
+            title: const Text('Mapa'),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const MapScreen()),
+            ),
+          ),
           ListTile(
             leading: const Icon(Icons.newspaper),
             title: const Text('Noticias'),

@@ -13,9 +13,11 @@ import 'app/theme.dart';
 import 'data/firebase/firebase_auth_repository_impl.dart';
 import 'data/firebase/firestore_account_repository_impl.dart';
 import 'data/firebase/firestore_emergency_report_repository_impl.dart';
+import 'data/location/geolocator_location_repository_impl.dart';
 import 'domain/repositories/account_repository.dart';
 import 'domain/repositories/auth_repository.dart';
 import 'domain/repositories/emergency_report_repository.dart';
+import 'domain/repositories/location_repository.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -63,6 +65,7 @@ class DccApp extends StatelessWidget {
             uploadPhoto: _uploadReportPhoto,
           ),
         ),
+        Provider<LocationRepository>(create: (_) => GeolocatorLocationRepositoryImpl()),
       ],
       child: MaterialApp(
         title: 'DCC-BOGOTA',

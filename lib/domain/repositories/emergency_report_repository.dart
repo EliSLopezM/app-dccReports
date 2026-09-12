@@ -15,6 +15,8 @@ abstract class EmergencyReportRepository {
     String? reporterName,
     String? reporterPhone,
     required String deviceId,
+    double? latitude,
+    double? longitude,
   });
 
   /// RF-8: todos los reportes, para el panel.
@@ -25,6 +27,10 @@ abstract class EmergencyReportRepository {
 
   /// RF-12: historial de reportes de un mismo teléfono.
   Stream<List<EmergencyReport>> watchReportsByPhone(String phone);
+
+  /// RF-1 (spec 003): reportes "activa" creados desde [since] — fuente
+  /// única para el mapa y la campana.
+  Stream<List<EmergencyReport>> watchActiveReports({required DateTime since});
 
   /// RF-9/RF-10: cambia el estado de un reporte.
   Future<void> updateStatus({

@@ -1,6 +1,7 @@
 import 'package:app_dcc_reports/domain/entities/emergency_report.dart';
 import 'package:app_dcc_reports/domain/entities/report_status.dart';
 import 'package:app_dcc_reports/domain/repositories/emergency_report_repository.dart';
+import 'package:app_dcc_reports/domain/repositories/location_repository.dart';
 import 'package:app_dcc_reports/presentation/report/public_report_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -12,6 +13,8 @@ class _FakeEmergencyReportRepository implements EmergencyReportRepository {
   String? lastReporterName;
   String? lastReporterPhone;
   List<String>? lastPhotoPaths;
+  double? lastLatitude;
+  double? lastLongitude;
 
   @override
   Future<String> submit({
@@ -22,11 +25,15 @@ class _FakeEmergencyReportRepository implements EmergencyReportRepository {
     String? reporterName,
     String? reporterPhone,
     required String deviceId,
+    double? latitude,
+    double? longitude,
   }) async {
     lastTitle = title;
     lastReporterName = reporterName;
     lastReporterPhone = reporterPhone;
     lastPhotoPaths = localPhotoPaths;
+    lastLatitude = latitude;
+    lastLongitude = longitude;
     return 'fake-report-id';
   }
 
@@ -40,6 +47,10 @@ class _FakeEmergencyReportRepository implements EmergencyReportRepository {
   Stream<List<EmergencyReport>> watchReportsByPhone(String phone) => Stream.value(const []);
 
   @override
+  Stream<List<EmergencyReport>> watchActiveReports({required DateTime since}) =>
+      Stream.value(const []);
+
+  @override
   Future<void> updateStatus({
     required String reviewerId,
     required String reportId,
@@ -47,14 +58,27 @@ class _FakeEmergencyReportRepository implements EmergencyReportRepository {
   }) async {}
 }
 
+class _FakeLocationRepository implements LocationRepository {
+  _FakeLocationRepository({this.result});
+
+  final ({double latitude, double longitude})? result;
+
+  @override
+  Future<({double latitude, double longitude})?> getCurrentLocation() async => result;
+}
+
 Future<void> _pumpScreen(
   WidgetTester tester,
   _FakeEmergencyReportRepository repo, {
   PickImage? pickImage,
+  ({double latitude, double longitude})? location,
 }) {
   return tester.pumpWidget(
-    Provider<EmergencyReportRepository>.value(
-      value: repo,
+    MultiProvider(
+      providers: [
+        Provider<EmergencyReportRepository>.value(value: repo),
+        Provider<LocationRepository>.value(value: _FakeLocationRepository(result: location)),
+      ],
       child: MaterialApp(
         home: PublicReportScreen(pickImage: pickImage ?? (source) async => null),
       ),
@@ -168,6 +192,53 @@ void main() {
 
     expect(repo.lastReporterName, isNull);
     expect(repo.lastReporterPhone, isNull);
+    expect(find.byKey(const Key('report-submitted-message')), findsOneWidget);
+  });
+
+  testWidgets('con ubicación disponible, se manda al repositorio (RF-13)', (tester) async {
+    final repo = _FakeEmergencyReportRepository();
+    await _pumpScreen(
+      tester,
+      repo,
+      pickImage: (source) async => '/tmp/photo.jpg',
+      location: (latitude: 4.65, longitude: -74.06),
+    );
+
+    await tester.enterText(find.widgetWithText(TextFormField, 'Título del reporte'), 'Incendio');
+    await tester.enterText(find.widgetWithText(TextFormField, 'Dirección'), 'Cra 68 # 24-10');
+    await _addTwoPhotos(tester);
+
+    final submitButton = find.widgetWithText(ElevatedButton, 'Enviar reporte', skipOffstage: false);
+    await tester.dragUntilVisible(submitButton, find.byType(ListView), const Offset(0, -300));
+    await tester.pumpAndSettle();
+    await tester.tap(submitButton);
+    await tester.pumpAndSettle();
+
+    expect(repo.lastLatitude, 4.65);
+    expect(repo.lastLongitude, -74.06);
+  });
+
+  testWidgets('sin ubicación disponible, el envío no se bloquea (RF-14)', (tester) async {
+    final repo = _FakeEmergencyReportRepository();
+    await _pumpScreen(
+      tester,
+      repo,
+      pickImage: (source) async => '/tmp/photo.jpg',
+      location: null,
+    );
+
+    await tester.enterText(find.widgetWithText(TextFormField, 'Título del reporte'), 'Incendio');
+    await tester.enterText(find.widgetWithText(TextFormField, 'Dirección'), 'Cra 68 # 24-10');
+    await _addTwoPhotos(tester);
+
+    final submitButton = find.widgetWithText(ElevatedButton, 'Enviar reporte', skipOffstage: false);
+    await tester.dragUntilVisible(submitButton, find.byType(ListView), const Offset(0, -300));
+    await tester.pumpAndSettle();
+    await tester.tap(submitButton);
+    await tester.pumpAndSettle();
+
+    expect(repo.lastLatitude, isNull);
+    expect(repo.lastLongitude, isNull);
     expect(find.byKey(const Key('report-submitted-message')), findsOneWidget);
   });
 }

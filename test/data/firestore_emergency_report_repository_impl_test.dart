@@ -191,6 +191,79 @@ void main() {
     });
   });
 
+  group('watchActiveReports (spec 003, T4, RF-1)', () {
+    test('solo trae activa dentro del rango de fecha', () async {
+      final firestore = FakeFirebaseFirestore();
+      final now = DateTime(2026, 9, 11, 12);
+
+      final oldRepo = FirestoreEmergencyReportRepositoryImpl(
+        firestore,
+        uploadPhoto: _uploader,
+        now: () => now.subtract(const Duration(days: 10)),
+      );
+      final oldId = await oldRepo.submit(
+        title: 'Vieja',
+        address: 'D1',
+        emergencyTypeId: 'incendio',
+        localPhotoPaths: const ['/tmp/a.jpg', '/tmp/b.jpg'],
+        deviceId: 'device-a',
+      );
+
+      final recentRepo = FirestoreEmergencyReportRepositoryImpl(
+        firestore,
+        uploadPhoto: _uploader,
+        now: () => now,
+      );
+      final recentId = await recentRepo.submit(
+        title: 'Reciente',
+        address: 'D2',
+        emergencyTypeId: 'incendio',
+        localPhotoPaths: const ['/tmp/a.jpg', '/tmp/b.jpg'],
+        deviceId: 'device-b',
+      );
+
+      await recentRepo.updateStatus(
+        reviewerId: 'reviewer-1',
+        reportId: oldId,
+        newStatus: ReportStatus.activa,
+      );
+      await recentRepo.updateStatus(
+        reviewerId: 'reviewer-1',
+        reportId: recentId,
+        newStatus: ReportStatus.activa,
+      );
+
+      final active = await recentRepo
+          .watchActiveReports(since: now.subtract(const Duration(days: 7)))
+          .first;
+
+      expect(active.map((r) => r.id), [recentId]);
+    });
+
+    test('nunca trae reportes que no estén en activa, aunque estén en el rango', () async {
+      final firestore = FakeFirebaseFirestore();
+      final now = DateTime(2026, 9, 11, 12);
+      final repo = FirestoreEmergencyReportRepositoryImpl(
+        firestore,
+        uploadPhoto: _uploader,
+        now: () => now,
+      );
+      await repo.submit(
+        title: 'Pendiente',
+        address: 'D1',
+        emergencyTypeId: 'incendio',
+        localPhotoPaths: const ['/tmp/a.jpg', '/tmp/b.jpg'],
+        deviceId: 'device-a',
+      );
+
+      final active = await repo
+          .watchActiveReports(since: now.subtract(const Duration(days: 7)))
+          .first;
+
+      expect(active, isEmpty);
+    });
+  });
+
   group('updateStatus (T7, RF-9/RF-10)', () {
     test('pasa de pending a activa, y de activa a falsaControlada', () async {
       final firestore = FakeFirebaseFirestore();

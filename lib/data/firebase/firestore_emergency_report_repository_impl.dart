@@ -52,6 +52,8 @@ class FirestoreEmergencyReportRepositoryImpl implements EmergencyReportRepositor
     String? reporterName,
     String? reporterPhone,
     required String deviceId,
+    double? latitude,
+    double? longitude,
   }) async {
     if (title.trim().isEmpty || address.trim().isEmpty || emergencyTypeId.trim().isEmpty) {
       throw InvalidReportException('Falta título, dirección o tipo de emergencia.');
@@ -80,6 +82,8 @@ class FirestoreEmergencyReportRepositoryImpl implements EmergencyReportRepositor
         reporterName: reporterName,
         reporterPhone: reporterPhone,
         deviceId: deviceId,
+        latitude: latitude,
+        longitude: longitude,
       ),
       // Reloj inyectable (en vez de FieldValue.serverTimestamp()) para que
       // la ventana antispam (RF-7) sea determinística en tests; en
@@ -108,6 +112,18 @@ class FirestoreEmergencyReportRepositoryImpl implements EmergencyReportRepositor
   @override
   Stream<List<EmergencyReport>> watchReportsByPhone(String phone) {
     return _reports.where('reporterPhone', isEqualTo: phone).snapshots().map(
+          (snapshot) =>
+              snapshot.docs.map((doc) => reportFromFirestore(doc.id, doc.data())).toList(),
+        );
+  }
+
+  @override
+  Stream<List<EmergencyReport>> watchActiveReports({required DateTime since}) {
+    return _reports
+        .where('status', isEqualTo: ReportStatus.activa.name)
+        .where('createdAt', isGreaterThanOrEqualTo: Timestamp.fromDate(since))
+        .snapshots()
+        .map(
           (snapshot) =>
               snapshot.docs.map((doc) => reportFromFirestore(doc.id, doc.data())).toList(),
         );

@@ -14,6 +14,8 @@ Map<String, dynamic> newReportToFirestore({
   String? reporterName,
   String? reporterPhone,
   required String deviceId,
+  double? latitude,
+  double? longitude,
 }) {
   return {
     'title': title,
@@ -24,6 +26,8 @@ Map<String, dynamic> newReportToFirestore({
     'reporterName': reporterName,
     'reporterPhone': reporterPhone,
     'deviceId': deviceId,
+    'latitude': latitude,
+    'longitude': longitude,
     'createdAt': FieldValue.serverTimestamp(),
     'reviewedBy': null,
     'reviewedAt': null,
@@ -46,5 +50,7 @@ EmergencyReport reportFromFirestore(String id, Map<String, dynamic> data) {
     createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
     reviewedBy: data['reviewedBy'] as String?,
     reviewedAt: (data['reviewedAt'] as Timestamp?)?.toDate(),
+    latitude: (data['latitude'] as num?)?.toDouble(),
+    longitude: (data['longitude'] as num?)?.toDouble(),
   );
 }
