@@ -48,7 +48,7 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
   `emergencyTypeId`.
   Hecho cuando: el widget test pasa.
 
-- [ ] **T7 — `ActiveReportsBell`** (RF-5, RF-6)
+- [x] **T7 — `ActiveReportsBell`** (RF-5, RF-6)
   Ícono con badge = cantidad de reportes de `watchActiveReports`; al
   tocarlo, lista (título/tipo/dirección) que navega a
   `EmergencyDetailScreen` al tocar un ítem. Widget tests: conteo
