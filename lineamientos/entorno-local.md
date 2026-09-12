@@ -109,6 +109,29 @@ Con el emulador corriendo (incluido Storage, puerto 9199):
    en la última hora) → el cuarto debe bloquearse con el mensaje de
    antispam (RF-7).
 
+## Recorrido de prueba completo (T9 de la spec 003)
+
+Con al menos un reporte ya "activa" (ver recorrido de la spec 002) y
+permiso de ubicación concedido al enviarlo:
+
+1. Entra con cualquier cuenta aprobada → Mapa. Con `kGoogleMapsConfigured
+   = false` verás el placeholder, pero la campana y la lista de
+   marcadores ya funcionan de verdad (revisa `MapView.markers` si estás
+   depurando, o simplemente confirma que la campana del `AppBar` del
+   Home muestra el conteo correcto).
+2. Toca el ícono de filtro y cambia entre "Hoy"/"Esta semana"/"Último
+   año" — confirma que el estado vacío aparece si no hay activas en el
+   rango elegido, y que reaparecen al ampliar el rango.
+3. Toca la campana → debe listar la(s) emergencia(s) activa(s); toca una
+   → debe abrir el detalle con sus recomendaciones según el tipo.
+4. Envía un segundo reporte con un tipo de emergencia distinto (ej.
+   inundación) y confírmalo como "activa" — las recomendaciones del
+   detalle deben ser distintas a las del primero.
+5. (Opcional, cuando exista una API key real de Google Maps) cambia
+   `kGoogleMapsConfigured` a `true` en `lib/app/maps_config.dart` y
+   confirma que el mapa real muestra los pines en las coordenadas
+   correctas.
+
 ## Mapa: Google Maps
 
 Mientras no haya una API key real, el mapa mostrará un placeholder (mismo

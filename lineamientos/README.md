@@ -80,7 +80,8 @@ propia entrevista de clarificación antes de escribirse como `spec.md`.
 | Spec | Nombre | Estado |
 |---|---|---|
 | [001](../specs/001-fundacional/spec.md) | Fundacional (tema, auth, roles, registro, panel de aprobación) | Código completo (T1-T15) y en verde; falta el recorrido manual en un emulador Android real (T16) antes de mergear a `main` |
-| [002](../specs/002-reporte-publico/spec.md) | Reporte público de emergencias y moderación | Código completo (T1-T11) y en verde; falta el recorrido manual (T12). Rama apilada sobre `spec/001-fundacional` |
+| [002](../specs/002-reporte-publico/spec.md) | Reporte público de emergencias y moderación | Código completo (T1-T11 + Enmienda 1) y en verde; falta el recorrido manual (T12). Rama apilada sobre `spec/001-fundacional` |
+| [003](../specs/003-mapa-despliegue/spec.md) | Mapa y despliegue | Código completo (T1-T8) y en verde; falta el recorrido manual (T9). Rama apilada sobre `spec/002-reporte-publico` |
 
 Se irán agregando filas a medida que se cierren specs, igual que en
 `amipets`.
@@ -158,10 +159,19 @@ desde el panel (verdadera/activa/falsa controlada/en desarrollo). Mismo
 estado: todo en verde salvo **T12**, el recorrido manual — también
 documentado en [`entorno-local.md`](entorno-local.md).
 
-Como las specs 001 y 002 están apiladas (002 nace de 001, que todavía no
-está en `main`), el orden recomendado para mergear es: probar T16 →
-mergear 001 a `main` → probar T12 → mergear 002 a `main` (o revisar
-ambas juntas si se prefiere).
+La spec 003 (rama `spec/003-mapa-despliegue`, apilada sobre
+`spec/002-reporte-publico`) también tiene su código completo: mapa
+(placeholder mientras no haya API key real) con pines de emergencias
+"activa" filtradas por fecha, detalle con recomendaciones por tipo, y
+campana con conteo/lista de activas. Motivó una pequeña Enmienda 1 a la
+spec 002 (coordenadas GPS del reporte, sin las cuales no había forma de
+ubicar un pin). Mismo estado: todo en verde salvo **T9**, el recorrido
+manual — documentado en [`entorno-local.md`](entorno-local.md).
 
-Todo lo demás (specs 003-009) está pendiente — ver
+Como las specs 001, 002 y 003 están apiladas (cada una nace de la
+anterior, que todavía no está en `main`), el orden recomendado para
+mergear es: probar T16 → mergear 001 → probar T12 → mergear 002 →
+probar T9 → mergear 003 (o revisar las tres juntas si se prefiere).
+
+Todo lo demás (specs 004-008) está pendiente — ver
 `docs/brief-inicial.md` para el alcance completo y el orden propuesto.
