@@ -33,7 +33,7 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
 
 ## Presentation
 
-- [ ] **T5 — `maps_config.dart` + `MapScreen` (placeholder + filtro)** (RF-1, RF-2, RF-7)
+- [x] **T5 — `maps_config.dart` + `MapScreen` (placeholder + filtro)** (RF-1, RF-2, RF-7)
   `kGoogleMapsConfigured = false` por defecto. `MapScreen` con selector
   de `EmergencyDateFilter` (chip/dropdown) que re-consulta
   `watchActiveReports`. Con el mapa desactivado, muestra un placeholder
