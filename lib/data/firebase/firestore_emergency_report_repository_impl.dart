@@ -52,6 +52,8 @@ class FirestoreEmergencyReportRepositoryImpl implements EmergencyReportRepositor
     String? reporterName,
     String? reporterPhone,
     required String deviceId,
+    double? latitude,
+    double? longitude,
   }) async {
     if (title.trim().isEmpty || address.trim().isEmpty || emergencyTypeId.trim().isEmpty) {
       throw InvalidReportException('Falta título, dirección o tipo de emergencia.');
@@ -80,6 +82,8 @@ class FirestoreEmergencyReportRepositoryImpl implements EmergencyReportRepositor
         reporterName: reporterName,
         reporterPhone: reporterPhone,
         deviceId: deviceId,
+        latitude: latitude,
+        longitude: longitude,
       ),
       // Reloj inyectable (en vez de FieldValue.serverTimestamp()) para que
       // la ventana antispam (RF-7) sea determinística en tests; en

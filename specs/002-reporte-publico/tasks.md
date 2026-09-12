@@ -93,3 +93,15 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
   un Revisor, cambiarlo a "activa", confirmar que un cuarto envío seguido
   desde el mismo dispositivo se bloquea por antispam.
   Hecho cuando: el recorrido completo funciona y queda una captura.
+
+## Enmienda 1 (motivada por la spec 003)
+
+- [x] **T13 — Coordenadas GPS del reporte** (RF-13, RF-14)
+  `EmergencyReport.latitude/longitude` (nullable), `LocationRepository` +
+  `GeolocatorLocationRepositoryImpl` (patrón igual a amipets, sin test
+  unitario directo — se ejerce vía fake en `PublicReportScreen`), y el
+  formulario público captura la ubicación al enviar sin bloquear el
+  envío si falla. `NSLocationWhenInUseUsageDescription` agregado en iOS
+  (Android no necesita nada: `geolocator` fusiona sus propios permisos).
+  Hecho cuando: los widget tests de ubicación disponible/no disponible
+  pasan y `flutter build apk --debug` sigue en verde.

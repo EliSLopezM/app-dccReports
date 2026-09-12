@@ -15,6 +15,8 @@ abstract class EmergencyReportRepository {
     String? reporterName,
     String? reporterPhone,
     required String deviceId,
+    double? latitude,
+    double? longitude,
   });
 
   /// RF-8: todos los reportes, para el panel.

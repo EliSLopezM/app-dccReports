@@ -102,6 +102,24 @@ de datos (`EmergencyReport` y su estado).
 - [NECESITA ACLARACIÓN] Catálogo cerrado de tipos de emergencia: se usa
   una lista provisional corta (incendio, sismo/estructura afectada,
   accidente estructural, inundación, otro) en el Plan, ajustable después.
+
+## Enmienda 1 — Coordenadas del reporte (motivada por la spec 003)
+
+La spec 003 (Mapa y despliegue) necesita ubicar cada reporte en un mapa,
+y el modelo original de esta spec solo guardaba la dirección como texto
+libre, sin coordenadas. Se agrega:
+
+- RF-13: CUANDO se envía un reporte, EL SISTEMA intentará capturar la
+  ubicación GPS del dispositivo (latitud/longitud) en el momento del
+  envío y la guardará junto con el reporte si se obtiene.
+- RF-14: SI no se puede obtener la ubicación (permiso denegado, GPS
+  apagado, error), ENTONCES EL SISTEMA permitirá el envío igualmente,
+  sin coordenadas — ese reporte no aparecerá en el mapa (spec 003) hasta
+  que se agregue una ubicación por otro medio (fuera de alcance).
+
+Decisión: priorizar que el envío nunca se bloquee por falta de permiso
+de ubicación (RF caso límite de esta spec: "sin fricción para reportar
+rápido"), sobre la garantía de que todo reporte tenga coordenadas.
 - [NECESITA ACLARACIÓN] Si "verdadera" (confirmado pero ya no urgente) 
   también debería ser visible en el mapa general quedó fuera por la
   respuesta del dueño del producto (solo "activa" es visible) — revisar

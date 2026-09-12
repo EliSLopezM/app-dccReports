@@ -6,6 +6,7 @@ import '../../data/device/device_id_provider.dart';
 import '../../domain/entities/emergency_type_catalog.dart';
 import '../../domain/exceptions.dart';
 import '../../domain/repositories/emergency_report_repository.dart';
+import '../../domain/repositories/location_repository.dart';
 
 typedef PickImage = Future<String?> Function(ImageSource source);
 
@@ -98,6 +99,7 @@ class _PublicReportScreenState extends State<PublicReportScreen> {
     }
 
     final repository = context.read<EmergencyReportRepository>();
+    final locationRepository = context.read<LocationRepository>();
 
     setState(() {
       _submitting = true;
@@ -106,6 +108,8 @@ class _PublicReportScreenState extends State<PublicReportScreen> {
 
     try {
       final deviceId = await _deviceIdProvider.getOrCreate();
+      // RF-13/RF-14: la ubicación es best-effort — null nunca bloquea el envío.
+      final location = await locationRepository.getCurrentLocation();
       await repository.submit(
             title: _titleController.text.trim(),
             address: _addressController.text.trim(),
@@ -117,6 +121,8 @@ class _PublicReportScreenState extends State<PublicReportScreen> {
                 ? null
                 : _reporterPhoneController.text.trim(),
             deviceId: deviceId,
+            latitude: location?.latitude,
+            longitude: location?.longitude,
           );
       if (mounted) setState(() => _submitted = true);
     } on InvalidReportException catch (e) {

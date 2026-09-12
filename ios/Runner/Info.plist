@@ -66,5 +66,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>DCC-BOGOTA usa tu ubicación para marcar dónde ocurre la emergencia que reportas y mostrarla en el mapa.</string>
 </dict>
 </plist>
