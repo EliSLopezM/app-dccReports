@@ -57,7 +57,7 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
 
 ## Wiring final
 
-- [ ] **T8 — Entrada "Mapa" + campana en `HomeShell`**
+- [x] **T8 — Entrada "Mapa" + campana en `HomeShell`**
   Agrega acceso a `MapScreen` visible para cualquier cuenta aprobada
   (no solo Revisores), y el ícono de `ActiveReportsBell` en el `AppBar`
   del `HomeShell`.

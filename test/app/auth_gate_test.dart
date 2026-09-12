@@ -2,9 +2,12 @@ import 'package:app_dcc_reports/app/auth_gate.dart';
 import 'package:app_dcc_reports/domain/entities/account.dart';
 import 'package:app_dcc_reports/domain/entities/account_role.dart';
 import 'package:app_dcc_reports/domain/entities/account_status.dart';
+import 'package:app_dcc_reports/domain/entities/emergency_report.dart';
 import 'package:app_dcc_reports/domain/entities/organization_info.dart';
+import 'package:app_dcc_reports/domain/entities/report_status.dart';
 import 'package:app_dcc_reports/domain/repositories/account_repository.dart';
 import 'package:app_dcc_reports/domain/repositories/auth_repository.dart';
+import 'package:app_dcc_reports/domain/repositories/emergency_report_repository.dart';
 import 'package:app_dcc_reports/presentation/home/home_shell.dart';
 import 'package:app_dcc_reports/presentation/login/login_screen.dart';
 import 'package:app_dcc_reports/presentation/pending/pending_approval_screen.dart';
@@ -69,6 +72,42 @@ class _FakeAccountRepository implements AccountRepository {
   }) async {}
 }
 
+class _FakeEmergencyReportRepository implements EmergencyReportRepository {
+  @override
+  Stream<List<EmergencyReport>> watchActiveReports({required DateTime since}) =>
+      Stream.value(const []);
+
+  @override
+  Future<String> submit({
+    required String title,
+    required String address,
+    required String emergencyTypeId,
+    required List<String> localPhotoPaths,
+    String? reporterName,
+    String? reporterPhone,
+    required String deviceId,
+    double? latitude,
+    double? longitude,
+  }) async =>
+      'id';
+
+  @override
+  Stream<List<EmergencyReport>> watchAllReports() => Stream.value(const []);
+
+  @override
+  Stream<List<EmergencyReport>> watchReportsByDevice(String deviceId) => Stream.value(const []);
+
+  @override
+  Stream<List<EmergencyReport>> watchReportsByPhone(String phone) => Stream.value(const []);
+
+  @override
+  Future<void> updateStatus({
+    required String reviewerId,
+    required String reportId,
+    required ReportStatus newStatus,
+  }) async {}
+}
+
 Account _approvedAccount() {
   return Account(
     id: 'uid-1',
@@ -101,6 +140,7 @@ Future<void> _pumpAuthGate(
       providers: [
         Provider<AuthRepository>.value(value: _FakeAuthRepository(uid: uid)),
         Provider<AccountRepository>.value(value: _FakeAccountRepository(account)),
+        Provider<EmergencyReportRepository>.value(value: _FakeEmergencyReportRepository()),
       ],
       child: const MaterialApp(home: AuthGate()),
     ),
