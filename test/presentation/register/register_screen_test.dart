@@ -1,6 +1,10 @@
+import 'package:app_dcc_reports/domain/entities/account.dart';
 import 'package:app_dcc_reports/domain/entities/account_role.dart';
+import 'package:app_dcc_reports/domain/entities/comite.dart';
 import 'package:app_dcc_reports/domain/entities/organization_info.dart';
+import 'package:app_dcc_reports/domain/repositories/account_repository.dart';
 import 'package:app_dcc_reports/domain/repositories/auth_repository.dart';
+import 'package:app_dcc_reports/domain/repositories/comite_repository.dart';
 import 'package:app_dcc_reports/presentation/register/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -35,10 +39,88 @@ class _FakeAuthRepository implements AuthRepository {
   Stream<String?> watchCurrentUid() => const Stream.empty();
 }
 
-Future<void> _pumpRegisterScreen(WidgetTester tester, _FakeAuthRepository repo) {
+class _FakeAccountRepository implements AccountRepository {
+  String? lastComiteUid;
+  String? lastComiteId;
+
+  @override
+  Future<void> setComite({required String uid, required String comiteId}) async {
+    lastComiteUid = uid;
+    lastComiteId = comiteId;
+  }
+
+  @override
+  Stream<Account?> watchAccount(String uid) => Stream.value(null);
+
+  @override
+  Stream<List<Account>> watchAllAccounts() => Stream.value(const []);
+
+  @override
+  Stream<List<Account>> watchPendingAccounts() => Stream.value(const []);
+
+  @override
+  Future<void> approve({
+    required AccountRole reviewerRole,
+    required String reviewerId,
+    required String accountId,
+  }) async {}
+
+  @override
+  Future<void> reject({
+    required AccountRole reviewerRole,
+    required String reviewerId,
+    required String accountId,
+    String? reason,
+  }) async {}
+}
+
+class _FakeComiteRepository implements ComiteRepository {
+  _FakeComiteRepository({this.existingComites = const []});
+
+  final List<Comite> existingComites;
+  String? lastCreatedName;
+  String? lastCreatedAddress;
+  String? lastCreatedLeaderId;
+
+  @override
+  Future<String> create({
+    required String name,
+    required String address,
+    required String leaderId,
+  }) async {
+    lastCreatedName = name;
+    lastCreatedAddress = address;
+    lastCreatedLeaderId = leaderId;
+    return 'new-comite-id';
+  }
+
+  @override
+  Stream<List<Comite>> watchAllComites() => Stream.value(existingComites);
+
+  @override
+  Stream<Comite?> watchComite(String comiteId) => Stream.value(null);
+
+  @override
+  Future<void> setDelegate({
+    required String comiteId,
+    required String requesterId,
+    required String delegateId,
+  }) async {}
+}
+
+Future<void> _pumpRegisterScreen(
+  WidgetTester tester,
+  _FakeAuthRepository authRepo, {
+  _FakeAccountRepository? accountRepo,
+  _FakeComiteRepository? comiteRepo,
+}) {
   return tester.pumpWidget(
-    Provider<AuthRepository>.value(
-      value: repo,
+    MultiProvider(
+      providers: [
+        Provider<AuthRepository>.value(value: authRepo),
+        Provider<AccountRepository>.value(value: accountRepo ?? _FakeAccountRepository()),
+        Provider<ComiteRepository>.value(value: comiteRepo ?? _FakeComiteRepository()),
+      ],
       child: const MaterialApp(home: RegisterScreen()),
     ),
   );
@@ -49,6 +131,12 @@ void main() {
     await _pumpRegisterScreen(tester, _FakeAuthRepository());
 
     expect(find.byKey(const Key('organization-section')), findsNothing);
+  });
+
+  testWidgets('rol voluntario muestra el selector de comité (RF-2, spec 004)', (tester) async {
+    await _pumpRegisterScreen(tester, _FakeAuthRepository());
+
+    expect(find.byKey(const Key('no-comites-message'), skipOffstage: false), findsOneWidget);
   });
 
   testWidgets('cambiar a funcionario muestra los campos de organización (RF-2)', (tester) async {
@@ -68,11 +156,14 @@ void main() {
 
     expect(orgSection, findsOneWidget);
     expect(find.widgetWithText(TextFormField, 'Nombre del grupo/comité'), findsOneWidget);
+    expect(find.byKey(const Key('no-comites-message')), findsNothing);
   });
 
-  testWidgets('enviar con funcionario manda la organization al repositorio', (tester) async {
-    final repo = _FakeAuthRepository();
-    await _pumpRegisterScreen(tester, repo);
+  testWidgets('enviar con funcionario funda un comité nuevo (RF-1, spec 004)', (tester) async {
+    final authRepo = _FakeAuthRepository();
+    final accountRepo = _FakeAccountRepository();
+    final comiteRepo = _FakeComiteRepository();
+    await _pumpRegisterScreen(tester, authRepo, accountRepo: accountRepo, comiteRepo: comiteRepo);
 
     await tester.enterText(find.widgetWithText(TextFormField, 'Nombre completo'), 'Jane Doe');
     await tester.enterText(
@@ -105,7 +196,48 @@ void main() {
     await tester.tap(submitButton);
     await tester.pumpAndSettle();
 
-    expect(repo.lastRole, AccountRole.funcionario);
-    expect(repo.lastOrganization?.name, 'Comité Suba');
+    expect(authRepo.lastRole, AccountRole.funcionario);
+    expect(authRepo.lastOrganization?.name, 'Comité Suba');
+    expect(comiteRepo.lastCreatedName, 'Comité Suba');
+    expect(comiteRepo.lastCreatedLeaderId, 'fake-uid');
+    expect(accountRepo.lastComiteId, 'new-comite-id');
+  });
+
+  testWidgets('voluntario elige un comité existente y se manda a setComite (RF-2)', (tester) async {
+    final authRepo = _FakeAuthRepository();
+    final accountRepo = _FakeAccountRepository();
+    final comite = Comite(
+      id: 'comite-1',
+      name: 'Comité Suba',
+      address: 'Cra 1 # 2-3',
+      leaderId: 'leader-uid',
+      createdAt: DateTime(2026, 9, 14),
+    );
+    final comiteRepo = _FakeComiteRepository(existingComites: [comite]);
+    await _pumpRegisterScreen(tester, authRepo, accountRepo: accountRepo, comiteRepo: comiteRepo);
+
+    await tester.enterText(find.widgetWithText(TextFormField, 'Nombre completo'), 'John Doe');
+    await tester.enterText(
+      find.widgetWithText(TextFormField, 'Correo (opcional si das teléfono)'),
+      'john@example.com',
+    );
+    await tester.enterText(find.widgetWithText(TextFormField, 'Contraseña'), '123456');
+
+    final comiteDropdown = find.byKey(const Key('comite-dropdown'), skipOffstage: false);
+    await tester.dragUntilVisible(comiteDropdown, find.byType(ListView), const Offset(0, -200));
+    await tester.pumpAndSettle();
+    await tester.tap(comiteDropdown);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Comité Suba').last);
+    await tester.pumpAndSettle();
+
+    final submitButton = find.widgetWithText(ElevatedButton, 'Registrarme', skipOffstage: false);
+    await tester.dragUntilVisible(submitButton, find.byType(ListView), const Offset(0, -300));
+    await tester.pumpAndSettle();
+    await tester.tap(submitButton);
+    await tester.pumpAndSettle();
+
+    expect(accountRepo.lastComiteId, 'comite-1');
+    expect(accountRepo.lastComiteUid, 'fake-uid');
   });
 }

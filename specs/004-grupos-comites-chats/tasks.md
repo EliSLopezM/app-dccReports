@@ -76,7 +76,7 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
 
 ## Presentation
 
-- [ ] **T12 — `ComitePickerField` + cambios en `RegisterScreen`** (RF-1, RF-2)
+- [x] **T12 — `ComitePickerField` + cambios en `RegisterScreen`** (RF-1, RF-2)
   Rol funcionario/liderFuncionario: al enviar el registro, además crea
   el comité (T4) con el nombre/dirección ya capturados (spec 001).
   Rol voluntario/lider: selector de comité existente (lista vacía si
