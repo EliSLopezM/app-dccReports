@@ -132,6 +132,27 @@ permiso de ubicación concedido al enviarlo:
    confirma que el mapa real muestra los pines en las coordenadas
    correctas.
 
+## Recorrido de prueba completo (T18 de la spec 004)
+
+Con el emulador corriendo y la cuenta Admin ya sembrada:
+
+1. Registra un funcionario ("Jane", comité "Comité Suba", dirección "Cra
+   1 # 2-3") → queda "pendiente".
+2. Registra un voluntario ("John") eligiendo "Comité Suba" en el
+   selector de comité → queda "pendiente".
+3. Con la cuenta Admin, aprueba a Jane y a John desde el Panel.
+4. Entra con Jane → Chats → debe aparecer el chat "Comité Suba". Entra
+   con John → debe ver el mismo chat. Mándense un mensaje desde ambas
+   cuentas y confirma que se ven en tiempo real en la otra.
+5. Con Jane → "Crear chats" → crea uno nuevo, agrega a John desde la
+   lista de cuentas → ambos deben poder chatear ahí también.
+6. Con Jane → "Mi comité" → asigna a John como delegado → confirma que
+   queda marcado como delegado.
+7. (Opcional) Busca "DCC Bogotá" en Chats y únete desde cualquier cuenta
+   aprobada.
+8. (Opcional) Con Jane, crea 5 chats personalizados y confirma que el
+   sexto se bloquea; elimina uno y confirma que ya puede crear otro.
+
 ## Mapa: Google Maps
 
 Mientras no haya una API key real, el mapa mostrará un placeholder (mismo
