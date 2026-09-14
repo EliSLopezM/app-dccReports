@@ -42,34 +42,34 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
 
 ## Data — Chats
 
-- [ ] **T6 — `ensureComiteMembership`** (RF-4)
+- [x] **T6 — `ensureComiteMembership`** (RF-4)
   Agrega el uid a `memberIds` del chat de ese comité (`arrayUnion`,
   idempotente). Tests: se agrega una vez; llamarlo dos veces no duplica.
   Hecho cuando: ambos tests pasan.
 
-- [ ] **T7 — Chat de departamento sembrado + `joinDepartmentChat`** (RF-6)
+- [x] **T7 — Chat de departamento sembrado + `joinDepartmentChat`** (RF-6)
   Documento `chats/dept-bogota` con `kind: department`, creado si no
   existe. Tests: unirse agrega el uid; buscar por nombre lo encuentra
   aunque el uid no sea miembro todavía.
   Hecho cuando: los tests pasan.
 
-- [ ] **T8 — `createCustomChat` con límite de 5 activos** (RF-7)
+- [x] **T8 — `createCustomChat` con límite de 5 activos** (RF-7)
   Tests: 5 chats seguidos del mismo funcionario pasan; el 6to lanza
   `ChatLimitExceededException`.
   Hecho cuando: ambos tests pasan.
 
-- [ ] **T9 — `deleteChat` y `addMember`, solo el creador** (RF-8, RF-9)
+- [x] **T9 — `deleteChat` y `addMember`, solo el creador** (RF-8, RF-9)
   Tests: el creador elimina y libera cupo (crear uno más tras eliminar
   pasa); el creador agrega un miembro; alguien que no es el creador
   intenta eliminar/agregar y se rechaza.
   Hecho cuando: los 4 casos pasan.
 
-- [ ] **T10 — `watchMyChats`** (RF-10)
+- [x] **T10 — `watchMyChats`** (RF-10)
   Tests: trae solo los chats donde `memberIds` contiene el uid dado,
   de los 3 tipos mezclados.
   Hecho cuando: el test pasa.
 
-- [ ] **T11 — `sendMessage`/`watchMessages`** (RF-11, RF-12)
+- [x] **T11 — `sendMessage`/`watchMessages`** (RF-11, RF-12)
   Tests: un miembro manda un mensaje y aparece en `watchMessages`; un no
   miembro intenta mandar y `NotChatMemberException` se lanza.
   Hecho cuando: ambos tests pasan.
