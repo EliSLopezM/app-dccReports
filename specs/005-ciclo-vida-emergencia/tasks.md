@@ -26,24 +26,24 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
 
 ## Data
 
-- [ ] **T4 — `goTo`/`arrive`** (RF-1, RF-4, RF-5, RF-6, caso límite "Ir" x2)
+- [x] **T4 — `goTo`/`arrive`** (RF-1, RF-4, RF-5, RF-6, caso límite "Ir" x2)
   Tests: `goTo` crea en "going"; llamarlo dos veces no duplica; `arrive`
   marca "arrived"; el primero en llegar (sin punto de encuentro) se
   distingue del segundo.
   Hecho cuando: los tests pasan.
 
-- [ ] **T5 — `setMeetingPoint`** (RF-7, RF-8)
+- [x] **T5 — `setMeetingPoint`** (RF-7, RF-8)
   Tests: voluntario pone el primero (OK); segundo voluntario bloqueado;
   funcionario reemplaza el de un voluntario (OK); el mismo voluntario que
   lo puso lo cambia (OK).
   Hecho cuando: los 4 casos pasan.
 
-- [ ] **T6 — `requestAmbulance`** (RF-9)
+- [x] **T6 — `requestAmbulance`** (RF-9)
   Test: registra el timestamp de la solicitud, se puede llamar más de
   una vez.
   Hecho cuando: el test pasa.
 
-- [ ] **T7 — `finishCompleted`/`finishWithdrawn` con cálculo de tiempos** (RF-10, RF-11)
+- [x] **T7 — `finishCompleted`/`finishWithdrawn` con cálculo de tiempos** (RF-10, RF-11)
   Tests con reloj inyectable: tiempo going→arrived y arrived→fin
   calculados correctamente para ambos tipos de finalización; finalizar
   sin haber llegado lanza `NotArrivedException`.

@@ -24,11 +24,12 @@ abstract class ParticipationRepository {
     required String accountId,
   });
 
-  /// RF-10/RF-11: lanza [NotArrivedException] si no había llegado.
+  /// RF-10/RF-11: sube [localPhotoPath] (mismo patrón que los reportes,
+  /// spec 002) y lanza [NotArrivedException] si no había llegado.
   Future<void> finishCompleted({
     required String reportId,
     required String accountId,
-    required String photoUrl,
+    required String localPhotoPath,
     required DifficultyLevel difficultyLevel,
   });
 
