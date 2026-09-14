@@ -89,13 +89,13 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
   permite asignar/cambiar delegado. Widget test.
   Hecho cuando: el widget test pasa.
 
-- [ ] **T14 — `ChatsListScreen`** (RF-6, RF-10)
+- [x] **T14 — `ChatsListScreen`** (RF-6, RF-10)
   Lista "mis chats"; buscador para encontrar y unirse al chat de
   departamento. Widget tests: lista mis chats; buscar y unirse agrega el
   chat a la lista.
   Hecho cuando: los widget tests pasan.
 
-- [ ] **T15 — `ChatScreen`** (RF-11, RF-12)
+- [x] **T15 — `ChatScreen`** (RF-11, RF-12)
   Mensajería en tiempo real dentro de un chat. Widget test: enviar un
   mensaje lo agrega a la lista visible.
   Hecho cuando: el widget test pasa.
