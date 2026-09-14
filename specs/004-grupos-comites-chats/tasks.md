@@ -108,7 +108,7 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
 
 ## Wiring final
 
-- [ ] **T17 — Providers + integración con aprobación + `HomeShell`**
+- [x] **T17 — Providers + integración con aprobación + `HomeShell`**
   `ComiteRepository`/`ChatRepository` en `main.dart`.
   `PanelAccountsListScreen` llama `ensureComiteMembership` justo después
   de un `approve()` exitoso si la cuenta tiene `comiteId` (RF-4).

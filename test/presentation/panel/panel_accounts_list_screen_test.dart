@@ -1,8 +1,11 @@
 import 'package:app_dcc_reports/domain/entities/account.dart';
 import 'package:app_dcc_reports/domain/entities/account_role.dart';
 import 'package:app_dcc_reports/domain/entities/account_status.dart';
+import 'package:app_dcc_reports/domain/entities/chat.dart';
+import 'package:app_dcc_reports/domain/entities/chat_message.dart';
 import 'package:app_dcc_reports/domain/entities/organization_info.dart';
 import 'package:app_dcc_reports/domain/repositories/account_repository.dart';
+import 'package:app_dcc_reports/domain/repositories/chat_repository.dart';
 import 'package:app_dcc_reports/presentation/panel/panel_accounts_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -48,7 +51,59 @@ class _FakeAccountRepository implements AccountRepository {
   Future<void> setComite({required String uid, required String comiteId}) async {}
 }
 
-Account _pendingAccount({required String id, required AccountRole role}) {
+class _FakeChatRepository implements ChatRepository {
+  String? lastComiteId;
+  String? lastMemberUid;
+
+  @override
+  Future<void> ensureComiteMembership({required String comiteId, required String uid}) async {
+    lastComiteId = comiteId;
+    lastMemberUid = uid;
+  }
+
+  @override
+  Future<void> joinDepartmentChat(String uid) async {}
+
+  @override
+  Future<String> createCustomChat({
+    required String name,
+    required String createdBy,
+    required List<String> initialMemberIds,
+  }) async =>
+      'id';
+
+  @override
+  Future<void> deleteChat({required String chatId, required String requesterId}) async {}
+
+  @override
+  Future<void> addMember({
+    required String chatId,
+    required String requesterId,
+    required String newMemberUid,
+  }) async {}
+
+  @override
+  Stream<List<Chat>> watchMyChats(String uid) => Stream.value(const []);
+
+  @override
+  Stream<Chat?> watchChat(String chatId) => Stream.value(null);
+
+  @override
+  Stream<Chat?> watchChatByComite(String comiteId) => Stream.value(null);
+
+  @override
+  Future<void> sendMessage({
+    required String chatId,
+    required String senderId,
+    required String senderName,
+    required String text,
+  }) async {}
+
+  @override
+  Stream<List<ChatMessage>> watchMessages(String chatId) => Stream.value(const []);
+}
+
+Account _pendingAccount({required String id, required AccountRole role, String? comiteId}) {
   return Account(
     id: id,
     name: 'Cuenta $id',
@@ -58,6 +113,7 @@ Account _pendingAccount({required String id, required AccountRole role}) {
     organization:
         role.requiresOrganization ? const OrganizationInfo(name: 'Comité X', address: 'Dir X') : null,
     createdAt: DateTime(2026, 9, 11),
+    comiteId: comiteId,
   );
 }
 
@@ -65,10 +121,14 @@ Future<void> _pumpPanel(
   WidgetTester tester,
   _FakeAccountRepository repo, {
   required AccountRole viewerRole,
+  ChatRepository? chatRepo,
 }) {
   return tester.pumpWidget(
-    Provider<AccountRepository>.value(
-      value: repo,
+    MultiProvider(
+      providers: [
+        Provider<AccountRepository>.value(value: repo),
+        Provider<ChatRepository>.value(value: chatRepo ?? _FakeChatRepository()),
+      ],
       child: MaterialApp(
         home: PanelAccountsListScreen(viewerRole: viewerRole, viewerId: 'viewer-uid'),
       ),
@@ -115,5 +175,36 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(repo.approvedIds, contains('v1'));
+  });
+
+  testWidgets('aprobar una cuenta con comité la agrega a su chat (RF-4, spec 004)', (tester) async {
+    final repo = _FakeAccountRepository([
+      _pendingAccount(id: 'v1', role: AccountRole.voluntario, comiteId: 'comite-1'),
+    ]);
+    final chatRepo = _FakeChatRepository();
+
+    await _pumpPanel(tester, repo, viewerRole: AccountRole.funcionario, chatRepo: chatRepo);
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.check));
+    await tester.pumpAndSettle();
+
+    expect(chatRepo.lastComiteId, 'comite-1');
+    expect(chatRepo.lastMemberUid, 'v1');
+  });
+
+  testWidgets('aprobar una cuenta sin comité no toca el chat', (tester) async {
+    final repo = _FakeAccountRepository([
+      _pendingAccount(id: 'v1', role: AccountRole.voluntario),
+    ]);
+    final chatRepo = _FakeChatRepository();
+
+    await _pumpPanel(tester, repo, viewerRole: AccountRole.funcionario, chatRepo: chatRepo);
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.check));
+    await tester.pumpAndSettle();
+
+    expect(chatRepo.lastComiteId, isNull);
   });
 }

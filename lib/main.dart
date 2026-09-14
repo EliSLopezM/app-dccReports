@@ -12,10 +12,14 @@ import 'app/auth_gate.dart';
 import 'app/theme.dart';
 import 'data/firebase/firebase_auth_repository_impl.dart';
 import 'data/firebase/firestore_account_repository_impl.dart';
+import 'data/firebase/firestore_chat_repository_impl.dart';
+import 'data/firebase/firestore_comite_repository_impl.dart';
 import 'data/firebase/firestore_emergency_report_repository_impl.dart';
 import 'data/location/geolocator_location_repository_impl.dart';
 import 'domain/repositories/account_repository.dart';
 import 'domain/repositories/auth_repository.dart';
+import 'domain/repositories/chat_repository.dart';
+import 'domain/repositories/comite_repository.dart';
 import 'domain/repositories/emergency_report_repository.dart';
 import 'domain/repositories/location_repository.dart';
 import 'firebase_options.dart';
@@ -66,6 +70,12 @@ class DccApp extends StatelessWidget {
           ),
         ),
         Provider<LocationRepository>(create: (_) => GeolocatorLocationRepositoryImpl()),
+        Provider<ComiteRepository>(
+          create: (_) => FirestoreComiteRepositoryImpl(FirebaseFirestore.instance),
+        ),
+        Provider<ChatRepository>(
+          create: (_) => FirestoreChatRepositoryImpl(FirebaseFirestore.instance),
+        ),
       ],
       child: MaterialApp(
         title: 'DCC-BOGOTA',
