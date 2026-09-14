@@ -5,18 +5,18 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
 
 ## Domain
 
-- [ ] **T1 — Entidades: `Comite`, `Chat`, `ChatKind`, `ChatMessage`** (RF-1, RF-3, RF-6, RF-7, RF-11)
+- [x] **T1 — Entidades: `Comite`, `Chat`, `ChatKind`, `ChatMessage`** (RF-1, RF-3, RF-6, RF-7, RF-11)
   Más el campo `comiteId: String?` en `Account` (spec 001). Unit tests:
   construir cada entidad válida.
   Hecho cuando: los tests de entidades pasan.
 
-- [ ] **T2 — Excepciones + interfaz `ComiteRepository`** (RF-1, RF-5)
+- [x] **T2 — Excepciones + interfaz `ComiteRepository`** (RF-1, RF-5)
   `NotComiteLeaderException` en `domain/exceptions.dart`;
   `domain/repositories/comite_repository.dart` con `create`,
   `watchAllComites`, `watchComite`, `setDelegate`.
   Hecho cuando: `flutter analyze` no marca nada en `domain/`.
 
-- [ ] **T3 — Excepciones + interfaz `ChatRepository`** (RF-4, RF-6 a RF-12)
+- [x] **T3 — Excepciones + interfaz `ChatRepository`** (RF-4, RF-6 a RF-12)
   `NotChatOwnerException`, `ChatLimitExceededException`,
   `NotChatMemberException`; `domain/repositories/chat_repository.dart`
   con `ensureComiteMembership`, `joinDepartmentChat`, `createCustomChat`,
