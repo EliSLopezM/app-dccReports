@@ -15,6 +15,11 @@ class Account {
   final String? reviewedBy;
   final DateTime? reviewedAt;
 
+  /// RF-1/RF-2 (spec 004): comité al que pertenece — fundado (funcionario/
+  /// líder funcionario) o elegido (voluntario/líder) al registrarse. Null
+  /// si aún no existía ninguno para elegir.
+  final String? comiteId;
+
   Account({
     required this.id,
     required this.name,
@@ -27,6 +32,7 @@ class Account {
     required this.createdAt,
     this.reviewedBy,
     this.reviewedAt,
+    this.comiteId,
   })  : assert(
           email != null || phone != null,
           'Account requiere email o teléfono',

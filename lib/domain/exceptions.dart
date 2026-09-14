@@ -25,3 +25,17 @@ class InvalidReportException implements Exception {
 
 /// RF-7: el mismo deviceId superó el límite de reportes por hora.
 class SpamLimitExceededException implements Exception {}
+
+/// RF-5 (spec 004): solo el líder de un comité puede asignar delegado.
+class NotComiteLeaderException implements Exception {}
+
+class ComiteNotFoundException implements Exception {}
+
+/// RF-9 (spec 004): solo el funcionario creador administra su chat.
+class NotChatOwnerException implements Exception {}
+
+/// RF-7 (spec 004): el funcionario ya tiene 5 chats activos.
+class ChatLimitExceededException implements Exception {}
+
+/// RF-12 (spec 004): solo un miembro puede mandar/leer mensajes.
+class NotChatMemberException implements Exception {}

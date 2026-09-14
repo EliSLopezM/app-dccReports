@@ -79,4 +79,9 @@ class FirestoreAccountRepositoryImpl implements AccountRepository {
       'rejectionReason': ?reason,
     });
   }
+
+  @override
+  Future<void> setComite({required String uid, required String comiteId}) async {
+    await _accounts.doc(uid).update({'comiteId': comiteId});
+  }
 }

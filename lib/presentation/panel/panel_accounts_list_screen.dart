@@ -5,6 +5,7 @@ import '../../domain/entities/account.dart';
 import '../../domain/entities/account_role.dart';
 import '../../domain/entities/account_status.dart';
 import '../../domain/repositories/account_repository.dart';
+import '../../domain/repositories/chat_repository.dart';
 import 'account_detail_screen.dart';
 
 const _roleLabels = {
@@ -48,6 +49,22 @@ class _PanelAccountsListScreenState extends State<PanelAccountsListScreen> {
     // nuevo en cada build (ej. dentro de StreamBuilder.stream), cada
     // filtro nuevo re-suscribiría a Firestore y parpadearía en "cargando".
     _accountsStream = context.read<AccountRepository>().watchAllAccounts();
+  }
+
+  /// RF-4 (spec 004): una cuenta con comité asignado entra a su chat de
+  /// comité justo al ser aprobada.
+  Future<void> _approve(BuildContext context, Account account) async {
+    final accountRepository = context.read<AccountRepository>();
+    final chatRepository = context.read<ChatRepository>();
+    await accountRepository.approve(
+      reviewerRole: widget.viewerRole,
+      reviewerId: widget.viewerId,
+      accountId: account.id,
+    );
+    final comiteId = account.comiteId;
+    if (comiteId != null) {
+      await chatRepository.ensureComiteMembership(comiteId: comiteId, uid: account.id);
+    }
   }
 
   @override
@@ -106,11 +123,7 @@ class _PanelAccountsListScreenState extends State<PanelAccountsListScreen> {
                                 IconButton(
                                   icon: const Icon(Icons.check, color: Colors.green),
                                   tooltip: 'Aprobar',
-                                  onPressed: () => context.read<AccountRepository>().approve(
-                                        reviewerRole: widget.viewerRole,
-                                        reviewerId: widget.viewerId,
-                                        accountId: account.id,
-                                      ),
+                                  onPressed: () => _approve(context, account),
                                 ),
                                 IconButton(
                                   icon: const Icon(Icons.close, color: Colors.red),

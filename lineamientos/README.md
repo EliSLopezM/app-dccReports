@@ -82,6 +82,7 @@ propia entrevista de clarificación antes de escribirse como `spec.md`.
 | [001](../specs/001-fundacional/spec.md) | Fundacional (tema, auth, roles, registro, panel de aprobación) | Código completo (T1-T15) y en verde; falta el recorrido manual en un emulador Android real (T16) antes de mergear a `main` |
 | [002](../specs/002-reporte-publico/spec.md) | Reporte público de emergencias y moderación | Código completo (T1-T11 + Enmienda 1) y en verde; falta el recorrido manual (T12). Rama apilada sobre `spec/001-fundacional` |
 | [003](../specs/003-mapa-despliegue/spec.md) | Mapa y despliegue | Código completo (T1-T8) y en verde; falta el recorrido manual (T9). Rama apilada sobre `spec/002-reporte-publico` |
+| [004](../specs/004-grupos-comites-chats/spec.md) | Grupos/comités y chats | Código completo (T1-T17) y en verde; falta el recorrido manual (T18). Rama apilada sobre `spec/003-mapa-despliegue` |
 
 Se irán agregando filas a medida que se cierren specs, igual que en
 `amipets`.
@@ -168,10 +169,21 @@ spec 002 (coordenadas GPS del reporte, sin las cuales no había forma de
 ubicar un pin). Mismo estado: todo en verde salvo **T9**, el recorrido
 manual — documentado en [`entorno-local.md`](entorno-local.md).
 
-Como las specs 001, 002 y 003 están apiladas (cada una nace de la
-anterior, que todavía no está en `main`), el orden recomendado para
-mergear es: probar T16 → mergear 001 → probar T12 → mergear 002 →
-probar T9 → mergear 003 (o revisar las tres juntas si se prefiere).
+La spec 004 (rama `spec/004-grupos-comites-chats`, apilada sobre
+`spec/003-mapa-despliegue`) también tiene su código completo: comité
+real (fundado por funcionario/líder funcionario al registrarse, elegido
+por voluntario/líder), delegado, chat automático de comité (poblado al
+aprobar la cuenta, no al registrarse), chat único de departamento (DCC
+Bogotá), chats personalizados de funcionario (máx. 5 activos) y
+mensajería en tiempo real para los tres tipos. Mismo estado: todo en
+verde salvo **T18**, el recorrido manual — documentado en
+[`entorno-local.md`](entorno-local.md).
 
-Todo lo demás (specs 004-008) está pendiente — ver
+Como las specs 001-004 están apiladas (cada una nace de la anterior, que
+todavía no está en `main`), el orden recomendado para mergear es: probar
+T16 → mergear 001 → probar T12 → mergear 002 → probar T9 → mergear 003
+→ probar T18 → mergear 004 (o revisar las cuatro juntas si se
+prefiere).
+
+Todo lo demás (specs 005-008) está pendiente — ver
 `docs/brief-inicial.md` para el alcance completo y el orden propuesto.

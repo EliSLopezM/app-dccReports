@@ -184,9 +184,12 @@ producto confirme o reordene antes de arrancar la spec 001:
    con conteo/lista de activas (sin dirigirse todavía solo a los
    grupos/comités cercanos — eso lo amplía la spec 004), y detalle de
    emergencia con recomendaciones por tipo.
-4. **Grupos/comités y chats**: alta de grupo/comité con delegado, chat
-   por defecto del grupo, chat general por departamento, creación/borrado
-   de chats por el funcionario (máx. 5).
+4. **Grupos/comités y chats** (spec 004, código completo): comité
+   fundado por funcionario/líder funcionario al registrarse (elegido por
+   voluntario/líder de una lista), delegado, chat automático de comité
+   (se puebla al aprobar la cuenta), chat único de departamento (DCC
+   Bogotá), chats personalizados creados/eliminados solo por funcionario
+   (máx. 5 activos), y mensajería en tiempo real para los tres tipos.
 5. **Ciclo de vida de la emergencia**: "Ir", punto de encuentro (reglas de
    voluntario vs. líder/funcionario), "Ya llegué", solicitud de ambulancia
    + llamada, finalización (foto/nivel/razón) y tiempos en el perfil.

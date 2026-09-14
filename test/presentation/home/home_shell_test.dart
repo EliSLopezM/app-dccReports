@@ -59,6 +59,9 @@ class _FakeAccountRepository implements AccountRepository {
     required String accountId,
     String? reason,
   }) async {}
+
+  @override
+  Future<void> setComite({required String uid, required String comiteId}) async {}
 }
 
 class _FakeEmergencyReportRepository implements EmergencyReportRepository {

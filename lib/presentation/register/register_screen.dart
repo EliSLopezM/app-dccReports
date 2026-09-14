@@ -5,7 +5,10 @@ import '../../domain/entities/account_role.dart';
 import '../../domain/entities/course_catalog.dart';
 import '../../domain/entities/organization_info.dart';
 import '../../domain/exceptions.dart';
+import '../../domain/repositories/account_repository.dart';
 import '../../domain/repositories/auth_repository.dart';
+import '../../domain/repositories/comite_repository.dart';
+import '../comite/comite_picker_field.dart';
 
 const _registrableRoles = [
   AccountRole.voluntario,
@@ -39,6 +42,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   AccountRole _role = AccountRole.voluntario;
   final Set<String> _selectedCourseIds = {};
+  String? _selectedComiteId;
   bool _submitting = false;
   String? _errorMessage;
 
@@ -63,26 +67,43 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return;
     }
 
+    final authRepository = context.read<AuthRepository>();
+    final accountRepository = context.read<AccountRepository>();
+    final comiteRepository = context.read<ComiteRepository>();
+
     setState(() {
       _submitting = true;
       _errorMessage = null;
     });
 
     try {
-      await context.read<AuthRepository>().register(
-            name: _nameController.text.trim(),
-            email: _emailController.text.trim().isEmpty ? null : _emailController.text.trim(),
-            phone: _phoneController.text.trim().isEmpty ? null : _phoneController.text.trim(),
-            password: _passwordController.text,
-            role: _role,
-            activeCourseIds: _selectedCourseIds.toList(),
-            organization: _requiresOrganization
-                ? OrganizationInfo(
-                    name: _organizationNameController.text.trim(),
-                    address: _organizationAddressController.text.trim(),
-                  )
-                : null,
-          );
+      final uid = await authRepository.register(
+        name: _nameController.text.trim(),
+        email: _emailController.text.trim().isEmpty ? null : _emailController.text.trim(),
+        phone: _phoneController.text.trim().isEmpty ? null : _phoneController.text.trim(),
+        password: _passwordController.text,
+        role: _role,
+        activeCourseIds: _selectedCourseIds.toList(),
+        organization: _requiresOrganization
+            ? OrganizationInfo(
+                name: _organizationNameController.text.trim(),
+                address: _organizationAddressController.text.trim(),
+              )
+            : null,
+      );
+
+      // RF-1/RF-2: funcionario/líder funcionario funda su comité; el resto
+      // ya eligió uno existente (o continúa sin comité).
+      if (_requiresOrganization) {
+        final comiteId = await comiteRepository.create(
+          name: _organizationNameController.text.trim(),
+          address: _organizationAddressController.text.trim(),
+          leaderId: uid,
+        );
+        await accountRepository.setComite(uid: uid, comiteId: comiteId);
+      } else if (_selectedComiteId != null) {
+        await accountRepository.setComite(uid: uid, comiteId: _selectedComiteId!);
+      }
     } on DuplicateAccountException {
       setState(() => _errorMessage = 'Ese correo o teléfono ya tiene una cuenta.');
     } on AuthUnexpectedException catch (e) {
@@ -169,6 +190,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 validator: (value) => _requiresOrganization && (value == null || value.trim().isEmpty)
                     ? 'Ingresa la dirección de la sede'
                     : null,
+              ),
+            ] else ...[
+              const SizedBox(height: 16),
+              ComitePickerField(
+                value: _selectedComiteId,
+                onChanged: (id) => setState(() => _selectedComiteId = id),
               ),
             ],
             const SizedBox(height: 24),

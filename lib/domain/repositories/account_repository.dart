@@ -28,4 +28,10 @@ abstract class AccountRepository {
     required String accountId,
     String? reason,
   });
+
+  /// RF-1/RF-2 (spec 004): fija el comité de una cuenta ya creada — el
+  /// registro no conoce el comité hasta después de crear la cuenta
+  /// (funcionario/líder funcionario) o antes (voluntario/líder, que
+  /// eligen uno existente).
+  Future<void> setComite({required String uid, required String comiteId});
 }
