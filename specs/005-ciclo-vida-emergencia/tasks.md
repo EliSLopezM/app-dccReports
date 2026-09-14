@@ -56,21 +56,21 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
 
 ## Presentation
 
-- [ ] **T9 — `EmergencyResponseScreen`: Ir / Ya llegué / ambulancia** (RF-1, RF-2, RF-4, RF-6, RF-9)
+- [x] **T9 — `EmergencyResponseScreen`: Ir / Ya llegué / ambulancia** (RF-1, RF-2, RF-4, RF-6, RF-9)
   Botones según el estado de la propia participación; lista de
   participantes con su estado. Widget tests: "Ir" llama a `goTo` y abre
   direcciones; "Ya llegué" llama a `arrive`; "Pedir ambulancia" llama a
   `requestAmbulance` y abre `tel:123`.
   Hecho cuando: los widget tests pasan.
 
-- [ ] **T10 — `MeetingPointPickerScreen`** (RF-5, RF-7, RF-8)
+- [x] **T10 — `MeetingPointPickerScreen`** (RF-5, RF-7, RF-8)
   Sugiere la ubicación GPS actual, botón "Confirmar aquí"; se abre
   automáticamente para el primero en llegar (T9). Widget test: confirmar
   llama a `setMeetingPoint`; error de `MeetingPointBlockedException` se
   muestra como mensaje, no crashea.
   Hecho cuando: el widget test pasa.
 
-- [ ] **T11 — `FinishParticipationSheet`** (RF-10)
+- [x] **T11 — `FinishParticipationSheet`** (RF-10)
   Formulario "Ya terminé" (foto + nivel) o "Debo retirarme" (razón +
   nivel). Widget tests para ambas ramas.
   Hecho cuando: los widget tests pasan.
