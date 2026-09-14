@@ -84,7 +84,7 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
 
 ## Wiring final
 
-- [ ] **T13 — Providers + acceso a `EmergencyResponseScreen`**
+- [x] **T13 — Providers + acceso a `EmergencyResponseScreen`**
   `ParticipationRepository` en `main.dart` (con el uploader de fotos de
   finalización). Botón "Responder" en `EmergencyDetailScreen` que navega
   a `EmergencyResponseScreen`.
