@@ -29,6 +29,8 @@ class SpamLimitExceededException implements Exception {}
 /// RF-5 (spec 004): solo el líder de un comité puede asignar delegado.
 class NotComiteLeaderException implements Exception {}
 
+class ComiteNotFoundException implements Exception {}
+
 /// RF-9 (spec 004): solo el funcionario creador administra su chat.
 class NotChatOwnerException implements Exception {}
 

@@ -26,14 +26,14 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
 
 ## Data — Comités
 
-- [ ] **T4 — `FirestoreComiteRepositoryImpl.create`** (RF-1, RF-3)
+- [x] **T4 — `FirestoreComiteRepositoryImpl.create`** (RF-1, RF-3)
   Crea el documento del comité y, en la misma operación, el chat de tipo
   "comité" asociado. Tests con `fake_cloud_firestore`: el comité y su
   chat quedan creados; el chat tiene `kind: comite` y `comiteId`
   apuntando al comité.
   Hecho cuando: el test pasa.
 
-- [ ] **T5 — `FirestoreComiteRepositoryImpl.setDelegate`** (RF-5)
+- [x] **T5 — `FirestoreComiteRepositoryImpl.setDelegate`** (RF-5)
   Solo el `leaderId` puede asignar delegado, y solo a alguien que ya sea
   miembro (ver T6, se valida contra el chat de comité). Tests: líder
   asigna a un miembro real (OK); alguien que no es el líder intenta
