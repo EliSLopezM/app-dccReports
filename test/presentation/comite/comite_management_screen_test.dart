@@ -22,11 +22,17 @@ class _FakeComiteRepository implements ComiteRepository {
     required String leaderId,
     double? latitude,
     double? longitude,
-  }) async =>
-      'id';
+  }) async => 'id';
 
   @override
   Stream<Comite?> watchComite(String comiteId) => Stream.value(comite);
+
+  @override
+  Stream<List<Comite>> watchNearbyComites({
+    required double latitude,
+    required double longitude,
+    double radiusKm = 10,
+  }) => Stream.value(const []);
 
   @override
   Stream<List<Comite>> watchAllComites() => Stream.value([comite]);
@@ -48,18 +54,21 @@ class _FakeChatRepository implements ChatRepository {
 
   @override
   Stream<Chat?> watchChatByComite(String comiteId) => Stream.value(
-        Chat(
-          id: 'chat-1',
-          name: 'Comité Suba',
-          kind: ChatKind.comite,
-          comiteId: comiteId,
-          memberIds: memberIds,
-          createdAt: DateTime(2026, 9, 14),
-        ),
-      );
+    Chat(
+      id: 'chat-1',
+      name: 'Comité Suba',
+      kind: ChatKind.comite,
+      comiteId: comiteId,
+      memberIds: memberIds,
+      createdAt: DateTime(2026, 9, 14),
+    ),
+  );
 
   @override
-  Future<void> ensureComiteMembership({required String comiteId, required String uid}) async {}
+  Future<void> ensureComiteMembership({
+    required String comiteId,
+    required String uid,
+  }) async {}
 
   @override
   Future<void> joinDepartmentChat(String uid) async {}
@@ -69,11 +78,13 @@ class _FakeChatRepository implements ChatRepository {
     required String name,
     required String createdBy,
     required List<String> initialMemberIds,
-  }) async =>
-      'id';
+  }) async => 'id';
 
   @override
-  Future<void> deleteChat({required String chatId, required String requesterId}) async {}
+  Future<void> deleteChat({
+    required String chatId,
+    required String requesterId,
+  }) async {}
 
   @override
   Future<void> addMember({
@@ -97,7 +108,8 @@ class _FakeChatRepository implements ChatRepository {
   }) async {}
 
   @override
-  Stream<List<ChatMessage>> watchMessages(String chatId) => Stream.value(const []);
+  Stream<List<ChatMessage>> watchMessages(String chatId) =>
+      Stream.value(const []);
 }
 
 Comite _comite({String? delegateId}) {
@@ -112,7 +124,9 @@ Comite _comite({String? delegateId}) {
 }
 
 void main() {
-  testWidgets('lista los miembros y permite hacer delegado a uno (RF-5)', (tester) async {
+  testWidgets('lista los miembros y permite hacer delegado a uno (RF-5)', (
+    tester,
+  ) async {
     final comiteRepo = _FakeComiteRepository(_comite());
     final chatRepo = _FakeChatRepository(['leader-uid', 'volunteer-uid']);
 
@@ -123,7 +137,10 @@ void main() {
           Provider<ChatRepository>.value(value: chatRepo),
         ],
         child: MaterialApp(
-          home: ComiteManagementScreen(comite: comiteRepo.comite, requesterId: 'leader-uid'),
+          home: ComiteManagementScreen(
+            comite: comiteRepo.comite,
+            requesterId: 'leader-uid',
+          ),
         ),
       ),
     );
@@ -139,7 +156,9 @@ void main() {
   });
 
   testWidgets('muestra quién es el delegado actual', (tester) async {
-    final comiteRepo = _FakeComiteRepository(_comite(delegateId: 'volunteer-uid'));
+    final comiteRepo = _FakeComiteRepository(
+      _comite(delegateId: 'volunteer-uid'),
+    );
     final chatRepo = _FakeChatRepository(['leader-uid', 'volunteer-uid']);
 
     await tester.pumpWidget(
@@ -149,7 +168,10 @@ void main() {
           Provider<ChatRepository>.value(value: chatRepo),
         ],
         child: MaterialApp(
-          home: ComiteManagementScreen(comite: comiteRepo.comite, requesterId: 'leader-uid'),
+          home: ComiteManagementScreen(
+            comite: comiteRepo.comite,
+            requesterId: 'leader-uid',
+          ),
         ),
       ),
     );

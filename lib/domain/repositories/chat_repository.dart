@@ -5,7 +5,10 @@ import '../exceptions.dart';
 /// RF-4, RF-6 a RF-12.
 abstract class ChatRepository {
   /// RF-4: agrega [uid] al chat del comité [comiteId]. Idempotente.
-  Future<void> ensureComiteMembership({required String comiteId, required String uid});
+  Future<void> ensureComiteMembership({
+    required String comiteId,
+    required String uid,
+  });
 
   /// RF-6: agrega [uid] al único chat de departamento (creándolo si
   /// hace falta).
@@ -21,7 +24,10 @@ abstract class ChatRepository {
 
   /// RF-8/RF-9: lanza [NotChatOwnerException] si [requesterId] no creó
   /// el chat.
-  Future<void> deleteChat({required String chatId, required String requesterId});
+  Future<void> deleteChat({
+    required String chatId,
+    required String requesterId,
+  });
 
   /// RF-8/RF-9: mismo criterio que [deleteChat].
   Future<void> addMember({

@@ -17,23 +17,30 @@ class FirestoreAccountRepositoryImpl implements AccountRepository {
 
   @override
   Stream<Account?> watchAccount(String uid) {
-    return _accounts.doc(uid).snapshots().map(
-          (doc) => doc.exists ? accountFromFirestore(doc.id, doc.data()!) : null,
+    return _accounts
+        .doc(uid)
+        .snapshots()
+        .map(
+          (doc) =>
+              doc.exists ? accountFromFirestore(doc.id, doc.data()!) : null,
         );
   }
 
   @override
   Stream<List<Account>> watchAllAccounts() {
     return _accounts.snapshots().map(
-          (snapshot) => snapshot.docs
-              .map((doc) => accountFromFirestore(doc.id, doc.data()))
-              .toList(),
-        );
+      (snapshot) => snapshot.docs
+          .map((doc) => accountFromFirestore(doc.id, doc.data()))
+          .toList(),
+    );
   }
 
   @override
   Stream<List<Account>> watchPendingAccounts() {
-    return _accounts.where('status', isEqualTo: AccountStatus.pending.name).snapshots().map(
+    return _accounts
+        .where('status', isEqualTo: AccountStatus.pending.name)
+        .snapshots()
+        .map(
           (snapshot) => snapshot.docs
               .map((doc) => accountFromFirestore(doc.id, doc.data()))
               .toList(),
@@ -41,10 +48,15 @@ class FirestoreAccountRepositoryImpl implements AccountRepository {
   }
 
   /// RF-7: solo Admin revisa cuentas de rango funcionario/liderFuncionario.
-  Future<void> _assertCanReview(AccountRole reviewerRole, String accountId) async {
+  Future<void> _assertCanReview(
+    AccountRole reviewerRole,
+    String accountId,
+  ) async {
     final target = await _accounts.doc(accountId).get();
     if (!target.exists) throw AccountNotFoundException();
-    final targetRole = AccountRole.values.byName(target.data()!['role'] as String);
+    final targetRole = AccountRole.values.byName(
+      target.data()!['role'] as String,
+    );
     if (!canReview(reviewerRole: reviewerRole, targetRole: targetRole)) {
       throw InsufficientReviewPermissionException();
     }
@@ -81,7 +93,10 @@ class FirestoreAccountRepositoryImpl implements AccountRepository {
   }
 
   @override
-  Future<void> setComite({required String uid, required String comiteId}) async {
+  Future<void> setComite({
+    required String uid,
+    required String comiteId,
+  }) async {
     await _accounts.doc(uid).update({'comiteId': comiteId});
   }
 }

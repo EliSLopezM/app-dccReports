@@ -66,4 +66,41 @@ void main() {
       );
     });
   });
+
+  group('watchNearbyComites (T8, RF-3)', () {
+    test('trae solo comités con coordenadas dentro del radio, ordenados por distancia', () async {
+      final firestore = FakeFirebaseFirestore();
+      final repo = FirestoreComiteRepositoryImpl(firestore);
+      // Punto de referencia: emergencia en el centro de Bogotá.
+      const emergencyLat = 4.65;
+      const emergencyLng = -74.10;
+
+      await repo.create(
+        name: 'Comité cercano',
+        address: 'A',
+        leaderId: 'leader-1',
+        latitude: 4.651,
+        longitude: -74.101,
+      );
+      await repo.create(
+        name: 'Comité lejano (Medellín)',
+        address: 'B',
+        leaderId: 'leader-2',
+        latitude: 6.25,
+        longitude: -75.56,
+      );
+      await repo.create(
+        name: 'Comité sin coordenadas',
+        address: 'C',
+        leaderId: 'leader-3',
+      );
+
+      final nearby = await repo
+          .watchNearbyComites(latitude: emergencyLat, longitude: emergencyLng, radiusKm: 10)
+          .first;
+
+      expect(nearby, hasLength(1));
+      expect(nearby.single.name, 'Comité cercano');
+    });
+  });
 }

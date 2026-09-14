@@ -4,6 +4,7 @@ import '../../domain/entities/chat_kind.dart';
 import '../../domain/entities/comite.dart';
 import '../../domain/exceptions.dart';
 import '../../domain/repositories/comite_repository.dart';
+import '../geo/haversine.dart';
 import 'chat_mapper.dart';
 import 'comite_mapper.dart';
 
@@ -15,7 +16,8 @@ class FirestoreComiteRepositoryImpl implements ComiteRepository {
   CollectionReference<Map<String, dynamic>> get _comites =>
       _firestore.collection(comitesCollection);
 
-  CollectionReference<Map<String, dynamic>> get _chats => _firestore.collection(chatsCollection);
+  CollectionReference<Map<String, dynamic>> get _chats =>
+      _firestore.collection(chatsCollection);
 
   @override
   Future<String> create({
@@ -40,7 +42,11 @@ class FirestoreComiteRepositoryImpl implements ComiteRepository {
     );
     batch.set(
       chatDoc,
-      newChatToFirestore(name: name, kind: ChatKind.comite, comiteId: comiteDoc.id),
+      newChatToFirestore(
+        name: name,
+        kind: ChatKind.comite,
+        comiteId: comiteDoc.id,
+      ),
     );
     await batch.commit();
     return comiteDoc.id;
@@ -49,15 +55,49 @@ class FirestoreComiteRepositoryImpl implements ComiteRepository {
   @override
   Stream<List<Comite>> watchAllComites() {
     return _comites.snapshots().map(
-          (snapshot) => snapshot.docs.map((doc) => comiteFromFirestore(doc.id, doc.data())).toList(),
-        );
+      (snapshot) => snapshot.docs
+          .map((doc) => comiteFromFirestore(doc.id, doc.data()))
+          .toList(),
+    );
   }
 
   @override
   Stream<Comite?> watchComite(String comiteId) {
-    return _comites.doc(comiteId).snapshots().map(
+    return _comites
+        .doc(comiteId)
+        .snapshots()
+        .map(
           (doc) => doc.exists ? comiteFromFirestore(doc.id, doc.data()!) : null,
         );
+  }
+
+  @override
+  Stream<List<Comite>> watchNearbyComites({
+    required double latitude,
+    required double longitude,
+    double radiusKm = 10,
+  }) {
+    return _comites.snapshots().map((snapshot) {
+      final withDistance =
+          snapshot.docs
+              .map((doc) => comiteFromFirestore(doc.id, doc.data()))
+              .where((comite) => comite.hasLocation)
+              .map(
+                (comite) => (
+                  comite: comite,
+                  distanceKm: haversineDistanceKm(
+                    lat1: latitude,
+                    lon1: longitude,
+                    lat2: comite.latitude!,
+                    lon2: comite.longitude!,
+                  ),
+                ),
+              )
+              .where((entry) => entry.distanceKm <= radiusKm)
+              .toList()
+            ..sort((a, b) => a.distanceKm.compareTo(b.distanceKm));
+      return [for (final entry in withDistance) entry.comite];
+    });
   }
 
   @override

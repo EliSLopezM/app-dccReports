@@ -5,13 +5,13 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
 
 ## Domain
 
-- [ ] **T1 — Enums y entidades: `Participation`, `MeetingPoint`** (RF-1, RF-7, RF-10)
+- [x] **T1 — Enums y entidades: `Participation`, `MeetingPoint`** (RF-1, RF-7, RF-10)
   `participation_status.dart`, `finish_type.dart`, `difficulty_level.dart`,
   `participation.dart`, `meeting_point.dart`. Unit tests: construir cada
   entidad válida.
   Hecho cuando: los tests pasan.
 
-- [ ] **T2 — Excepciones + interfaz `ParticipationRepository`** (RF-1 a RF-12)
+- [x] **T2 — Excepciones + interfaz `ParticipationRepository`** (RF-1 a RF-12)
   `NotArrivedException`, `MeetingPointBlockedException` en
   `domain/exceptions.dart`; `domain/repositories/participation_repository.dart`
   con `goTo`, `arrive`, `requestAmbulance`, `finishCompleted`,
@@ -19,7 +19,7 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
   `watchMeetingPoint`, `setMeetingPoint`.
   Hecho cuando: `flutter analyze` no marca nada en `domain/`.
 
-- [ ] **T3 — `watchNearbyComites` en `ComiteRepository`** (RF-3)
+- [x] **T3 — `watchNearbyComites` en `ComiteRepository`** (RF-3)
   Agregar el método a la interfaz existente (spec 004). Sin test propio
   (solo interfaz).
   Hecho cuando: `flutter analyze` no marca nada en `domain/`.
@@ -49,7 +49,7 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
   sin haber llegado lanza `NotArrivedException`.
   Hecho cuando: los tests pasan.
 
-- [ ] **T8 — `watchNearbyComites`** (RF-3)
+- [x] **T8 — `watchNearbyComites`** (RF-3)
   Tests con `fake_cloud_firestore`: comité a 2 km aparece, uno a 50 km no;
   uno sin coordenadas no aparece ni rompe el cálculo.
   Hecho cuando: los tests pasan.

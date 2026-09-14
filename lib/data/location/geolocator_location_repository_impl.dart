@@ -14,7 +14,8 @@ class GeolocatorLocationRepositoryImpl implements LocationRepository {
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
       }
-      if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) {
+      if (permission == LocationPermission.denied ||
+          permission == LocationPermission.deniedForever) {
         return null;
       }
       if (!await Geolocator.isLocationServiceEnabled()) return null;

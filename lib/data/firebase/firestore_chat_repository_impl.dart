@@ -16,10 +16,14 @@ class FirestoreChatRepositoryImpl implements ChatRepository {
 
   final FirebaseFirestore _firestore;
 
-  CollectionReference<Map<String, dynamic>> get _chats => _firestore.collection(chatsCollection);
+  CollectionReference<Map<String, dynamic>> get _chats =>
+      _firestore.collection(chatsCollection);
 
   @override
-  Future<void> ensureComiteMembership({required String comiteId, required String uid}) async {
+  Future<void> ensureComiteMembership({
+    required String comiteId,
+    required String uid,
+  }) async {
     final query = await _chats
         .where('comiteId', isEqualTo: comiteId)
         .where('kind', isEqualTo: ChatKind.comite.name)
@@ -37,7 +41,11 @@ class FirestoreChatRepositoryImpl implements ChatRepository {
     final snapshot = await doc.get();
     if (!snapshot.exists) {
       await doc.set(
-        newChatToFirestore(name: _departmentChatName, kind: ChatKind.department, memberIds: [uid]),
+        newChatToFirestore(
+          name: _departmentChatName,
+          kind: ChatKind.department,
+          memberIds: [uid],
+        ),
       );
     } else {
       await doc.update({
@@ -52,8 +60,10 @@ class FirestoreChatRepositoryImpl implements ChatRepository {
     required String createdBy,
     required List<String> initialMemberIds,
   }) async {
-    final active =
-        await _chats.where('kind', isEqualTo: ChatKind.custom.name).where('createdBy', isEqualTo: createdBy).get();
+    final active = await _chats
+        .where('kind', isEqualTo: ChatKind.custom.name)
+        .where('createdBy', isEqualTo: createdBy)
+        .get();
     if (active.docs.length >= _customChatLimit) {
       throw ChatLimitExceededException();
     }
@@ -82,7 +92,10 @@ class FirestoreChatRepositoryImpl implements ChatRepository {
   }
 
   @override
-  Future<void> deleteChat({required String chatId, required String requesterId}) async {
+  Future<void> deleteChat({
+    required String chatId,
+    required String requesterId,
+  }) async {
     await _assertOwner(chatId, requesterId);
     await _chats.doc(chatId).delete();
   }
@@ -101,14 +114,22 @@ class FirestoreChatRepositoryImpl implements ChatRepository {
 
   @override
   Stream<List<Chat>> watchMyChats(String uid) {
-    return _chats.where('memberIds', arrayContains: uid).snapshots().map(
-          (snapshot) => snapshot.docs.map((doc) => chatFromFirestore(doc.id, doc.data())).toList(),
+    return _chats
+        .where('memberIds', arrayContains: uid)
+        .snapshots()
+        .map(
+          (snapshot) => snapshot.docs
+              .map((doc) => chatFromFirestore(doc.id, doc.data()))
+              .toList(),
         );
   }
 
   @override
   Stream<Chat?> watchChat(String chatId) {
-    return _chats.doc(chatId).snapshots().map(
+    return _chats
+        .doc(chatId)
+        .snapshots()
+        .map(
           (doc) => doc.exists ? chatFromFirestore(doc.id, doc.data()!) : null,
         );
   }
@@ -120,10 +141,14 @@ class FirestoreChatRepositoryImpl implements ChatRepository {
         .where('kind', isEqualTo: ChatKind.comite.name)
         .limit(1)
         .snapshots()
-        .map((snapshot) => snapshot.docs.isEmpty ? null : chatFromFirestore(
-              snapshot.docs.single.id,
-              snapshot.docs.single.data(),
-            ));
+        .map(
+          (snapshot) => snapshot.docs.isEmpty
+              ? null
+              : chatFromFirestore(
+                  snapshot.docs.single.id,
+                  snapshot.docs.single.data(),
+                ),
+        );
   }
 
   @override
@@ -134,20 +159,36 @@ class FirestoreChatRepositoryImpl implements ChatRepository {
     required String text,
   }) async {
     final chatDoc = await _chats.doc(chatId).get();
-    final memberIds = List<String>.from(chatDoc.data()?['memberIds'] as List? ?? const []);
+    final memberIds = List<String>.from(
+      chatDoc.data()?['memberIds'] as List? ?? const [],
+    );
     if (!chatDoc.exists || !memberIds.contains(senderId)) {
       throw NotChatMemberException();
     }
-    await _chats.doc(chatId).collection(messagesSubcollection).add(
-          newMessageToFirestore(senderId: senderId, senderName: senderName, text: text),
+    await _chats
+        .doc(chatId)
+        .collection(messagesSubcollection)
+        .add(
+          newMessageToFirestore(
+            senderId: senderId,
+            senderName: senderName,
+            text: text,
+          ),
         );
   }
 
   @override
   Stream<List<ChatMessage>> watchMessages(String chatId) {
-    return _chats.doc(chatId).collection(messagesSubcollection).orderBy('sentAt').snapshots().map(
+    return _chats
+        .doc(chatId)
+        .collection(messagesSubcollection)
+        .orderBy('sentAt')
+        .snapshots()
+        .map(
           (snapshot) => snapshot.docs
-              .map((doc) => chatMessageFromFirestore(chatId, doc.id, doc.data()))
+              .map(
+                (doc) => chatMessageFromFirestore(chatId, doc.id, doc.data()),
+              )
               .toList(),
         );
   }
