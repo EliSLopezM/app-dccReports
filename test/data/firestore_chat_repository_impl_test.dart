@@ -25,6 +25,26 @@ void main() {
     });
   });
 
+  group('watchChatByComite (RF-5)', () {
+    test('encuentra el chat del comité y lista sus miembros', () async {
+      final firestore = FakeFirebaseFirestore();
+      final comiteRepo = FirestoreComiteRepositoryImpl(firestore);
+      final chatRepo = FirestoreChatRepositoryImpl(firestore);
+      final comiteId = await comiteRepo.create(
+        name: 'Comité Suba',
+        address: 'Cra 1 # 2-3',
+        leaderId: 'leader-uid',
+      );
+      await chatRepo.ensureComiteMembership(comiteId: comiteId, uid: 'leader-uid');
+      await chatRepo.ensureComiteMembership(comiteId: comiteId, uid: 'volunteer-uid');
+
+      final chat = await chatRepo.watchChatByComite(comiteId).first;
+
+      expect(chat, isNotNull);
+      expect(chat!.memberIds, containsAll(['leader-uid', 'volunteer-uid']));
+    });
+  });
+
   group('joinDepartmentChat (T7, RF-6)', () {
     test('crea el chat de departamento la primera vez y agrega al uid', () async {
       final firestore = FakeFirebaseFirestore();

@@ -84,7 +84,7 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
   ramas.
   Hecho cuando: los widget tests pasan.
 
-- [ ] **T13 — `ComiteManagementScreen`** (RF-5)
+- [x] **T13 — `ComiteManagementScreen`** (RF-5)
   Visible solo para quien sea `leaderId` de un comité; lista miembros y
   permite asignar/cambiar delegado. Widget test.
   Hecho cuando: el widget test pasa.

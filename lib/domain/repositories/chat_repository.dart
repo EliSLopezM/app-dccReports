@@ -35,6 +35,9 @@ abstract class ChatRepository {
 
   Stream<Chat?> watchChat(String chatId);
 
+  /// RF-5: para listar miembros de un comité al asignar delegado.
+  Stream<Chat?> watchChatByComite(String comiteId);
+
   /// RF-11/RF-12: lanza [NotChatMemberException] si [senderId] no es
   /// miembro de [chatId].
   Future<void> sendMessage({

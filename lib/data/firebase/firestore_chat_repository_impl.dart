@@ -114,6 +114,19 @@ class FirestoreChatRepositoryImpl implements ChatRepository {
   }
 
   @override
+  Stream<Chat?> watchChatByComite(String comiteId) {
+    return _chats
+        .where('comiteId', isEqualTo: comiteId)
+        .where('kind', isEqualTo: ChatKind.comite.name)
+        .limit(1)
+        .snapshots()
+        .map((snapshot) => snapshot.docs.isEmpty ? null : chatFromFirestore(
+              snapshot.docs.single.id,
+              snapshot.docs.single.data(),
+            ));
+  }
+
+  @override
   Future<void> sendMessage({
     required String chatId,
     required String senderId,
