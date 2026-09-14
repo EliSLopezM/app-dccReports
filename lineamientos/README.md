@@ -83,6 +83,7 @@ propia entrevista de clarificación antes de escribirse como `spec.md`.
 | [002](../specs/002-reporte-publico/spec.md) | Reporte público de emergencias y moderación | Código completo (T1-T11 + Enmienda 1) y en verde; falta el recorrido manual (T12). Rama apilada sobre `spec/001-fundacional` |
 | [003](../specs/003-mapa-despliegue/spec.md) | Mapa y despliegue | Código completo (T1-T8) y en verde; falta el recorrido manual (T9). Rama apilada sobre `spec/002-reporte-publico` |
 | [004](../specs/004-grupos-comites-chats/spec.md) | Grupos/comités y chats | Código completo (T1-T17) y en verde; falta el recorrido manual (T18). Rama apilada sobre `spec/003-mapa-despliegue` |
+| [005](../specs/005-ciclo-vida-emergencia/spec.md) | Ciclo de vida de la emergencia | Código completo (T1-T13) y en verde; falta el recorrido manual (T14). Rama apilada sobre `spec/004-grupos-comites-chats` |
 
 Se irán agregando filas a medida que se cierren specs, igual que en
 `amipets`.
@@ -179,11 +180,22 @@ mensajería en tiempo real para los tres tipos. Mismo estado: todo en
 verde salvo **T18**, el recorrido manual — documentado en
 [`entorno-local.md`](entorno-local.md).
 
-Como las specs 001-004 están apiladas (cada una nace de la anterior, que
+La spec 005 (rama `spec/005-ciclo-vida-emergencia`, apilada sobre
+`spec/004-grupos-comites-chats`) también tiene su código completo: "Ir"
+con direcciones externas, comités convocados por cercanía (cierra el
+pendiente entre las specs 003 y 004), "Ya llegué" con punto de encuentro
+(reglas RF-7/RF-8: liderazgo sin límite, voluntario solo el suyo), pedir
+ambulancia (abre el marcador `tel:123`), finalizar participación
+(terminé/retirarme, con foto o razón) con cálculo de tiempos para el
+futuro perfil de voluntario, y "Cerrar emergencia" para liderazgo. Mismo
+estado: todo en verde salvo **T14**, el recorrido manual — documentado
+en [`entorno-local.md`](entorno-local.md).
+
+Como las specs 001-005 están apiladas (cada una nace de la anterior, que
 todavía no está en `main`), el orden recomendado para mergear es: probar
 T16 → mergear 001 → probar T12 → mergear 002 → probar T9 → mergear 003
-→ probar T18 → mergear 004 (o revisar las cuatro juntas si se
-prefiere).
+→ probar T18 → mergear 004 → probar T14 → mergear 005 (o revisar las
+cinco juntas si se prefiere).
 
-Todo lo demás (specs 005-008) está pendiente — ver
+Todo lo demás (specs 006-008) está pendiente — ver
 `docs/brief-inicial.md` para el alcance completo y el orden propuesto.
