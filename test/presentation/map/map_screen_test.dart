@@ -1,6 +1,9 @@
+import 'package:app_dcc_reports/domain/entities/account_role.dart';
+import 'package:app_dcc_reports/domain/entities/comite.dart';
 import 'package:app_dcc_reports/domain/entities/emergency_report.dart';
 import 'package:app_dcc_reports/domain/entities/report_status.dart';
 import 'package:app_dcc_reports/domain/entities/reporter_evidence.dart';
+import 'package:app_dcc_reports/domain/repositories/comite_repository.dart';
 import 'package:app_dcc_reports/domain/repositories/emergency_report_repository.dart';
 import 'package:app_dcc_reports/presentation/map/emergency_detail_screen.dart';
 import 'package:app_dcc_reports/presentation/map/map_screen.dart';
@@ -52,6 +55,39 @@ class _FakeEmergencyReportRepository implements EmergencyReportRepository {
   }) async {}
 }
 
+class _FakeComiteRepository implements ComiteRepository {
+  @override
+  Future<String> create({
+    required String name,
+    required String address,
+    required String leaderId,
+    double? latitude,
+    double? longitude,
+  }) async =>
+      'id';
+
+  @override
+  Stream<List<Comite>> watchAllComites() => Stream.value(const []);
+
+  @override
+  Stream<List<Comite>> watchNearbyComites({
+    required double latitude,
+    required double longitude,
+    double radiusKm = 10,
+  }) =>
+      Stream.value(const []);
+
+  @override
+  Stream<Comite?> watchComite(String comiteId) => Stream.value(null);
+
+  @override
+  Future<void> setDelegate({
+    required String comiteId,
+    required String requesterId,
+    required String delegateId,
+  }) async {}
+}
+
 EmergencyReport _activeReport({double? latitude, double? longitude}) {
   return EmergencyReport(
     id: 'report-1',
@@ -67,16 +103,25 @@ EmergencyReport _activeReport({double? latitude, double? longitude}) {
   );
 }
 
+Future<void> _pumpMapScreen(WidgetTester tester, _FakeEmergencyReportRepository repo) {
+  return tester.pumpWidget(
+    MultiProvider(
+      providers: [
+        Provider<EmergencyReportRepository>.value(value: repo),
+        Provider<ComiteRepository>.value(value: _FakeComiteRepository()),
+      ],
+      child: const MaterialApp(
+        home: MapScreen(accountId: 'uid-1', accountName: 'Jane', accountRole: AccountRole.voluntario),
+      ),
+    ),
+  );
+}
+
 void main() {
   testWidgets('sin reportes activos, muestra el estado vacío', (tester) async {
     final repo = _FakeEmergencyReportRepository(const []);
 
-    await tester.pumpWidget(
-      Provider<EmergencyReportRepository>.value(
-        value: repo,
-        child: const MaterialApp(home: MapScreen()),
-      ),
-    );
+    await _pumpMapScreen(tester, repo);
 
     expect(find.byKey(const Key('map-empty-state')), findsOneWidget);
   });
@@ -84,12 +129,7 @@ void main() {
   testWidgets('con un reporte con ubicación, arma un marcador (RF-1)', (tester) async {
     final repo = _FakeEmergencyReportRepository([_activeReport(latitude: 4.6, longitude: -74.1)]);
 
-    await tester.pumpWidget(
-      Provider<EmergencyReportRepository>.value(
-        value: repo,
-        child: const MaterialApp(home: MapScreen()),
-      ),
-    );
+    await _pumpMapScreen(tester, repo);
     await tester.pump();
 
     final mapView = tester.widget<MapView>(find.byType(MapView));
@@ -100,12 +140,7 @@ void main() {
   testWidgets('un reporte sin ubicación no genera marcador', (tester) async {
     final repo = _FakeEmergencyReportRepository([_activeReport()]);
 
-    await tester.pumpWidget(
-      Provider<EmergencyReportRepository>.value(
-        value: repo,
-        child: const MaterialApp(home: MapScreen()),
-      ),
-    );
+    await _pumpMapScreen(tester, repo);
     await tester.pump();
 
     final mapView = tester.widget<MapView>(find.byType(MapView));
@@ -115,12 +150,7 @@ void main() {
   testWidgets('tocar el marcador navega al detalle con recomendaciones (RF-3)', (tester) async {
     final repo = _FakeEmergencyReportRepository([_activeReport(latitude: 4.6, longitude: -74.1)]);
 
-    await tester.pumpWidget(
-      Provider<EmergencyReportRepository>.value(
-        value: repo,
-        child: const MaterialApp(home: MapScreen()),
-      ),
-    );
+    await _pumpMapScreen(tester, repo);
     await tester.pump();
 
     final mapView = tester.widget<MapView>(find.byType(MapView));
@@ -134,12 +164,7 @@ void main() {
       (tester) async {
     final repo = _FakeEmergencyReportRepository(const []);
 
-    await tester.pumpWidget(
-      Provider<EmergencyReportRepository>.value(
-        value: repo,
-        child: const MaterialApp(home: MapScreen()),
-      ),
-    );
+    await _pumpMapScreen(tester, repo);
 
     final firstSince = repo.sinceCalls.single;
 

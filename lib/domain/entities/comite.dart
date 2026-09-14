@@ -10,6 +10,14 @@ class Comite {
 
   final DateTime createdAt;
 
+  /// RF-13/RF-14 (Enmienda 1, motivada por la spec 005): null si no se
+  /// pudo capturar la ubicación al fundar el comité — no cuenta para
+  /// cercanía hasta que se agregue por otro medio.
+  final double? latitude;
+  final double? longitude;
+
+  bool get hasLocation => latitude != null && longitude != null;
+
   const Comite({
     required this.id,
     required this.name,
@@ -17,5 +25,7 @@ class Comite {
     required this.leaderId,
     this.delegateId,
     required this.createdAt,
+    this.latitude,
+    this.longitude,
   });
 }

@@ -54,7 +54,10 @@ class FirebaseAuthRepositoryImpl implements AuthRepository {
       if (uid == null) {
         throw AuthUnexpectedException('No se pudo crear la cuenta.');
       }
-      await _firestore.collection(accountsCollection).doc(uid).set(
+      await _firestore
+          .collection(accountsCollection)
+          .doc(uid)
+          .set(
             newAccountToFirestore(
               name: name,
               email: email,

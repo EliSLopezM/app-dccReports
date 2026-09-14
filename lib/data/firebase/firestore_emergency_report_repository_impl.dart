@@ -7,23 +7,21 @@ import '../../domain/repositories/emergency_report_repository.dart';
 import 'emergency_report_mapper.dart';
 
 /// Sube una foto local y devuelve su URL pública en Storage.
-typedef ReportPhotoUploader = Future<String> Function(
-  String reportId,
-  String localPhotoPath,
-  int index,
-);
+typedef ReportPhotoUploader =
+    Future<String> Function(String reportId, String localPhotoPath, int index);
 
 const _spamWindow = Duration(hours: 1);
 const _spamLimit = 3;
 
-class FirestoreEmergencyReportRepositoryImpl implements EmergencyReportRepository {
+class FirestoreEmergencyReportRepositoryImpl
+    implements EmergencyReportRepository {
   FirestoreEmergencyReportRepositoryImpl(
     this._firestore, {
     ReportPhotoUploader? uploadPhoto,
     DateTime Function()? now,
     // ignore: prefer_initializing_formals
-  })  : _uploadPhoto = uploadPhoto,
-        _now = now ?? DateTime.now;
+  }) : _uploadPhoto = uploadPhoto,
+       _now = now ?? DateTime.now;
 
   final FirebaseFirestore _firestore;
   final ReportPhotoUploader? _uploadPhoto;
@@ -55,8 +53,12 @@ class FirestoreEmergencyReportRepositoryImpl implements EmergencyReportRepositor
     double? latitude,
     double? longitude,
   }) async {
-    if (title.trim().isEmpty || address.trim().isEmpty || emergencyTypeId.trim().isEmpty) {
-      throw InvalidReportException('Falta título, dirección o tipo de emergencia.');
+    if (title.trim().isEmpty ||
+        address.trim().isEmpty ||
+        emergencyTypeId.trim().isEmpty) {
+      throw InvalidReportException(
+        'Falta título, dirección o tipo de emergencia.',
+      );
     }
     if (localPhotoPaths.length < 2) {
       throw InvalidReportException('Se requieren mínimo 2 fotos.');
@@ -96,24 +98,33 @@ class FirestoreEmergencyReportRepositoryImpl implements EmergencyReportRepositor
   @override
   Stream<List<EmergencyReport>> watchAllReports() {
     return _reports.snapshots().map(
-          (snapshot) =>
-              snapshot.docs.map((doc) => reportFromFirestore(doc.id, doc.data())).toList(),
-        );
+      (snapshot) => snapshot.docs
+          .map((doc) => reportFromFirestore(doc.id, doc.data()))
+          .toList(),
+    );
   }
 
   @override
   Stream<List<EmergencyReport>> watchReportsByDevice(String deviceId) {
-    return _reports.where('deviceId', isEqualTo: deviceId).snapshots().map(
-          (snapshot) =>
-              snapshot.docs.map((doc) => reportFromFirestore(doc.id, doc.data())).toList(),
+    return _reports
+        .where('deviceId', isEqualTo: deviceId)
+        .snapshots()
+        .map(
+          (snapshot) => snapshot.docs
+              .map((doc) => reportFromFirestore(doc.id, doc.data()))
+              .toList(),
         );
   }
 
   @override
   Stream<List<EmergencyReport>> watchReportsByPhone(String phone) {
-    return _reports.where('reporterPhone', isEqualTo: phone).snapshots().map(
-          (snapshot) =>
-              snapshot.docs.map((doc) => reportFromFirestore(doc.id, doc.data())).toList(),
+    return _reports
+        .where('reporterPhone', isEqualTo: phone)
+        .snapshots()
+        .map(
+          (snapshot) => snapshot.docs
+              .map((doc) => reportFromFirestore(doc.id, doc.data()))
+              .toList(),
         );
   }
 
@@ -124,8 +135,9 @@ class FirestoreEmergencyReportRepositoryImpl implements EmergencyReportRepositor
         .where('createdAt', isGreaterThanOrEqualTo: Timestamp.fromDate(since))
         .snapshots()
         .map(
-          (snapshot) =>
-              snapshot.docs.map((doc) => reportFromFirestore(doc.id, doc.data())).toList(),
+          (snapshot) => snapshot.docs
+              .map((doc) => reportFromFirestore(doc.id, doc.data()))
+              .toList(),
         );
   }
 

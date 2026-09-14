@@ -8,6 +8,7 @@ import '../../domain/exceptions.dart';
 import '../../domain/repositories/account_repository.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../../domain/repositories/comite_repository.dart';
+import '../../domain/repositories/location_repository.dart';
 import '../comite/comite_picker_field.dart';
 
 const _registrableRoles = [
@@ -70,6 +71,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final authRepository = context.read<AuthRepository>();
     final accountRepository = context.read<AccountRepository>();
     final comiteRepository = context.read<ComiteRepository>();
+    final locationRepository = context.read<LocationRepository>();
 
     setState(() {
       _submitting = true;
@@ -95,10 +97,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
       // RF-1/RF-2: funcionario/líder funcionario funda su comité; el resto
       // ya eligió uno existente (o continúa sin comité).
       if (_requiresOrganization) {
+        // RF-13/RF-14 (spec 004, Enmienda 1): best-effort, nunca bloquea.
+        final location = await locationRepository.getCurrentLocation();
         final comiteId = await comiteRepository.create(
           name: _organizationNameController.text.trim(),
           address: _organizationAddressController.text.trim(),
           leaderId: uid,
+          latitude: location?.latitude,
+          longitude: location?.longitude,
         );
         await accountRepository.setComite(uid: uid, comiteId: comiteId);
       } else if (_selectedComiteId != null) {

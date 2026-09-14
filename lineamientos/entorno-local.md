@@ -153,6 +153,29 @@ Con el emulador corriendo y la cuenta Admin ya sembrada:
 8. (Opcional) Con Jane, crea 5 chats personalizados y confirma que el
    sexto se bloquea; elimina uno y confirma que ya puede crear otro.
 
+## Recorrido de prueba completo (T14 de la spec 005)
+
+Con Jane (funcionario, comité "Comité Suba" con ubicación GPS) y John
+(voluntario del mismo comité) ya aprobados, y un reporte "activa" cerca
+de la ubicación de ese comité (ver recorrido de la spec 002/003):
+
+1. Entra con John → abre la emergencia → "Comités convocados" debe
+   listar "Comité Suba" (si está a menos de 10 km).
+2. Toca "Responder" → "Ir" → confirma que se abren direcciones externas
+   y que John aparece como participante "En camino".
+3. Con Jane, haz lo mismo ("Ir").
+4. Con John, toca "Ya llegué" → como es el primero, debe pedirle ubicar
+   el punto de encuentro → confirma con la ubicación sugerida.
+5. Con Jane, toca "Ya llegué" → no debe pedirle punto de encuentro (ya
+   existe uno de John) — pero como Jane es funcionario, puede reemplazar
+   el de John desde la misma pantalla si quisiera (RF-7).
+6. Con John, toca "Pedir ambulancia" → confirma que se abre el marcador
+   telefónico hacia 123.
+7. Con John, "Finalizar mi participación" → "Ya terminé" con una foto y
+   nivel de dificultad. Con Jane, "Debo retirarme" con una razón.
+8. Con Jane, vuelve al detalle de la emergencia → "Cerrar emergencia" →
+   confirma que el reporte pasa a "verdadera" en el Panel de Reportes.
+
 ## Mapa: Google Maps
 
 Mientras no haya una API key real, el mapa mostrará un placeholder (mismo

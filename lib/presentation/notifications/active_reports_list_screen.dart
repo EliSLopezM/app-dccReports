@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../domain/entities/account_role.dart';
 import '../../domain/entities/emergency_report.dart';
 import '../../domain/entities/emergency_type_catalog.dart';
 import '../map/emergency_detail_screen.dart';
@@ -13,9 +14,18 @@ String _typeLabel(String id) {
 
 /// RF-6: lista de emergencias activas, alcanzable desde la campana.
 class ActiveReportsListScreen extends StatelessWidget {
-  const ActiveReportsListScreen({super.key, required this.reports});
+  const ActiveReportsListScreen({
+    super.key,
+    required this.reports,
+    required this.accountId,
+    required this.accountName,
+    required this.accountRole,
+  });
 
   final List<EmergencyReport> reports;
+  final String accountId;
+  final String accountName;
+  final AccountRole accountRole;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +41,14 @@ class ActiveReportsListScreen extends StatelessWidget {
                   title: Text(report.title),
                   subtitle: Text('${_typeLabel(report.emergencyTypeId)} · ${report.address}'),
                   onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => EmergencyDetailScreen(report: report)),
+                    MaterialPageRoute(
+                      builder: (_) => EmergencyDetailScreen(
+                        report: report,
+                        accountId: accountId,
+                        accountName: accountName,
+                        accountRole: accountRole,
+                      ),
+                    ),
                   ),
                 );
               },

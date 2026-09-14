@@ -33,12 +33,12 @@ class Account {
     this.reviewedBy,
     this.reviewedAt,
     this.comiteId,
-  })  : assert(
-          email != null || phone != null,
-          'Account requiere email o teléfono',
-        ),
-        assert(
-          role.requiresOrganization == (organization != null),
-          'organization solo se define para funcionario/liderFuncionario (RF-3)',
-        );
+  }) : assert(
+         email != null || phone != null,
+         'Account requiere email o teléfono',
+       ),
+       assert(
+         role.requiresOrganization == (organization != null),
+         'organization solo se define para funcionario/liderFuncionario (RF-3)',
+       );
 }

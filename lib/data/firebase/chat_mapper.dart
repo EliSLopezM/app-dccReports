@@ -49,7 +49,11 @@ Map<String, dynamic> newMessageToFirestore({
   };
 }
 
-ChatMessage chatMessageFromFirestore(String chatId, String id, Map<String, dynamic> data) {
+ChatMessage chatMessageFromFirestore(
+  String chatId,
+  String id,
+  Map<String, dynamic> data,
+) {
   return ChatMessage(
     id: id,
     chatId: chatId,

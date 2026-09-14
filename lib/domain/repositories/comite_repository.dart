@@ -9,9 +9,19 @@ abstract class ComiteRepository {
     required String name,
     required String address,
     required String leaderId,
+    double? latitude,
+    double? longitude,
   });
 
   Stream<List<Comite>> watchAllComites();
+
+  /// RF-3 (spec 005): comités con coordenadas conocidas a [radiusKm] o
+  /// menos de ([latitude], [longitude]), ordenados por distancia.
+  Stream<List<Comite>> watchNearbyComites({
+    required double latitude,
+    required double longitude,
+    double radiusKm = 10,
+  });
 
   Stream<Comite?> watchComite(String comiteId);
 

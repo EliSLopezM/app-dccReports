@@ -39,3 +39,10 @@ class ChatLimitExceededException implements Exception {}
 
 /// RF-12 (spec 004): solo un miembro puede mandar/leer mensajes.
 class NotChatMemberException implements Exception {}
+
+/// RF-10 (spec 005): no se puede finalizar sin haber llegado antes.
+class NotArrivedException implements Exception {}
+
+/// RF-7/RF-8 (spec 005): un voluntario intentó poner/cambiar el punto de
+/// encuentro sin permiso (ya hay uno de otra cuenta).
+class MeetingPointBlockedException implements Exception {}

@@ -22,12 +22,12 @@ class Chat {
     this.comiteId,
     this.createdBy,
     required this.createdAt,
-  })  : assert(
-          (kind == ChatKind.comite) == (comiteId != null),
-          'comiteId solo se define para chats de tipo comite',
-        ),
-        assert(
-          (kind == ChatKind.custom) == (createdBy != null),
-          'createdBy solo se define para chats de tipo custom',
-        );
+  }) : assert(
+         (kind == ChatKind.comite) == (comiteId != null),
+         'comiteId solo se define para chats de tipo comite',
+       ),
+       assert(
+         (kind == ChatKind.custom) == (createdBy != null),
+         'createdBy solo se define para chats de tipo custom',
+       );
 }

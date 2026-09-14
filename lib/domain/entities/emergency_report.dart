@@ -33,5 +33,8 @@ class EmergencyReport {
     this.reviewedAt,
     this.latitude,
     this.longitude,
-  }) : assert(photoUrls.length >= 2, 'Un reporte requiere mínimo 2 fotos (RF-2/RF-3)');
+  }) : assert(
+         photoUrls.length >= 2,
+         'Un reporte requiere mínimo 2 fotos (RF-2/RF-3)',
+       );
 }

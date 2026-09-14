@@ -1,7 +1,14 @@
 /// RF-1/RF-2: filtro de fecha para el mapa. Ventanas móviles relativas a
 /// `now` (no semana/mes calendario) — más simple y suficiente para
 /// acotar cuántas emergencias "activa" se muestran.
-enum EmergencyDateFilter { today, thisWeek, thisMonth, last3Months, last6Months, lastYear }
+enum EmergencyDateFilter {
+  today,
+  thisWeek,
+  thisMonth,
+  last3Months,
+  last6Months,
+  lastYear,
+}
 
 extension EmergencyDateFilterX on EmergencyDateFilter {
   DateTime cutoff(DateTime now) {

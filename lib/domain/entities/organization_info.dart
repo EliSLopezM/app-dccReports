@@ -6,7 +6,9 @@ class OrganizationInfo {
 
   @override
   bool operator ==(Object other) =>
-      other is OrganizationInfo && other.name == name && other.address == address;
+      other is OrganizationInfo &&
+      other.name == name &&
+      other.address == address;
 
   @override
   int get hashCode => Object.hash(name, address);

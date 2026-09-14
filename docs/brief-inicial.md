@@ -190,11 +190,14 @@ producto confirme o reordene antes de arrancar la spec 001:
    (se puebla al aprobar la cuenta), chat único de departamento (DCC
    Bogotá), chats personalizados creados/eliminados solo por funcionario
    (máx. 5 activos), y mensajería en tiempo real para los tres tipos.
-5. **Ciclo de vida de la emergencia**: "Ir", punto de encuentro (reglas de
-   voluntario vs. líder/funcionario), "Ya llegué", solicitud de ambulancia
-   + llamada, finalización (foto/nivel/razón) y tiempos en el perfil.
-6. **Perfiles y logros**: historial de participación, logros, cursos y rol
-   visibles.
+5. **Ciclo de vida de la emergencia** (spec 005, código completo): "Ir"
+   con direcciones externas, comités convocados por cercanía, punto de
+   encuentro (reglas voluntario vs. liderazgo), "Ya llegué", solicitud de
+   ambulancia (la persona llama directo), finalización (foto/nivel/razón)
+   con tiempos calculados, y cierre completo de la emergencia por
+   liderazgo.
+6. **Perfiles y logros**: historial de participación (consume los
+   tiempos que ya guarda la spec 005), logros, cursos y rol visibles.
 7. **Noticias, Capacítate, Prepárate**: las tres secciones de contenido.
 8. **Legal**: políticas/términos + descarga en PDF.
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../domain/entities/account_role.dart';
 import '../../domain/entities/emergency_report.dart';
 import '../../domain/repositories/emergency_report_repository.dart';
 import 'active_reports_list_screen.dart';
@@ -12,7 +13,16 @@ final _sinceBeginning = DateTime(2000);
 /// RF-5/RF-6: campana con el conteo de emergencias activas, sin dirigirse
 /// solo a grupos/comités cercanos todavía (spec 004 lo amplía).
 class ActiveReportsBell extends StatelessWidget {
-  const ActiveReportsBell({super.key});
+  const ActiveReportsBell({
+    super.key,
+    required this.accountId,
+    required this.accountName,
+    required this.accountRole,
+  });
+
+  final String accountId;
+  final String accountName;
+  final AccountRole accountRole;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +41,14 @@ class ActiveReportsBell extends StatelessWidget {
             child: const Icon(Icons.notifications),
           ),
           onPressed: () => Navigator.of(context).push(
-            MaterialPageRoute(builder: (_) => ActiveReportsListScreen(reports: reports)),
+            MaterialPageRoute(
+              builder: (_) => ActiveReportsListScreen(
+                reports: reports,
+                accountId: accountId,
+                accountName: accountName,
+                accountRole: accountRole,
+              ),
+            ),
           ),
         );
       },

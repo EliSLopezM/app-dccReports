@@ -41,7 +41,9 @@ Account accountFromFirestore(String id, Map<String, dynamic> data) {
     phone: data['phone'] as String?,
     role: AccountRole.values.byName(data['role'] as String),
     status: AccountStatus.values.byName(data['status'] as String),
-    activeCourseIds: List<String>.from(data['activeCourseIds'] as List? ?? const []),
+    activeCourseIds: List<String>.from(
+      data['activeCourseIds'] as List? ?? const [],
+    ),
     organization: organizationData == null
         ? null
         : OrganizationInfo(
