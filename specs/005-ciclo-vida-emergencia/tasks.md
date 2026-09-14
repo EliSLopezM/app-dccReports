@@ -75,7 +75,7 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
   nivel). Widget tests para ambas ramas.
   Hecho cuando: los widget tests pasan.
 
-- [ ] **T12 — Comités convocados + "Cerrar emergencia" en `EmergencyDetailScreen`** (RF-3, RF-12)
+- [x] **T12 — Comités convocados + "Cerrar emergencia" en `EmergencyDetailScreen`** (RF-3, RF-12)
   Lista de comités convocados (spec 003, pantalla existente); botón
   "Cerrar emergencia" visible solo para liderazgo, llama a
   `updateStatus(verdadera)` (spec 002). Widget tests: lista de comités

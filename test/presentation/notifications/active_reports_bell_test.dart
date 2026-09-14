@@ -1,3 +1,4 @@
+import 'package:app_dcc_reports/domain/entities/account_role.dart';
 import 'package:app_dcc_reports/domain/entities/emergency_report.dart';
 import 'package:app_dcc_reports/domain/entities/report_status.dart';
 import 'package:app_dcc_reports/domain/entities/reporter_evidence.dart';
@@ -68,7 +69,15 @@ void main() {
     await tester.pumpWidget(
       Provider<EmergencyReportRepository>.value(
         value: repo,
-        child: MaterialApp(home: Scaffold(appBar: AppBar(actions: const [ActiveReportsBell()]))),
+        child: MaterialApp(
+          home: Scaffold(
+            appBar: AppBar(
+              actions: const [
+                ActiveReportsBell(accountId: 'uid-1', accountName: 'Jane', accountRole: AccountRole.voluntario),
+              ],
+            ),
+          ),
+        ),
       ),
     );
     await tester.pump();
@@ -82,7 +91,15 @@ void main() {
     await tester.pumpWidget(
       Provider<EmergencyReportRepository>.value(
         value: repo,
-        child: MaterialApp(home: Scaffold(appBar: AppBar(actions: const [ActiveReportsBell()]))),
+        child: MaterialApp(
+          home: Scaffold(
+            appBar: AppBar(
+              actions: const [
+                ActiveReportsBell(accountId: 'uid-1', accountName: 'Jane', accountRole: AccountRole.voluntario),
+              ],
+            ),
+          ),
+        ),
       ),
     );
     await tester.pump();

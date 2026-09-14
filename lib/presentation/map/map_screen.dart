@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../domain/entities/account_role.dart';
 import '../../domain/entities/date_filter.dart';
 import '../../domain/entities/emergency_report.dart';
 import '../../domain/entities/emergency_type_catalog.dart';
@@ -31,7 +32,16 @@ String _typeLabel(String id) {
 
 /// RF-1/RF-2: mapa de emergencias "activa", con filtro de fecha.
 class MapScreen extends StatefulWidget {
-  const MapScreen({super.key});
+  const MapScreen({
+    super.key,
+    required this.accountId,
+    required this.accountName,
+    required this.accountRole,
+  });
+
+  final String accountId;
+  final String accountName;
+  final AccountRole accountRole;
 
   @override
   State<MapScreen> createState() => _MapScreenState();
@@ -87,7 +97,14 @@ class _MapScreenState extends State<MapScreen> {
                   title: report.title,
                   snippet: _typeLabel(report.emergencyTypeId),
                   onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => EmergencyDetailScreen(report: report)),
+                    MaterialPageRoute(
+                      builder: (_) => EmergencyDetailScreen(
+                        report: report,
+                        accountId: widget.accountId,
+                        accountName: widget.accountName,
+                        accountRole: widget.accountRole,
+                      ),
+                    ),
                   ),
                 ),
             ],

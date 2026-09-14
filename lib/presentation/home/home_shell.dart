@@ -43,7 +43,11 @@ class HomeShell extends StatelessWidget {
       appBar: AppBar(
         title: const Text('DCC-BOGOTA'),
         actions: [
-          const ActiveReportsBell(),
+          ActiveReportsBell(
+            accountId: account.id,
+            accountName: account.name,
+            accountRole: account.role,
+          ),
           IconButton(
             icon: const Icon(Icons.logout),
             tooltip: 'Cerrar sesión',
@@ -61,7 +65,13 @@ class HomeShell extends StatelessWidget {
             leading: const Icon(Icons.map),
             title: const Text('Mapa'),
             onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => const MapScreen()),
+              MaterialPageRoute(
+                builder: (_) => MapScreen(
+                  accountId: account.id,
+                  accountName: account.name,
+                  accountRole: account.role,
+                ),
+              ),
             ),
           ),
           ListTile(
