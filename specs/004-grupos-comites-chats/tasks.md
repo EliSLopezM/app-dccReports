@@ -100,7 +100,7 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
   mensaje lo agrega a la lista visible.
   Hecho cuando: el widget test pasa.
 
-- [ ] **T16 — `CreateChatScreen`** (RF-7, RF-8, RF-9)
+- [x] **T16 — `CreateChatScreen`** (RF-7, RF-8, RF-9)
   Solo visible/alcanzable para funcionario; crear, ver mis chats creados,
   eliminar, agregar miembros. Widget tests: crear chat; bloqueado al
   llegar a 5 activos; eliminar libera cupo.
