@@ -43,6 +43,9 @@ class _FakeAccountRepository implements AccountRepository {
     required String accountId,
     String? reason,
   }) async {}
+
+  @override
+  Future<void> setComite({required String uid, required String comiteId}) async {}
 }
 
 Account _pendingAccount({required String id, required AccountRole role}) {

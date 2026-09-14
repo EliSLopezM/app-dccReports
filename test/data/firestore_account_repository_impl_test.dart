@@ -145,4 +145,17 @@ void main() {
       );
     });
   });
+
+  group('setComite (spec 004, RF-1/RF-2)', () {
+    test('fija el comiteId de la cuenta', () async {
+      final firestore = FakeFirebaseFirestore();
+      final accountId = await _seedAccount(firestore, role: AccountRole.voluntario, status: 'pending');
+      final repository = FirestoreAccountRepositoryImpl(firestore);
+
+      await repository.setComite(uid: accountId, comiteId: 'comite-1');
+
+      final doc = await firestore.collection('accounts').doc(accountId).get();
+      expect(doc.data()!['comiteId'], 'comite-1');
+    });
+  });
 }

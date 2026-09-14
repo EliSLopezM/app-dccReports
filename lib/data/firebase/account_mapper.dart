@@ -28,6 +28,7 @@ Map<String, dynamic> newAccountToFirestore({
     'createdAt': FieldValue.serverTimestamp(),
     'reviewedBy': null,
     'reviewedAt': null,
+    'comiteId': null,
   };
 }
 
@@ -50,5 +51,6 @@ Account accountFromFirestore(String id, Map<String, dynamic> data) {
     createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
     reviewedBy: data['reviewedBy'] as String?,
     reviewedAt: (data['reviewedAt'] as Timestamp?)?.toDate(),
+    comiteId: data['comiteId'] as String?,
   );
 }
