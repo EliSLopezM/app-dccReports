@@ -5,6 +5,7 @@ import 'package:app_dcc_reports/domain/entities/organization_info.dart';
 import 'package:app_dcc_reports/domain/repositories/account_repository.dart';
 import 'package:app_dcc_reports/domain/repositories/auth_repository.dart';
 import 'package:app_dcc_reports/domain/repositories/comite_repository.dart';
+import 'package:app_dcc_reports/domain/repositories/location_repository.dart';
 import 'package:app_dcc_reports/presentation/register/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -81,16 +82,22 @@ class _FakeComiteRepository implements ComiteRepository {
   String? lastCreatedName;
   String? lastCreatedAddress;
   String? lastCreatedLeaderId;
+  double? lastCreatedLatitude;
+  double? lastCreatedLongitude;
 
   @override
   Future<String> create({
     required String name,
     required String address,
     required String leaderId,
+    double? latitude,
+    double? longitude,
   }) async {
     lastCreatedName = name;
     lastCreatedAddress = address;
     lastCreatedLeaderId = leaderId;
+    lastCreatedLatitude = latitude;
+    lastCreatedLongitude = longitude;
     return 'new-comite-id';
   }
 
@@ -108,11 +115,21 @@ class _FakeComiteRepository implements ComiteRepository {
   }) async {}
 }
 
+class _FakeLocationRepository implements LocationRepository {
+  _FakeLocationRepository({this.result});
+
+  final ({double latitude, double longitude})? result;
+
+  @override
+  Future<({double latitude, double longitude})?> getCurrentLocation() async => result;
+}
+
 Future<void> _pumpRegisterScreen(
   WidgetTester tester,
   _FakeAuthRepository authRepo, {
   _FakeAccountRepository? accountRepo,
   _FakeComiteRepository? comiteRepo,
+  _FakeLocationRepository? locationRepo,
 }) {
   return tester.pumpWidget(
     MultiProvider(
@@ -120,6 +137,7 @@ Future<void> _pumpRegisterScreen(
         Provider<AuthRepository>.value(value: authRepo),
         Provider<AccountRepository>.value(value: accountRepo ?? _FakeAccountRepository()),
         Provider<ComiteRepository>.value(value: comiteRepo ?? _FakeComiteRepository()),
+        Provider<LocationRepository>.value(value: locationRepo ?? _FakeLocationRepository()),
       ],
       child: const MaterialApp(home: RegisterScreen()),
     ),
@@ -159,11 +177,19 @@ void main() {
     expect(find.byKey(const Key('no-comites-message')), findsNothing);
   });
 
-  testWidgets('enviar con funcionario funda un comité nuevo (RF-1, spec 004)', (tester) async {
+  testWidgets('enviar con funcionario funda un comité nuevo con ubicación (RF-1, spec 004; RF-13, spec 004 Enmienda 1)',
+      (tester) async {
     final authRepo = _FakeAuthRepository();
     final accountRepo = _FakeAccountRepository();
     final comiteRepo = _FakeComiteRepository();
-    await _pumpRegisterScreen(tester, authRepo, accountRepo: accountRepo, comiteRepo: comiteRepo);
+    final locationRepo = _FakeLocationRepository(result: (latitude: 4.6, longitude: -74.1));
+    await _pumpRegisterScreen(
+      tester,
+      authRepo,
+      accountRepo: accountRepo,
+      comiteRepo: comiteRepo,
+      locationRepo: locationRepo,
+    );
 
     await tester.enterText(find.widgetWithText(TextFormField, 'Nombre completo'), 'Jane Doe');
     await tester.enterText(
@@ -201,6 +227,8 @@ void main() {
     expect(comiteRepo.lastCreatedName, 'Comité Suba');
     expect(comiteRepo.lastCreatedLeaderId, 'fake-uid');
     expect(accountRepo.lastComiteId, 'new-comite-id');
+    expect(comiteRepo.lastCreatedLatitude, 4.6);
+    expect(comiteRepo.lastCreatedLongitude, -74.1);
   });
 
   testWidgets('voluntario elige un comité existente y se manda a setComite (RF-2)', (tester) async {

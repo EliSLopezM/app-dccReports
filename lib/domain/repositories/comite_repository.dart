@@ -9,6 +9,8 @@ abstract class ComiteRepository {
     required String name,
     required String address,
     required String leaderId,
+    double? latitude,
+    double? longitude,
   });
 
   Stream<List<Comite>> watchAllComites();

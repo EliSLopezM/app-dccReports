@@ -113,3 +113,19 @@ de texto en tiempo real para los tres tipos.
   sin comité (porque no existía ninguno) cuando después sí aparece uno —
   por ahora queda sin chat de comité hasta que se construya un flujo de
   "unirme después" (ver Fuera de alcance).
+
+## Enmienda 1 — Coordenadas del comité (motivada por la spec 005)
+
+La spec 005 (Ciclo de vida de la emergencia) necesita calcular qué
+comités están cerca de una emergencia para la convocatoria, y el
+`Comite` no guardaba coordenadas. Se agrega:
+
+- RF-13: CUANDO un funcionario o líder funcionario funda su comité
+  (RF-1), EL SISTEMA intentará capturar la ubicación GPS del
+  dispositivo en ese momento y la guardará junto con el comité si se
+  obtiene — mismo criterio best-effort que RF-13/RF-14 de la spec 002
+  (nunca bloquea el registro por falta de permiso de ubicación).
+- RF-14: SI no se pudo obtener la ubicación al fundar el comité,
+  ENTONCES ese comité no se tendrá en cuenta al calcular cercanía
+  (spec 005) hasta que se agregue una ubicación por otro medio (fuera
+  de alcance).

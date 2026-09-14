@@ -8,12 +8,16 @@ Map<String, dynamic> newComiteToFirestore({
   required String name,
   required String address,
   required String leaderId,
+  double? latitude,
+  double? longitude,
 }) {
   return {
     'name': name,
     'address': address,
     'leaderId': leaderId,
     'delegateId': null,
+    'latitude': latitude,
+    'longitude': longitude,
     'createdAt': FieldValue.serverTimestamp(),
   };
 }
@@ -26,5 +30,7 @@ Comite comiteFromFirestore(String id, Map<String, dynamic> data) {
     leaderId: data['leaderId'] as String,
     delegateId: data['delegateId'] as String?,
     createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+    latitude: (data['latitude'] as num?)?.toDouble(),
+    longitude: (data['longitude'] as num?)?.toDouble(),
   );
 }

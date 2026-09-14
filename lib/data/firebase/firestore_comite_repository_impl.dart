@@ -22,11 +22,22 @@ class FirestoreComiteRepositoryImpl implements ComiteRepository {
     required String name,
     required String address,
     required String leaderId,
+    double? latitude,
+    double? longitude,
   }) async {
     final comiteDoc = _comites.doc();
     final chatDoc = _chats.doc();
     final batch = _firestore.batch();
-    batch.set(comiteDoc, newComiteToFirestore(name: name, address: address, leaderId: leaderId));
+    batch.set(
+      comiteDoc,
+      newComiteToFirestore(
+        name: name,
+        address: address,
+        leaderId: leaderId,
+        latitude: latitude,
+        longitude: longitude,
+      ),
+    );
     batch.set(
       chatDoc,
       newChatToFirestore(name: name, kind: ChatKind.comite, comiteId: comiteDoc.id),
