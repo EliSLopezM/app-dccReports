@@ -21,12 +21,12 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
 
 ## Data
 
-- [ ] **T3 — `FirestoreContentRepositoryImpl`: `watchPosts`** (RF-1, RF-2)
+- [x] **T3 — `FirestoreContentRepositoryImpl`: `watchPosts`** (RF-1, RF-2)
   Test con `fake_cloud_firestore`: publicaciones filtradas por `kind` y
   ordenadas por `createdAt` descendente.
   Hecho cuando: el test pasa.
 
-- [ ] **T4 — `create`/`update`/`delete` con validación de rol** (RF-3, RF-4)
+- [x] **T4 — `create`/`update`/`delete` con validación de rol** (RF-3, RF-4)
   Test: `authorRole: AccountRole.admin` crea/edita/elimina correctamente;
   cualquier otro rol lanza `NotAdminException` y no escribe nada. Test de
   `update` con foto: subir una nueva reemplaza `photoUrl`; pasar
