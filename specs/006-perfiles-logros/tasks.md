@@ -38,7 +38,7 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
 
 ## Presentation
 
-- [ ] **T6 — `AccountDetailScreen` con logros e historial** (RF-2, RF-4)
+- [x] **T6 — `AccountDetailScreen` con logros e historial** (RF-2, RF-4)
   Nueva sección "Logros" (insignias desbloqueadas) e "Historial de
   emergencias" (título, tipo, tiempos) a partir de
   `watchParticipationsForAccount`. Widget tests: cuenta sin
