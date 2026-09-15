@@ -13,7 +13,7 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
 
 ## Presentation
 
-- [ ] **T2 — `LegalScreen`** (RF-1, RF-2)
+- [x] **T2 — `LegalScreen`** (RF-1, RF-2)
   Muestra título/cuerpo; botón "Descargar PDF" llama a `generatePdf` y
   luego a `sharePdf` (ambas inyectables, con defaults reales usando
   `pdf`/`printing`); se deshabilita mientras genera. Widget tests: se ve
