@@ -85,6 +85,7 @@ propia entrevista de clarificación antes de escribirse como `spec.md`.
 | [004](../specs/004-grupos-comites-chats/spec.md) | Grupos/comités y chats | Código completo (T1-T17) y en verde; falta el recorrido manual (T18). Rama apilada sobre `spec/003-mapa-despliegue` |
 | [005](../specs/005-ciclo-vida-emergencia/spec.md) | Ciclo de vida de la emergencia | Código completo (T1-T13) y en verde; falta el recorrido manual (T14). Rama apilada sobre `spec/004-grupos-comites-chats` |
 | [006](../specs/006-perfiles-logros/spec.md) | Perfiles y logros | Código completo (T1-T8) y en verde; falta el recorrido manual (T9). Rama apilada sobre `spec/005-ciclo-vida-emergencia` |
+| [007](../specs/007-contenido/spec.md) | Noticias, Capacítate y Prepárate | Código completo (T1-T9) y en verde; falta el recorrido manual (T10). Rama apilada sobre `spec/006-perfiles-logros` |
 
 Se irán agregando filas a medida que se cierren specs, igual que en
 `amipets`.
@@ -204,12 +205,25 @@ miembros del comité ya se muestran por nombre, no por uid), y entrada
 salvo **T9**, el recorrido manual — documentado en
 [`entorno-local.md`](entorno-local.md).
 
-Como las specs 001-006 están apiladas (cada una nace de la anterior, que
+La spec 007 (rama `spec/007-contenido`, apilada sobre
+`spec/006-perfiles-logros`) también tiene su código completo:
+`ContentListScreen` reutilizada para Noticias y Prepárate (título,
+extracto, foto opcional), `ContentDetailScreen`, `ContentFormScreen`
+para crear/editar restringido a Admin (reforzado en `data` con
+`NotAdminException`, igual que RF-7 de la spec 001), y `CapacitateScreen`
+con un enlace externo a un Google Forms (`kCapacitateFormUrl`, vacío
+hasta que la DCC entregue el enlace real). Los tres accesos
+"Próximamente" sembrados desde la spec 001 en `HomeShell` y
+`PendingApprovalScreen` ya apuntan a las pantallas reales. Mismo estado:
+todo en verde salvo **T10**, el recorrido manual — documentado en
+[`entorno-local.md`](entorno-local.md).
+
+Como las specs 001-007 están apiladas (cada una nace de la anterior, que
 todavía no está en `main`), el orden recomendado para mergear es: probar
 T16 → mergear 001 → probar T12 → mergear 002 → probar T9 (spec 003) →
 mergear 003 → probar T18 → mergear 004 → probar T14 → mergear 005 →
-probar T9 (spec 006) → mergear 006 (o revisar las seis juntas si se
-prefiere).
+probar T9 (spec 006) → mergear 006 → probar T10 (spec 007) → mergear 007
+(o revisar las siete juntas si se prefiere).
 
-Todo lo demás (specs 007-008) está pendiente — ver
+Todo lo demás (spec 008, Legal) está pendiente — ver
 `docs/brief-inicial.md` para el alcance completo y el orden propuesto.

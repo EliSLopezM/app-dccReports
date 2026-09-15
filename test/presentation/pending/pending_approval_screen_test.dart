@@ -1,7 +1,12 @@
+import 'package:app_dcc_reports/domain/entities/account.dart';
 import 'package:app_dcc_reports/domain/entities/account_role.dart';
 import 'package:app_dcc_reports/domain/entities/account_status.dart';
+import 'package:app_dcc_reports/domain/entities/content_kind.dart';
+import 'package:app_dcc_reports/domain/entities/content_post.dart';
 import 'package:app_dcc_reports/domain/entities/organization_info.dart';
 import 'package:app_dcc_reports/domain/repositories/auth_repository.dart';
+import 'package:app_dcc_reports/domain/repositories/content_repository.dart';
+import 'package:app_dcc_reports/presentation/content/content_list_screen.dart';
 import 'package:app_dcc_reports/presentation/pending/pending_approval_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -30,11 +35,54 @@ class _FakeAuthRepository implements AuthRepository {
   Stream<String?> watchCurrentUid() => const Stream.empty();
 }
 
+class _FakeContentRepository implements ContentRepository {
+  @override
+  Stream<List<ContentPost>> watchPosts(ContentKind kind) => Stream.value(const []);
+
+  @override
+  Future<String> create({
+    required ContentKind kind,
+    required String authorId,
+    required AccountRole authorRole,
+    required String title,
+    required String body,
+    String? localPhotoPath,
+  }) async =>
+      'id';
+
+  @override
+  Future<void> update({
+    required String postId,
+    required AccountRole authorRole,
+    required String title,
+    required String body,
+    String? localPhotoPath,
+    bool removePhoto = false,
+  }) async {}
+
+  @override
+  Future<void> delete({required String postId, required AccountRole authorRole}) async {}
+}
+
+Account _account(AccountStatus status) {
+  return Account(
+    id: 'uid-1',
+    name: 'Jane Doe',
+    email: 'jane@example.com',
+    role: AccountRole.voluntario,
+    status: status,
+    createdAt: DateTime(2026, 9, 11),
+  );
+}
+
 Future<void> _pumpPendingScreen(WidgetTester tester, AccountStatus status) {
   return tester.pumpWidget(
-    Provider<AuthRepository>.value(
-      value: _FakeAuthRepository(),
-      child: MaterialApp(home: PendingApprovalScreen(status: status)),
+    MultiProvider(
+      providers: [
+        Provider<AuthRepository>.value(value: _FakeAuthRepository()),
+        Provider<ContentRepository>.value(value: _FakeContentRepository()),
+      ],
+      child: MaterialApp(home: PendingApprovalScreen(account: _account(status))),
     ),
   );
 }
@@ -51,13 +99,13 @@ void main() {
     expect(find.textContaining('Panel'), findsNothing);
   });
 
-  testWidgets('tocar Noticias navega al stub de Noticias', (tester) async {
+  testWidgets('tocar Noticias navega a la pantalla real de Noticias (spec 007)', (tester) async {
     await _pumpPendingScreen(tester, AccountStatus.pending);
 
     await tester.tap(find.text('Noticias'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Próximamente'), findsOneWidget);
+    expect(find.byType(ContentListScreen), findsOneWidget);
   });
 
   testWidgets('cuenta rechazada muestra el mensaje correspondiente', (tester) async {

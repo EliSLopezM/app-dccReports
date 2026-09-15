@@ -201,7 +201,10 @@ producto confirme o reordene antes de arrancar la spec 001:
    catálogo cerrado de logros por hitos, cursos y rol visibles, y
    perfil accesible tanto desde "Mi perfil" como tocando el nombre de
    cualquier cuenta en un chat/comité/lista de participantes.
-7. **Noticias, Capacítate, Prepárate**: las tres secciones de contenido.
+7. **Noticias, Capacítate, Prepárate** (spec 007, código completo):
+   Noticias y Prepárate como publicaciones (título, cuerpo, foto
+   opcional) gestionadas solo por Admin; Capacítate como información
+   más un enlace externo a un Google Forms de postulación.
 8. **Legal**: políticas/términos + descarga en PDF.
 
 Ver perfiles de usuarios actuales (mencionado en la sección 8 del brief)

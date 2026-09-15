@@ -195,6 +195,29 @@ su comité (ver recorridos de las specs 002/003/005):
    participado, toca su nombre en la lista de participantes → mismo
    resultado.
 
+## Recorrido de prueba completo (T10 de la spec 007)
+
+Con la cuenta Admin y al menos otra cuenta aprobada de rol distinto
+(ej. John, voluntario) ya sembradas:
+
+1. Con Admin, entra a "Noticias" → toca el botón "+" → crea una
+   publicación con título, cuerpo y una foto → confirma que aparece en
+   la lista y, al tocarla, en el detalle con la foto y el texto
+   completo.
+2. Con John, entra a "Noticias" → confirma que ve la misma publicación
+   pero sin ningún botón de editar/eliminar ni el "+" de crear.
+3. Con Admin, edita la publicación (cambia el título, quita la foto) →
+   confirma que el cambio se refleja en la lista y el detalle.
+4. Con Admin, elimínala → confirma que desaparece de la lista.
+5. Repite brevemente los pasos 1 y 4 en "Prepárate" (mismo
+   comportamiento, otra colección de contenido).
+6. Entra a "Capacítate" (con cualquier cuenta, o incluso con una cuenta
+   pendiente desde `PendingApprovalScreen`) → mientras
+   `kCapacitateFormUrl` siga vacío en `lib/app/capacitate_config.dart`,
+   confirma el mensaje de "no disponible"; una vez configurado con la
+   URL real del Google Forms, confirma que el botón "Postúlate" abre el
+   formulario en el navegador/app externa.
+
 ## Mapa: Google Maps
 
 Mientras no haya una API key real, el mapa mostrará un placeholder (mismo

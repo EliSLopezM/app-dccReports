@@ -14,6 +14,7 @@ import 'data/firebase/firebase_auth_repository_impl.dart';
 import 'data/firebase/firestore_account_repository_impl.dart';
 import 'data/firebase/firestore_chat_repository_impl.dart';
 import 'data/firebase/firestore_comite_repository_impl.dart';
+import 'data/firebase/firestore_content_repository_impl.dart';
 import 'data/firebase/firestore_emergency_report_repository_impl.dart';
 import 'data/firebase/firestore_participation_repository_impl.dart';
 import 'data/location/geolocator_location_repository_impl.dart';
@@ -21,6 +22,7 @@ import 'domain/repositories/account_repository.dart';
 import 'domain/repositories/auth_repository.dart';
 import 'domain/repositories/chat_repository.dart';
 import 'domain/repositories/comite_repository.dart';
+import 'domain/repositories/content_repository.dart';
 import 'domain/repositories/emergency_report_repository.dart';
 import 'domain/repositories/location_repository.dart';
 import 'domain/repositories/participation_repository.dart';
@@ -51,6 +53,12 @@ Future<String> _uploadReportPhoto(String reportId, String localPath, int index) 
 
 Future<String> _uploadParticipationPhoto(String reportId, String accountId, String localPath) async {
   final ref = FirebaseStorage.instance.ref('participation_photos/$reportId/$accountId.jpg');
+  await ref.putFile(File(localPath));
+  return ref.getDownloadURL();
+}
+
+Future<String> _uploadContentPhoto(String postId, String localPath) async {
+  final ref = FirebaseStorage.instance.ref('content_photos/$postId.jpg');
   await ref.putFile(File(localPath));
   return ref.getDownloadURL();
 }
@@ -88,6 +96,12 @@ class DccApp extends StatelessWidget {
           create: (_) => FirestoreParticipationRepositoryImpl(
             FirebaseFirestore.instance,
             uploadPhoto: _uploadParticipationPhoto,
+          ),
+        ),
+        Provider<ContentRepository>(
+          create: (_) => FirestoreContentRepositoryImpl(
+            FirebaseFirestore.instance,
+            uploadPhoto: _uploadContentPhoto,
           ),
         ),
       ],

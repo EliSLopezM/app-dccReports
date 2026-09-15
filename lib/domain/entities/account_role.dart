@@ -20,6 +20,9 @@ extension AccountRoleX on AccountRole {
   /// voluntario) maneja el punto de encuentro sin restricción y puede
   /// cerrar la emergencia completa.
   bool get isEmergencyLeadership => this != AccountRole.voluntario;
+
+  /// RF-3/RF-4 (spec 007): solo Admin publica/edita/elimina contenido.
+  bool get canManageContent => this == AccountRole.admin;
 }
 
 /// RF-7, centralizado para que data y presentation apliquen la misma

@@ -46,3 +46,7 @@ class NotArrivedException implements Exception {}
 /// RF-7/RF-8 (spec 005): un voluntario intentó poner/cambiar el punto de
 /// encuentro sin permiso (ya hay uno de otra cuenta).
 class MeetingPointBlockedException implements Exception {}
+
+/// RF-4 (spec 007): solo Admin crea/edita/elimina contenido (Noticias,
+/// Prepárate).
+class NotAdminException implements Exception {}
