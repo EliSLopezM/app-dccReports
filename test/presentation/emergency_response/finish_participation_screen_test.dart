@@ -35,7 +35,10 @@ class _FakeParticipationRepository implements ParticipationRepository {
   }
 
   @override
-  Future<void> arrive({required String reportId, required String accountId}) async {}
+  Future<void> arrive({
+    required String reportId,
+    required String accountId,
+  }) async {}
 
   @override
   Future<void> goTo({
@@ -43,10 +46,15 @@ class _FakeParticipationRepository implements ParticipationRepository {
     required String accountId,
     required String accountName,
     required dynamic accountRole,
+    required String reportTitle,
+    required String emergencyTypeId,
   }) async {}
 
   @override
-  Future<void> requestAmbulance({required String reportId, required String accountId}) async {}
+  Future<void> requestAmbulance({
+    required String reportId,
+    required String accountId,
+  }) async {}
 
   @override
   Future<void> setMeetingPoint({
@@ -61,14 +69,19 @@ class _FakeParticipationRepository implements ParticipationRepository {
   Stream<Participation?> watchMyParticipation({
     required String reportId,
     required String accountId,
-  }) =>
+  }) => const Stream.empty();
+
+  @override
+  Stream<List<Participation>> watchParticipations(String reportId) =>
       const Stream.empty();
 
   @override
-  Stream<List<Participation>> watchParticipations(String reportId) => const Stream.empty();
+  Stream<List<Participation>> watchParticipationsForAccount(String accountId) =>
+      const Stream.empty();
 
   @override
-  Stream<MeetingPoint?> watchMeetingPoint(String reportId) => const Stream.empty();
+  Stream<MeetingPoint?> watchMeetingPoint(String reportId) =>
+      const Stream.empty();
 }
 
 Future<void> _pumpScreen(
@@ -91,9 +104,15 @@ Future<void> _pumpScreen(
 }
 
 void main() {
-  testWidgets('"Ya terminé" con foto manda finishCompleted (RF-10)', (tester) async {
+  testWidgets('"Ya terminé" con foto manda finishCompleted (RF-10)', (
+    tester,
+  ) async {
     final repo = _FakeParticipationRepository();
-    await _pumpScreen(tester, repo, pickImage: (source) async => '/tmp/finish.jpg');
+    await _pumpScreen(
+      tester,
+      repo,
+      pickImage: (source) async => '/tmp/finish.jpg',
+    );
 
     await tester.tap(find.text('Agregar foto'));
     await tester.pumpAndSettle();
@@ -115,13 +134,18 @@ void main() {
     expect(repo.lastLocalPhotoPath, isNull);
   });
 
-  testWidgets('"Debo retirarme" con razón manda finishWithdrawn (RF-10)', (tester) async {
+  testWidgets('"Debo retirarme" con razón manda finishWithdrawn (RF-10)', (
+    tester,
+  ) async {
     final repo = _FakeParticipationRepository();
     await _pumpScreen(tester, repo);
 
     await tester.tap(find.text('Debo retirarme'));
     await tester.pumpAndSettle();
-    await tester.enterText(find.byKey(const Key('reason-field')), 'Emergencia familiar');
+    await tester.enterText(
+      find.byKey(const Key('reason-field')),
+      'Emergencia familiar',
+    );
     await tester.tap(find.widgetWithText(ElevatedButton, 'Confirmar'));
     await tester.pumpAndSettle();
 

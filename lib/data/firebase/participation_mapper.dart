@@ -11,13 +11,19 @@ const participationsSubcollection = 'participations';
 const meetingPointsCollection = 'meetingPoints';
 
 Map<String, dynamic> newGoingParticipationToFirestore({
+  required String accountId,
   required String accountName,
   required AccountRole accountRole,
+  required String reportTitle,
+  required String emergencyTypeId,
   required DateTime goingAt,
 }) {
   return {
+    'accountId': accountId,
     'accountName': accountName,
     'accountRole': accountRole.name,
+    'reportTitle': reportTitle,
+    'emergencyTypeId': emergencyTypeId,
     'status': ParticipationStatus.going.name,
     'goingAt': Timestamp.fromDate(goingAt),
     'arrivedAt': null,
@@ -40,6 +46,8 @@ Participation participationFromFirestore(
     accountId: accountId,
     accountName: data['accountName'] as String,
     accountRole: AccountRole.values.byName(data['accountRole'] as String),
+    reportTitle: data['reportTitle'] as String,
+    emergencyTypeId: data['emergencyTypeId'] as String,
     status: ParticipationStatus.values.byName(data['status'] as String),
     goingAt: (data['goingAt'] as Timestamp).toDate(),
     arrivedAt: (data['arrivedAt'] as Timestamp?)?.toDate(),

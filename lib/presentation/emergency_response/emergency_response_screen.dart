@@ -83,6 +83,8 @@ class _EmergencyResponseScreenState extends State<EmergencyResponseScreen> {
       accountId: widget.accountId,
       accountName: widget.accountName,
       accountRole: widget.accountRole,
+      reportTitle: widget.report.title,
+      emergencyTypeId: widget.report.emergencyTypeId,
     );
     await widget.launchUrl(_directionsUri);
   }

@@ -36,17 +36,25 @@ class _FakeParticipationRepository implements ParticipationRepository {
     required String accountId,
     required String accountName,
     required AccountRole accountRole,
+    required String reportTitle,
+    required String emergencyTypeId,
   }) async {
     goToCalled = true;
   }
 
   @override
-  Future<void> arrive({required String reportId, required String accountId}) async {
+  Future<void> arrive({
+    required String reportId,
+    required String accountId,
+  }) async {
     arriveCalled = true;
   }
 
   @override
-  Future<void> requestAmbulance({required String reportId, required String accountId}) async {
+  Future<void> requestAmbulance({
+    required String reportId,
+    required String accountId,
+  }) async {
     ambulanceCalled = true;
   }
 
@@ -70,15 +78,19 @@ class _FakeParticipationRepository implements ParticipationRepository {
   Stream<Participation?> watchMyParticipation({
     required String reportId,
     required String accountId,
-  }) =>
-      Stream.value(myParticipation).asBroadcastStream();
+  }) => Stream.value(myParticipation).asBroadcastStream();
 
   @override
   Stream<List<Participation>> watchParticipations(String reportId) =>
       Stream<List<Participation>>.value(const []).asBroadcastStream();
 
   @override
-  Stream<MeetingPoint?> watchMeetingPoint(String reportId) => Stream.value(meetingPoint);
+  Stream<List<Participation>> watchParticipationsForAccount(String accountId) =>
+      const Stream.empty();
+
+  @override
+  Stream<MeetingPoint?> watchMeetingPoint(String reportId) =>
+      Stream.value(meetingPoint);
 
   @override
   Future<void> setMeetingPoint({
@@ -104,13 +116,17 @@ EmergencyReport _report() {
 }
 
 Participation _participation({required ParticipationStatus status}) {
-  final arrivedAt = status != ParticipationStatus.going ? DateTime(2026, 9, 14, 10, 20) : null;
+  final arrivedAt = status != ParticipationStatus.going
+      ? DateTime(2026, 9, 14, 10, 20)
+      : null;
   final finished = status == ParticipationStatus.finished;
   return Participation(
     reportId: 'report-1',
     accountId: 'uid-1',
     accountName: 'Jane',
     accountRole: AccountRole.voluntario,
+    reportTitle: 'Incendio',
+    emergencyTypeId: 'incendio',
     status: status,
     goingAt: DateTime(2026, 9, 14, 10),
     arrivedAt: arrivedAt,
@@ -149,21 +165,25 @@ Future<void> _pumpScreen(
 }
 
 void main() {
-  testWidgets('sin participación, muestra "Ir" y al tocarlo llama a goTo y abre direcciones (RF-1/RF-2)',
-      (tester) async {
-    final repo = _FakeParticipationRepository();
-    final launched = <Uri>[];
-    await _pumpScreen(tester, repo, launchedUrls: launched);
-    await tester.pump();
+  testWidgets(
+    'sin participación, muestra "Ir" y al tocarlo llama a goTo y abre direcciones (RF-1/RF-2)',
+    (tester) async {
+      final repo = _FakeParticipationRepository();
+      final launched = <Uri>[];
+      await _pumpScreen(tester, repo, launchedUrls: launched);
+      await tester.pump();
 
-    await tester.tap(find.byKey(const Key('go-button')));
-    await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('go-button')));
+      await tester.pumpAndSettle();
 
-    expect(repo.goToCalled, isTrue);
-    expect(launched, isNotEmpty);
-  });
+      expect(repo.goToCalled, isTrue);
+      expect(launched, isNotEmpty);
+    },
+  );
 
-  testWidgets('con estado going, muestra "Ya llegué" y llama a arrive (RF-4)', (tester) async {
+  testWidgets('con estado going, muestra "Ya llegué" y llama a arrive (RF-4)', (
+    tester,
+  ) async {
     final repo = _FakeParticipationRepository(
       myParticipation: _participation(status: ParticipationStatus.going),
     );
@@ -176,7 +196,9 @@ void main() {
     expect(repo.arriveCalled, isTrue);
   });
 
-  testWidgets('pedir ambulancia llama al repositorio y abre tel:123 (RF-9)', (tester) async {
+  testWidgets('pedir ambulancia llama al repositorio y abre tel:123 (RF-9)', (
+    tester,
+  ) async {
     final repo = _FakeParticipationRepository(
       myParticipation: _participation(status: ParticipationStatus.arrived),
     );
@@ -191,7 +213,9 @@ void main() {
     expect(launched.any((u) => u.scheme == 'tel' && u.path == '123'), isTrue);
   });
 
-  testWidgets('con estado arrived, muestra el botón de finalizar', (tester) async {
+  testWidgets('con estado arrived, muestra el botón de finalizar', (
+    tester,
+  ) async {
     final repo = _FakeParticipationRepository(
       myParticipation: _participation(status: ParticipationStatus.arrived),
     );
@@ -201,7 +225,9 @@ void main() {
     expect(find.byKey(const Key('finish-button')), findsOneWidget);
   });
 
-  testWidgets('llegar sin punto de encuentro navega a ubicarlo (RF-5)', (tester) async {
+  testWidgets('llegar sin punto de encuentro navega a ubicarlo (RF-5)', (
+    tester,
+  ) async {
     final repo = _FakeParticipationRepository(
       myParticipation: _participation(status: ParticipationStatus.going),
       meetingPoint: null,
@@ -215,7 +241,9 @@ void main() {
     expect(find.byType(MeetingPointPickerScreen), findsOneWidget);
   });
 
-  testWidgets('llegar con un punto de encuentro ya puesto no navega (RF-6)', (tester) async {
+  testWidgets('llegar con un punto de encuentro ya puesto no navega (RF-6)', (
+    tester,
+  ) async {
     final repo = _FakeParticipationRepository(
       myParticipation: _participation(status: ParticipationStatus.going),
       meetingPoint: MeetingPoint(
@@ -236,7 +264,9 @@ void main() {
     expect(find.byType(MeetingPointPickerScreen), findsNothing);
   });
 
-  testWidgets('con estado finished, no muestra ni ambulancia ni finalizar', (tester) async {
+  testWidgets('con estado finished, no muestra ni ambulancia ni finalizar', (
+    tester,
+  ) async {
     final repo = _FakeParticipationRepository(
       myParticipation: _participation(status: ParticipationStatus.finished),
     );

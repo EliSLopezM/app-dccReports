@@ -17,9 +17,13 @@ void main() {
         accountId: 'uid-1',
         accountName: 'Jane',
         accountRole: AccountRole.voluntario,
+        reportTitle: 'Incendio',
+        emergencyTypeId: 'incendio',
       );
 
-      final participation = await repo.watchMyParticipation(reportId: 'report-1', accountId: 'uid-1').first;
+      final participation = await repo
+          .watchMyParticipation(reportId: 'report-1', accountId: 'uid-1')
+          .first;
       expect(participation!.status, ParticipationStatus.going);
     });
 
@@ -31,6 +35,8 @@ void main() {
         accountId: 'uid-1',
         accountName: 'Jane',
         accountRole: AccountRole.voluntario,
+        reportTitle: 'Incendio',
+        emergencyTypeId: 'incendio',
       );
       await repo.arrive(reportId: 'report-1', accountId: 'uid-1');
 
@@ -39,9 +45,13 @@ void main() {
         accountId: 'uid-1',
         accountName: 'Jane',
         accountRole: AccountRole.voluntario,
+        reportTitle: 'Incendio',
+        emergencyTypeId: 'incendio',
       );
 
-      final participation = await repo.watchMyParticipation(reportId: 'report-1', accountId: 'uid-1').first;
+      final participation = await repo
+          .watchMyParticipation(reportId: 'report-1', accountId: 'uid-1')
+          .first;
       expect(participation!.status, ParticipationStatus.arrived);
     });
   });
@@ -50,17 +60,24 @@ void main() {
     test('marca arrived con la hora', () async {
       final firestore = FakeFirebaseFirestore();
       final now = DateTime(2026, 9, 14, 10);
-      final repo = FirestoreParticipationRepositoryImpl(firestore, now: () => now);
+      final repo = FirestoreParticipationRepositoryImpl(
+        firestore,
+        now: () => now,
+      );
       await repo.goTo(
         reportId: 'report-1',
         accountId: 'uid-1',
         accountName: 'Jane',
         accountRole: AccountRole.voluntario,
+        reportTitle: 'Incendio',
+        emergencyTypeId: 'incendio',
       );
 
       await repo.arrive(reportId: 'report-1', accountId: 'uid-1');
 
-      final participation = await repo.watchMyParticipation(reportId: 'report-1', accountId: 'uid-1').first;
+      final participation = await repo
+          .watchMyParticipation(reportId: 'report-1', accountId: 'uid-1')
+          .first;
       expect(participation!.status, ParticipationStatus.arrived);
       expect(participation.arrivedAt, now);
     });
@@ -162,6 +179,8 @@ void main() {
         accountId: 'uid-1',
         accountName: 'Jane',
         accountRole: AccountRole.voluntario,
+        reportTitle: 'Incendio',
+        emergencyTypeId: 'incendio',
       );
 
       await repo.requestAmbulance(reportId: 'report-1', accountId: 'uid-1');
@@ -170,7 +189,9 @@ void main() {
         completes,
       );
 
-      final participation = await repo.watchMyParticipation(reportId: 'report-1', accountId: 'uid-1').first;
+      final participation = await repo
+          .watchMyParticipation(reportId: 'report-1', accountId: 'uid-1')
+          .first;
       expect(participation!.ambulanceRequestedAt, isNotNull);
     });
   });
@@ -185,7 +206,8 @@ void main() {
       final repo = FirestoreParticipationRepositoryImpl(
         firestore,
         now: () => now,
-        uploadPhoto: (reportId, accountId, path) async => 'https://storage.example/$path',
+        uploadPhoto: (reportId, accountId, path) async =>
+            'https://storage.example/$path',
       );
 
       await repo.goTo(
@@ -193,6 +215,8 @@ void main() {
         accountId: 'uid-1',
         accountName: 'Jane',
         accountRole: AccountRole.voluntario,
+        reportTitle: 'Incendio',
+        emergencyTypeId: 'incendio',
       );
       now = arrivedAt;
       await repo.arrive(reportId: 'report-1', accountId: 'uid-1');
@@ -204,7 +228,9 @@ void main() {
         difficultyLevel: DifficultyLevel.media,
       );
 
-      final participation = await repo.watchMyParticipation(reportId: 'report-1', accountId: 'uid-1').first;
+      final participation = await repo
+          .watchMyParticipation(reportId: 'report-1', accountId: 'uid-1')
+          .first;
       expect(participation!.timeToArrive, const Duration(minutes: 20));
       expect(participation.timeAtEmergency, const Duration(hours: 1));
       expect(participation.photoUrl, 'https://storage.example//tmp/finish.jpg');
@@ -218,6 +244,8 @@ void main() {
         accountId: 'uid-1',
         accountName: 'Jane',
         accountRole: AccountRole.voluntario,
+        reportTitle: 'Incendio',
+        emergencyTypeId: 'incendio',
       );
       await repo.arrive(reportId: 'report-1', accountId: 'uid-1');
 
@@ -228,7 +256,9 @@ void main() {
         difficultyLevel: DifficultyLevel.baja,
       );
 
-      final participation = await repo.watchMyParticipation(reportId: 'report-1', accountId: 'uid-1').first;
+      final participation = await repo
+          .watchMyParticipation(reportId: 'report-1', accountId: 'uid-1')
+          .first;
       expect(participation!.reason, 'Emergencia familiar');
     });
 
@@ -240,6 +270,8 @@ void main() {
         accountId: 'uid-1',
         accountName: 'Jane',
         accountRole: AccountRole.voluntario,
+        reportTitle: 'Incendio',
+        emergencyTypeId: 'incendio',
       );
 
       expect(
@@ -251,6 +283,69 @@ void main() {
         ),
         throwsA(isA<NotArrivedException>()),
       );
+    });
+  });
+
+  group('goTo guarda accountId/reportTitle/emergencyTypeId (T4, RF-3 spec 006)', () {
+    test('el documento tiene los tres campos', () async {
+      final firestore = FakeFirebaseFirestore();
+      final repo = FirestoreParticipationRepositoryImpl(firestore);
+
+      await repo.goTo(
+        reportId: 'report-1',
+        accountId: 'uid-1',
+        accountName: 'Jane',
+        accountRole: AccountRole.voluntario,
+        reportTitle: 'Incendio en bodega',
+        emergencyTypeId: 'incendio',
+      );
+
+      final doc = await firestore
+          .collection('reports')
+          .doc('report-1')
+          .collection('participations')
+          .doc('uid-1')
+          .get();
+      expect(doc.data()!['accountId'], 'uid-1');
+      expect(doc.data()!['reportTitle'], 'Incendio en bodega');
+      expect(doc.data()!['emergencyTypeId'], 'incendio');
+    });
+  });
+
+  group('watchParticipationsForAccount (T5, RF-4 spec 006)', () {
+    test('trae las participaciones de la cuenta en varios reportes', () async {
+      final firestore = FakeFirebaseFirestore();
+      final repo = FirestoreParticipationRepositoryImpl(firestore);
+
+      await repo.goTo(
+        reportId: 'report-1',
+        accountId: 'uid-1',
+        accountName: 'Jane',
+        accountRole: AccountRole.voluntario,
+        reportTitle: 'Incendio',
+        emergencyTypeId: 'incendio',
+      );
+      await repo.goTo(
+        reportId: 'report-2',
+        accountId: 'uid-1',
+        accountName: 'Jane',
+        accountRole: AccountRole.voluntario,
+        reportTitle: 'Inundación',
+        emergencyTypeId: 'inundacion',
+      );
+      await repo.goTo(
+        reportId: 'report-1',
+        accountId: 'uid-2',
+        accountName: 'John',
+        accountRole: AccountRole.voluntario,
+        reportTitle: 'Incendio',
+        emergencyTypeId: 'incendio',
+      );
+
+      final history = await repo.watchParticipationsForAccount('uid-1').first;
+
+      expect(history, hasLength(2));
+      expect(history.map((p) => p.reportId), containsAll(['report-1', 'report-2']));
     });
   });
 }

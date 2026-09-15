@@ -5,7 +5,7 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
 
 ## Domain
 
-- [ ] **T1 — `Achievement`, `ProfileStats`** (RF-1, RF-2)
+- [x] **T1 — `Achievement`, `ProfileStats`** (RF-1, RF-2)
   `domain/entities/achievement.dart` (catálogo cerrado),
   `domain/entities/profile_stats.dart` con `ProfileStats.from(List<Participation>)`
   y `unlockedAchievements(ProfileStats)`. Unit tests: 0/1/5/20
@@ -13,24 +13,24 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
   participación "withdrawn" cuenta igual que "completed".
   Hecho cuando: los tests pasan.
 
-- [ ] **T2 — `reportTitle`/`emergencyTypeId` en `Participation`** (RF-3)
+- [x] **T2 — `reportTitle`/`emergencyTypeId` en `Participation`** (RF-3)
   Agregar los campos (siempre presentes, ya que `goTo` los recibe).
   Actualizar la interfaz `ParticipationRepository.goTo` con los nuevos
   parámetros requeridos. Unit test: construir una participación con
   estos campos.
   Hecho cuando: `flutter analyze` no marca nada en `domain/`.
 
-- [ ] **T3 — `watchParticipationsForAccount` en `ParticipationRepository`** (RF-4)
+- [x] **T3 — `watchParticipationsForAccount` en `ParticipationRepository`** (RF-4)
   Agregar el método a la interfaz. Sin test propio (solo interfaz).
   Hecho cuando: `flutter analyze` no marca nada en `domain/`.
 
 ## Data
 
-- [ ] **T4 — `goTo` guarda `reportTitle`/`emergencyTypeId`/`accountId`** (RF-3)
+- [x] **T4 — `goTo` guarda `reportTitle`/`emergencyTypeId`/`accountId`** (RF-3)
   Test: el documento creado por `goTo` tiene los tres campos.
   Hecho cuando: el test pasa.
 
-- [ ] **T5 — `watchParticipationsForAccount` (collectionGroup)** (RF-4)
+- [x] **T5 — `watchParticipationsForAccount` (collectionGroup)** (RF-4)
   Test con `fake_cloud_firestore`: participaciones de la misma cuenta en
   2 reportes distintos aparecen juntas; una participación de otra cuenta
   no aparece.
