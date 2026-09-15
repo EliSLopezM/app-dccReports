@@ -1,13 +1,18 @@
 import 'package:app_dcc_reports/domain/entities/account.dart';
 import 'package:app_dcc_reports/domain/entities/account_role.dart';
 import 'package:app_dcc_reports/domain/entities/account_status.dart';
+import 'package:app_dcc_reports/domain/entities/difficulty_level.dart';
 import 'package:app_dcc_reports/domain/entities/emergency_report.dart';
+import 'package:app_dcc_reports/domain/entities/meeting_point.dart';
 import 'package:app_dcc_reports/domain/entities/organization_info.dart';
+import 'package:app_dcc_reports/domain/entities/participation.dart';
 import 'package:app_dcc_reports/domain/entities/report_status.dart';
 import 'package:app_dcc_reports/domain/repositories/account_repository.dart';
 import 'package:app_dcc_reports/domain/repositories/auth_repository.dart';
 import 'package:app_dcc_reports/domain/repositories/emergency_report_repository.dart';
+import 'package:app_dcc_reports/domain/repositories/participation_repository.dart';
 import 'package:app_dcc_reports/presentation/home/home_shell.dart';
+import 'package:app_dcc_reports/presentation/panel/account_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
@@ -100,6 +105,66 @@ class _FakeEmergencyReportRepository implements EmergencyReportRepository {
   }) async {}
 }
 
+class _FakeParticipationRepository implements ParticipationRepository {
+  @override
+  Stream<List<Participation>> watchParticipationsForAccount(String accountId) =>
+      Stream.value(const []);
+
+  @override
+  Future<void> goTo({
+    required String reportId,
+    required String accountId,
+    required String accountName,
+    required AccountRole accountRole,
+    required String reportTitle,
+    required String emergencyTypeId,
+  }) async {}
+
+  @override
+  Future<void> arrive({required String reportId, required String accountId}) async {}
+
+  @override
+  Future<void> requestAmbulance({required String reportId, required String accountId}) async {}
+
+  @override
+  Future<void> finishCompleted({
+    required String reportId,
+    required String accountId,
+    required String localPhotoPath,
+    required DifficultyLevel difficultyLevel,
+  }) async {}
+
+  @override
+  Future<void> finishWithdrawn({
+    required String reportId,
+    required String accountId,
+    required String reason,
+    required DifficultyLevel difficultyLevel,
+  }) async {}
+
+  @override
+  Stream<Participation?> watchMyParticipation({
+    required String reportId,
+    required String accountId,
+  }) =>
+      const Stream.empty();
+
+  @override
+  Stream<List<Participation>> watchParticipations(String reportId) => const Stream.empty();
+
+  @override
+  Stream<MeetingPoint?> watchMeetingPoint(String reportId) => const Stream.empty();
+
+  @override
+  Future<void> setMeetingPoint({
+    required String reportId,
+    required String requesterId,
+    required AccountRole requesterRole,
+    required double latitude,
+    required double longitude,
+  }) async {}
+}
+
 Account _account({required AccountRole role}) {
   return Account(
     id: 'uid-1',
@@ -120,6 +185,7 @@ Future<void> _pumpHome(WidgetTester tester, AccountRole role) {
         Provider<AuthRepository>.value(value: _FakeAuthRepository()),
         Provider<AccountRepository>.value(value: _FakeAccountRepository()),
         Provider<EmergencyReportRepository>.value(value: _FakeEmergencyReportRepository()),
+        Provider<ParticipationRepository>.value(value: _FakeParticipationRepository()),
       ],
       child: MaterialApp(home: HomeShell(account: _account(role: role))),
     ),
@@ -155,5 +221,18 @@ void main() {
     await _pumpHome(tester, AccountRole.voluntario);
 
     expect(find.byKey(const Key('map-access')), findsOneWidget);
+  });
+
+  testWidgets('cualquier cuenta aprobada ve "Mi perfil" y navega a su propio detalle (spec 006, RF-5)',
+      (tester) async {
+    await _pumpHome(tester, AccountRole.voluntario);
+
+    expect(find.byKey(const Key('profile-access')), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('profile-access')));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(AccountDetailScreen), findsOneWidget);
+    expect(find.text('Jane Doe'), findsWidgets);
   });
 }

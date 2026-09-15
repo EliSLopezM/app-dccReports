@@ -13,6 +13,7 @@ import '../content/news_stub_screen.dart';
 import '../content/preparate_stub_screen.dart';
 import '../map/map_screen.dart';
 import '../notifications/active_reports_bell.dart';
+import '../panel/account_detail_screen.dart';
 import '../panel/panel_accounts_list_screen.dart';
 import '../panel/panel_reports_list_screen.dart';
 
@@ -60,6 +61,14 @@ class HomeShell extends StatelessWidget {
         children: [
           Text('Hola, ${account.name}', style: Theme.of(context).textTheme.titleLarge),
           const SizedBox(height: 24),
+          ListTile(
+            key: const Key('profile-access'),
+            leading: const Icon(Icons.person),
+            title: const Text('Mi perfil'),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => AccountDetailScreen(account: account)),
+            ),
+          ),
           ListTile(
             key: const Key('map-access'),
             leading: const Icon(Icons.map),

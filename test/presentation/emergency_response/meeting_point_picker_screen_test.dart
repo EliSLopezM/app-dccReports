@@ -16,7 +16,8 @@ class _FakeLocationRepository implements LocationRepository {
   final ({double latitude, double longitude})? result;
 
   @override
-  Future<({double latitude, double longitude})?> getCurrentLocation() async => result;
+  Future<({double latitude, double longitude})?> getCurrentLocation() async =>
+      result;
 }
 
 class _FakeParticipationRepository implements ParticipationRepository {
@@ -45,13 +46,21 @@ class _FakeParticipationRepository implements ParticipationRepository {
     required String accountId,
     required String accountName,
     required AccountRole accountRole,
+    required String reportTitle,
+    required String emergencyTypeId,
   }) async {}
 
   @override
-  Future<void> arrive({required String reportId, required String accountId}) async {}
+  Future<void> arrive({
+    required String reportId,
+    required String accountId,
+  }) async {}
 
   @override
-  Future<void> requestAmbulance({required String reportId, required String accountId}) async {}
+  Future<void> requestAmbulance({
+    required String reportId,
+    required String accountId,
+  }) async {}
 
   @override
   Future<void> finishCompleted({
@@ -73,14 +82,19 @@ class _FakeParticipationRepository implements ParticipationRepository {
   Stream<Participation?> watchMyParticipation({
     required String reportId,
     required String accountId,
-  }) =>
+  }) => const Stream.empty();
+
+  @override
+  Stream<List<Participation>> watchParticipations(String reportId) =>
       const Stream.empty();
 
   @override
-  Stream<List<Participation>> watchParticipations(String reportId) => const Stream.empty();
+  Stream<List<Participation>> watchParticipationsForAccount(String accountId) =>
+      const Stream.empty();
 
   @override
-  Stream<MeetingPoint?> watchMeetingPoint(String reportId) => const Stream.empty();
+  Stream<MeetingPoint?> watchMeetingPoint(String reportId) =>
+      const Stream.empty();
 }
 
 Future<void> _pumpScreen(
@@ -92,7 +106,9 @@ Future<void> _pumpScreen(
     MultiProvider(
       providers: [
         Provider<ParticipationRepository>.value(value: participationRepo),
-        Provider<LocationRepository>.value(value: _FakeLocationRepository(result: location)),
+        Provider<LocationRepository>.value(
+          value: _FakeLocationRepository(result: location),
+        ),
       ],
       child: const MaterialApp(
         home: MeetingPointPickerScreen(
@@ -106,9 +122,15 @@ Future<void> _pumpScreen(
 }
 
 void main() {
-  testWidgets('confirmar manda la ubicación sugerida al repositorio (RF-5)', (tester) async {
+  testWidgets('confirmar manda la ubicación sugerida al repositorio (RF-5)', (
+    tester,
+  ) async {
     final repo = _FakeParticipationRepository();
-    await _pumpScreen(tester, participationRepo: repo, location: (latitude: 4.6, longitude: -74.1));
+    await _pumpScreen(
+      tester,
+      participationRepo: repo,
+      location: (latitude: 4.6, longitude: -74.1),
+    );
     await tester.pumpAndSettle();
 
     await tester.tap(find.byKey(const Key('confirm-meeting-point-button')));
@@ -118,24 +140,35 @@ void main() {
     expect(repo.lastLongitude, -74.1);
   });
 
-  testWidgets('sin ubicación disponible, el botón queda deshabilitado', (tester) async {
+  testWidgets('sin ubicación disponible, el botón queda deshabilitado', (
+    tester,
+  ) async {
     final repo = _FakeParticipationRepository();
     await _pumpScreen(tester, participationRepo: repo, location: null);
     await tester.pumpAndSettle();
 
     expect(find.byKey(const Key('no-location-message')), findsOneWidget);
-    final button = tester.widget<ElevatedButton>(find.byKey(const Key('confirm-meeting-point-button')));
+    final button = tester.widget<ElevatedButton>(
+      find.byKey(const Key('confirm-meeting-point-button')),
+    );
     expect(button.onPressed, isNull);
   });
 
-  testWidgets('si el repositorio bloquea, muestra un mensaje en vez de crashear', (tester) async {
-    final repo = _FakeParticipationRepository(shouldBlock: true);
-    await _pumpScreen(tester, participationRepo: repo, location: (latitude: 4.6, longitude: -74.1));
-    await tester.pumpAndSettle();
+  testWidgets(
+    'si el repositorio bloquea, muestra un mensaje en vez de crashear',
+    (tester) async {
+      final repo = _FakeParticipationRepository(shouldBlock: true);
+      await _pumpScreen(
+        tester,
+        participationRepo: repo,
+        location: (latitude: 4.6, longitude: -74.1),
+      );
+      await tester.pumpAndSettle();
 
-    await tester.tap(find.byKey(const Key('confirm-meeting-point-button')));
-    await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('confirm-meeting-point-button')));
+      await tester.pumpAndSettle();
 
-    expect(find.byKey(const Key('meeting-point-error')), findsOneWidget);
-  });
+      expect(find.byKey(const Key('meeting-point-error')), findsOneWidget);
+    },
+  );
 }

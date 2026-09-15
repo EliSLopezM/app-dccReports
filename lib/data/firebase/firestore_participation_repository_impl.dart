@@ -45,14 +45,19 @@ class FirestoreParticipationRepositoryImpl implements ParticipationRepository {
     required String accountId,
     required String accountName,
     required AccountRole accountRole,
+    required String reportTitle,
+    required String emergencyTypeId,
   }) async {
     final doc = _participations(reportId).doc(accountId);
     final existing = await doc.get();
     if (existing.exists) return; // RF caso límite: "Ir" dos veces no duplica.
     await doc.set(
       newGoingParticipationToFirestore(
+        accountId: accountId,
         accountName: accountName,
         accountRole: accountRole,
+        reportTitle: reportTitle,
+        emergencyTypeId: emergencyTypeId,
         goingAt: _now(),
       ),
     );
@@ -147,6 +152,21 @@ class FirestoreParticipationRepositoryImpl implements ParticipationRepository {
           (snapshot) => snapshot.docs
               .map((doc) => participationFromFirestore(reportId, doc.id, doc.data()))
               .toList(),
+        );
+  }
+
+  @override
+  Stream<List<Participation>> watchParticipationsForAccount(String accountId) {
+    return _firestore
+        .collectionGroup(participationsSubcollection)
+        .where('accountId', isEqualTo: accountId)
+        .snapshots()
+        .map(
+          (snapshot) => snapshot.docs.map((doc) {
+            // reports/{reportId}/participations/{accountId}
+            final reportId = doc.reference.parent.parent!.id;
+            return participationFromFirestore(reportId, doc.id, doc.data());
+          }).toList(),
         );
   }
 

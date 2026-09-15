@@ -9,6 +9,12 @@ class Participation {
   final String accountId;
   final String accountName;
   final AccountRole accountRole;
+
+  /// RF-3 (spec 006): guardados al tocar "Ir" para listar el historial
+  /// de una cuenta sin volver a consultar cada reporte.
+  final String reportTitle;
+  final String emergencyTypeId;
+
   final ParticipationStatus status;
   final DateTime goingAt;
   final DateTime? arrivedAt;
@@ -24,6 +30,8 @@ class Participation {
     required this.accountId,
     required this.accountName,
     required this.accountRole,
+    required this.reportTitle,
+    required this.emergencyTypeId,
     required this.status,
     required this.goingAt,
     this.arrivedAt,

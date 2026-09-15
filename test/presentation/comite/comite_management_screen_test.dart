@@ -1,10 +1,19 @@
+import 'package:app_dcc_reports/domain/entities/account.dart';
+import 'package:app_dcc_reports/domain/entities/account_role.dart';
+import 'package:app_dcc_reports/domain/entities/account_status.dart';
 import 'package:app_dcc_reports/domain/entities/chat.dart';
 import 'package:app_dcc_reports/domain/entities/chat_kind.dart';
 import 'package:app_dcc_reports/domain/entities/chat_message.dart';
 import 'package:app_dcc_reports/domain/entities/comite.dart';
+import 'package:app_dcc_reports/domain/entities/difficulty_level.dart';
+import 'package:app_dcc_reports/domain/entities/meeting_point.dart';
+import 'package:app_dcc_reports/domain/entities/participation.dart';
+import 'package:app_dcc_reports/domain/repositories/account_repository.dart';
 import 'package:app_dcc_reports/domain/repositories/chat_repository.dart';
 import 'package:app_dcc_reports/domain/repositories/comite_repository.dart';
+import 'package:app_dcc_reports/domain/repositories/participation_repository.dart';
 import 'package:app_dcc_reports/presentation/comite/comite_management_screen.dart';
+import 'package:app_dcc_reports/presentation/panel/account_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
@@ -112,6 +121,99 @@ class _FakeChatRepository implements ChatRepository {
       Stream.value(const []);
 }
 
+class _FakeAccountRepository implements AccountRepository {
+  _FakeAccountRepository(this.accountsById);
+
+  final Map<String, Account> accountsById;
+
+  @override
+  Stream<Account?> watchAccount(String uid) => Stream.value(accountsById[uid]);
+
+  @override
+  Stream<List<Account>> watchAllAccounts() => Stream.value(accountsById.values.toList());
+
+  @override
+  Stream<List<Account>> watchPendingAccounts() => Stream.value(const []);
+
+  @override
+  Future<void> approve({
+    required AccountRole reviewerRole,
+    required String reviewerId,
+    required String accountId,
+  }) async {}
+
+  @override
+  Future<void> reject({
+    required AccountRole reviewerRole,
+    required String reviewerId,
+    required String accountId,
+    String? reason,
+  }) async {}
+
+  @override
+  Future<void> setComite({required String uid, required String comiteId}) async {}
+}
+
+class _FakeParticipationRepository implements ParticipationRepository {
+  @override
+  Stream<List<Participation>> watchParticipationsForAccount(String accountId) =>
+      Stream.value(const []);
+
+  @override
+  Future<void> goTo({
+    required String reportId,
+    required String accountId,
+    required String accountName,
+    required AccountRole accountRole,
+    required String reportTitle,
+    required String emergencyTypeId,
+  }) async {}
+
+  @override
+  Future<void> arrive({required String reportId, required String accountId}) async {}
+
+  @override
+  Future<void> requestAmbulance({required String reportId, required String accountId}) async {}
+
+  @override
+  Future<void> finishCompleted({
+    required String reportId,
+    required String accountId,
+    required String localPhotoPath,
+    required DifficultyLevel difficultyLevel,
+  }) async {}
+
+  @override
+  Future<void> finishWithdrawn({
+    required String reportId,
+    required String accountId,
+    required String reason,
+    required DifficultyLevel difficultyLevel,
+  }) async {}
+
+  @override
+  Stream<Participation?> watchMyParticipation({
+    required String reportId,
+    required String accountId,
+  }) =>
+      const Stream.empty();
+
+  @override
+  Stream<List<Participation>> watchParticipations(String reportId) => const Stream.empty();
+
+  @override
+  Stream<MeetingPoint?> watchMeetingPoint(String reportId) => const Stream.empty();
+
+  @override
+  Future<void> setMeetingPoint({
+    required String reportId,
+    required String requesterId,
+    required AccountRole requesterRole,
+    required double latitude,
+    required double longitude,
+  }) async {}
+}
+
 Comite _comite({String? delegateId}) {
   return Comite(
     id: 'comite-1',
@@ -123,31 +225,53 @@ Comite _comite({String? delegateId}) {
   );
 }
 
+Account _account(String id, String name) {
+  return Account(
+    id: id,
+    name: name,
+    email: '$id@example.com',
+    role: AccountRole.voluntario,
+    status: AccountStatus.approved,
+    createdAt: DateTime(2026, 9, 14),
+  );
+}
+
+Future<void> _pumpScreen(
+  WidgetTester tester, {
+  required _FakeComiteRepository comiteRepo,
+  required _FakeChatRepository chatRepo,
+  required _FakeAccountRepository accountRepo,
+}) {
+  return tester.pumpWidget(
+    MultiProvider(
+      providers: [
+        Provider<ComiteRepository>.value(value: comiteRepo),
+        Provider<ChatRepository>.value(value: chatRepo),
+        Provider<AccountRepository>.value(value: accountRepo),
+        Provider<ParticipationRepository>.value(value: _FakeParticipationRepository()),
+      ],
+      child: MaterialApp(
+        home: ComiteManagementScreen(comite: comiteRepo.comite, requesterId: 'leader-uid'),
+      ),
+    ),
+  );
+}
+
 void main() {
-  testWidgets('lista los miembros y permite hacer delegado a uno (RF-5)', (
-    tester,
-  ) async {
+  testWidgets('lista los miembros con su nombre real y permite hacer delegado a uno (RF-5, spec 006 RF-6)',
+      (tester) async {
     final comiteRepo = _FakeComiteRepository(_comite());
     final chatRepo = _FakeChatRepository(['leader-uid', 'volunteer-uid']);
+    final accountRepo = _FakeAccountRepository({
+      'leader-uid': _account('leader-uid', 'Jane Leader'),
+      'volunteer-uid': _account('volunteer-uid', 'John Volunteer'),
+    });
 
-    await tester.pumpWidget(
-      MultiProvider(
-        providers: [
-          Provider<ComiteRepository>.value(value: comiteRepo),
-          Provider<ChatRepository>.value(value: chatRepo),
-        ],
-        child: MaterialApp(
-          home: ComiteManagementScreen(
-            comite: comiteRepo.comite,
-            requesterId: 'leader-uid',
-          ),
-        ),
-      ),
-    );
-    await tester.pump();
+    await _pumpScreen(tester, comiteRepo: comiteRepo, chatRepo: chatRepo, accountRepo: accountRepo);
+    await tester.pumpAndSettle();
 
-    expect(find.text('leader-uid'), findsOneWidget);
-    expect(find.text('volunteer-uid'), findsOneWidget);
+    expect(find.text('Jane Leader'), findsOneWidget);
+    expect(find.text('John Volunteer'), findsOneWidget);
 
     await tester.tap(find.widgetWithText(TextButton, 'Hacer delegado').first);
     await tester.pumpAndSettle();
@@ -155,26 +279,32 @@ void main() {
     expect(comiteRepo.lastDelegateId, isNotNull);
   });
 
-  testWidgets('muestra quién es el delegado actual', (tester) async {
-    final comiteRepo = _FakeComiteRepository(
-      _comite(delegateId: 'volunteer-uid'),
-    );
+  testWidgets('tocar un miembro navega a su perfil (spec 006, RF-6)', (tester) async {
+    final comiteRepo = _FakeComiteRepository(_comite());
     final chatRepo = _FakeChatRepository(['leader-uid', 'volunteer-uid']);
+    final accountRepo = _FakeAccountRepository({
+      'leader-uid': _account('leader-uid', 'Jane Leader'),
+      'volunteer-uid': _account('volunteer-uid', 'John Volunteer'),
+    });
 
-    await tester.pumpWidget(
-      MultiProvider(
-        providers: [
-          Provider<ComiteRepository>.value(value: comiteRepo),
-          Provider<ChatRepository>.value(value: chatRepo),
-        ],
-        child: MaterialApp(
-          home: ComiteManagementScreen(
-            comite: comiteRepo.comite,
-            requesterId: 'leader-uid',
-          ),
-        ),
-      ),
-    );
+    await _pumpScreen(tester, comiteRepo: comiteRepo, chatRepo: chatRepo, accountRepo: accountRepo);
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('John Volunteer'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(AccountDetailScreen), findsOneWidget);
+  });
+
+  testWidgets('muestra quién es el delegado actual', (tester) async {
+    final comiteRepo = _FakeComiteRepository(_comite(delegateId: 'volunteer-uid'));
+    final chatRepo = _FakeChatRepository(['leader-uid', 'volunteer-uid']);
+    final accountRepo = _FakeAccountRepository({
+      'leader-uid': _account('leader-uid', 'Jane Leader'),
+      'volunteer-uid': _account('volunteer-uid', 'John Volunteer'),
+    });
+
+    await _pumpScreen(tester, comiteRepo: comiteRepo, chatRepo: chatRepo, accountRepo: accountRepo);
     await tester.pump();
 
     expect(find.textContaining('volunteer-uid'), findsWidgets);

@@ -10,18 +10,23 @@ void main() {
   final arrivedAt = DateTime(2026, 9, 14, 10, 20);
   final finishedAt = DateTime(2026, 9, 14, 11, 20);
 
-  test('una participación "going" se construye sin arrivedAt ni finishedAt (RF-1)', () {
-    final participation = Participation(
-      reportId: 'report-1',
-      accountId: 'uid-1',
-      accountName: 'Jane',
-      accountRole: AccountRole.voluntario,
-      status: ParticipationStatus.going,
-      goingAt: goingAt,
-    );
+  test(
+    'una participación "going" se construye sin arrivedAt ni finishedAt (RF-1)',
+    () {
+      final participation = Participation(
+        reportId: 'report-1',
+        accountId: 'uid-1',
+        accountName: 'Jane',
+        accountRole: AccountRole.voluntario,
+        reportTitle: 'Incendio',
+        emergencyTypeId: 'incendio',
+        status: ParticipationStatus.going,
+        goingAt: goingAt,
+      );
 
-    expect(participation.arrivedAt, isNull);
-  });
+      expect(participation.arrivedAt, isNull);
+    },
+  );
 
   test('una participación "arrived" requiere arrivedAt (RF-4)', () {
     final participation = Participation(
@@ -29,6 +34,8 @@ void main() {
       accountId: 'uid-1',
       accountName: 'Jane',
       accountRole: AccountRole.voluntario,
+      reportTitle: 'Incendio',
+      emergencyTypeId: 'incendio',
       status: ParticipationStatus.arrived,
       goingAt: goingAt,
       arrivedAt: arrivedAt,
@@ -43,6 +50,8 @@ void main() {
       accountId: 'uid-1',
       accountName: 'Jane',
       accountRole: AccountRole.voluntario,
+      reportTitle: 'Incendio',
+      emergencyTypeId: 'incendio',
       status: ParticipationStatus.finished,
       goingAt: goingAt,
       arrivedAt: arrivedAt,
@@ -56,23 +65,28 @@ void main() {
     expect(participation.timeAtEmergency, const Duration(hours: 1));
   });
 
-  test('finalizada como completed sin foto lanza un assertion error (RF-10)', () {
-    expect(
-      () => Participation(
-        reportId: 'report-1',
-        accountId: 'uid-1',
-        accountName: 'Jane',
-        accountRole: AccountRole.voluntario,
-        status: ParticipationStatus.finished,
-        goingAt: goingAt,
-        arrivedAt: arrivedAt,
-        finishedAt: finishedAt,
-        finishType: FinishType.completed,
-        difficultyLevel: DifficultyLevel.media,
-      ),
-      throwsA(isA<AssertionError>()),
-    );
-  });
+  test(
+    'finalizada como completed sin foto lanza un assertion error (RF-10)',
+    () {
+      expect(
+        () => Participation(
+          reportId: 'report-1',
+          accountId: 'uid-1',
+          accountName: 'Jane',
+          accountRole: AccountRole.voluntario,
+          reportTitle: 'Incendio',
+          emergencyTypeId: 'incendio',
+          status: ParticipationStatus.finished,
+          goingAt: goingAt,
+          arrivedAt: arrivedAt,
+          finishedAt: finishedAt,
+          finishType: FinishType.completed,
+          difficultyLevel: DifficultyLevel.media,
+        ),
+        throwsA(isA<AssertionError>()),
+      );
+    },
+  );
 
   test('finalizada como withdrawn requiere reason, no foto (RF-10)', () {
     final participation = Participation(
@@ -80,6 +94,8 @@ void main() {
       accountId: 'uid-1',
       accountName: 'Jane',
       accountRole: AccountRole.voluntario,
+      reportTitle: 'Incendio',
+      emergencyTypeId: 'incendio',
       status: ParticipationStatus.finished,
       goingAt: goingAt,
       arrivedAt: arrivedAt,

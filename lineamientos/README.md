@@ -84,6 +84,7 @@ propia entrevista de clarificación antes de escribirse como `spec.md`.
 | [003](../specs/003-mapa-despliegue/spec.md) | Mapa y despliegue | Código completo (T1-T8) y en verde; falta el recorrido manual (T9). Rama apilada sobre `spec/002-reporte-publico` |
 | [004](../specs/004-grupos-comites-chats/spec.md) | Grupos/comités y chats | Código completo (T1-T17) y en verde; falta el recorrido manual (T18). Rama apilada sobre `spec/003-mapa-despliegue` |
 | [005](../specs/005-ciclo-vida-emergencia/spec.md) | Ciclo de vida de la emergencia | Código completo (T1-T13) y en verde; falta el recorrido manual (T14). Rama apilada sobre `spec/004-grupos-comites-chats` |
+| [006](../specs/006-perfiles-logros/spec.md) | Perfiles y logros | Código completo (T1-T8) y en verde; falta el recorrido manual (T9). Rama apilada sobre `spec/005-ciclo-vida-emergencia` |
 
 Se irán agregando filas a medida que se cierren specs, igual que en
 `amipets`.
@@ -191,11 +192,24 @@ futuro perfil de voluntario, y "Cerrar emergencia" para liderazgo. Mismo
 estado: todo en verde salvo **T14**, el recorrido manual — documentado
 en [`entorno-local.md`](entorno-local.md).
 
-Como las specs 001-005 están apiladas (cada una nace de la anterior, que
-todavía no está en `main`), el orden recomendado para mergear es: probar
-T16 → mergear 001 → probar T12 → mergear 002 → probar T9 → mergear 003
-→ probar T18 → mergear 004 → probar T14 → mergear 005 (o revisar las
-cinco juntas si se prefiere).
+La spec 006 (rama `spec/006-perfiles-logros`, apilada sobre
+`spec/005-ciclo-vida-emergencia`) también tiene su código completo:
+estadísticas de servicio y catálogo cerrado de insignias por hitos de
+participaciones finalizadas, `AccountDetailScreen` con "Logros" e
+"Historial de emergencias", filas tocables en `EmergencyResponseScreen`
+y `ComiteManagementScreen` que navegan al perfil de cualquier cuenta
+(esto también corrigió una limitación conocida de la spec 004: los
+miembros del comité ya se muestran por nombre, no por uid), y entrada
+"Mi perfil" en el Home para ver el propio. Mismo estado: todo en verde
+salvo **T9**, el recorrido manual — documentado en
+[`entorno-local.md`](entorno-local.md).
 
-Todo lo demás (specs 006-008) está pendiente — ver
+Como las specs 001-006 están apiladas (cada una nace de la anterior, que
+todavía no está en `main`), el orden recomendado para mergear es: probar
+T16 → mergear 001 → probar T12 → mergear 002 → probar T9 (spec 003) →
+mergear 003 → probar T18 → mergear 004 → probar T14 → mergear 005 →
+probar T9 (spec 006) → mergear 006 (o revisar las seis juntas si se
+prefiere).
+
+Todo lo demás (specs 007-008) está pendiente — ver
 `docs/brief-inicial.md` para el alcance completo y el orden propuesto.

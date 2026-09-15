@@ -176,6 +176,25 @@ de la ubicación de ese comité (ver recorrido de la spec 002/003):
 8. Con Jane, vuelve al detalle de la emergencia → "Cerrar emergencia" →
    confirma que el reporte pasa a "verdadera" en el Panel de Reportes.
 
+## Recorrido de prueba completo (T9 de la spec 006)
+
+Con John (voluntario) ya aprobado y al menos un reporte "activa" cerca de
+su comité (ver recorridos de las specs 002/003/005):
+
+1. Con John, participa y finaliza (completada o retirada, cualquiera
+   cuenta) 3 emergencias distintas usando el flujo de la spec 005 ("Ir"
+   → "Ya llegué" → "Ya terminé"/"Debo retirarme").
+2. Entra a "Mi perfil" desde el Home → confirma que "Logros" muestra al
+   menos la insignia "Primeros pasos" (y "Comprometido" si llegaste a 5),
+   que "Historial de emergencias" lista las 3 con su título/tipo, y que
+   el tiempo total de servicio sumado es razonable.
+3. Desde otra cuenta (ej. Jane), abre un chat o el comité donde esté
+   John y toca su nombre → debe abrir el mismo perfil con las mismas
+   insignias e historial.
+4. Desde `EmergencyResponseScreen` de una emergencia donde John haya
+   participado, toca su nombre en la lista de participantes → mismo
+   resultado.
+
 ## Mapa: Google Maps
 
 Mientras no haya una API key real, el mapa mostrará un placeholder (mismo

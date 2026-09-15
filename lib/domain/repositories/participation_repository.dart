@@ -8,11 +8,15 @@ import '../exceptions.dart';
 /// emergencia, y el punto de encuentro asociado.
 abstract class ParticipationRepository {
   /// RF-1: idempotente — llamarlo dos veces no duplica la participación.
+  /// RF-3 (spec 006): [reportTitle]/[emergencyTypeId] quedan guardados
+  /// en la participación para el historial de perfil.
   Future<void> goTo({
     required String reportId,
     required String accountId,
     required String accountName,
     required AccountRole accountRole,
+    required String reportTitle,
+    required String emergencyTypeId,
   });
 
   /// RF-4.
@@ -47,6 +51,10 @@ abstract class ParticipationRepository {
   });
 
   Stream<List<Participation>> watchParticipations(String reportId);
+
+  /// RF-4 (spec 006): historial de una cuenta a través de todos los
+  /// reportes.
+  Stream<List<Participation>> watchParticipationsForAccount(String accountId);
 
   Stream<MeetingPoint?> watchMeetingPoint(String reportId);
 

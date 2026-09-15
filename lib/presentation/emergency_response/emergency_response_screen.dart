@@ -6,7 +6,9 @@ import '../../domain/entities/account_role.dart';
 import '../../domain/entities/emergency_report.dart';
 import '../../domain/entities/participation.dart';
 import '../../domain/entities/participation_status.dart';
+import '../../domain/repositories/account_repository.dart';
 import '../../domain/repositories/participation_repository.dart';
+import '../panel/account_detail_screen.dart';
 import 'finish_participation_screen.dart';
 import 'meeting_point_picker_screen.dart';
 
@@ -83,6 +85,8 @@ class _EmergencyResponseScreenState extends State<EmergencyResponseScreen> {
       accountId: widget.accountId,
       accountName: widget.accountName,
       accountRole: widget.accountRole,
+      reportTitle: widget.report.title,
+      emergencyTypeId: widget.report.emergencyTypeId,
     );
     await widget.launchUrl(_directionsUri);
   }
@@ -108,6 +112,15 @@ class _EmergencyResponseScreenState extends State<EmergencyResponseScreen> {
         ),
       );
     }
+  }
+
+  /// RF-6 (spec 006): tocar un participante abre su perfil.
+  Future<void> _openProfile(BuildContext context, String accountId) async {
+    final account = await context.read<AccountRepository>().watchAccount(accountId).first;
+    if (account == null || !context.mounted) return;
+    await Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => AccountDetailScreen(account: account)),
+    );
   }
 
   Future<void> _requestAmbulance(BuildContext context) async {
@@ -183,6 +196,7 @@ class _EmergencyResponseScreenState extends State<EmergencyResponseScreen> {
                           subtitle: Text(
                             '${_roleLabels[participant.accountRole]} · ${_statusLabels[participant.status]}',
                           ),
+                          onTap: () => _openProfile(context, participant.accountId),
                         ),
                     ],
                   );
