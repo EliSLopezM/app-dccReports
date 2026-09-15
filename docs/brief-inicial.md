@@ -205,7 +205,9 @@ producto confirme o reordene antes de arrancar la spec 001:
    Noticias y Prepárate como publicaciones (título, cuerpo, foto
    opcional) gestionadas solo por Admin; Capacítate como información
    más un enlace externo a un Google Forms de postulación.
-8. **Legal**: políticas/términos + descarga en PDF.
+8. **Legal** (spec 008, código completo): políticas/términos como texto
+   fijo en el código (revisado por code review, no editable en runtime),
+   con descarga/compartir en PDF generado en el dispositivo.
 
 Ver perfiles de usuarios actuales (mencionado en la sección 8 del brief)
 ya quedó cubierto por el panel de la spec 001; ver perfiles de

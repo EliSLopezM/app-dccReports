@@ -23,7 +23,7 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
 
 ## Wiring final
 
-- [ ] **T3 — Entrada "Legal" en `HomeShell` y `PendingApprovalScreen`** (RF-3)
+- [x] **T3 — Entrada "Legal" en `HomeShell` y `PendingApprovalScreen`** (RF-3)
   Ambas navegan a `LegalScreen`. Widget tests en las dos pantallas.
   Hecho cuando: `flutter analyze` y `flutter test` (suite completa) pasan
   en verde.

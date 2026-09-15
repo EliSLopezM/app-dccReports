@@ -218,6 +218,23 @@ Con la cuenta Admin y al menos otra cuenta aprobada de rol distinto
    URL real del Google Forms, confirma que el botón "Postúlate" abre el
    formulario en el navegador/app externa.
 
+## Recorrido de prueba completo (T4 de la spec 008)
+
+Con cualquier cuenta aprobada (y, por separado, una cuenta con estado
+pendiente/rechazado):
+
+1. Desde el Home, entra a "Legal" → confirma que se ve el título y el
+   texto completo de políticas y términos (`lib/app/legal_content.dart`
+   mientras la DCC no entregue el texto definitivo).
+2. Toca "Descargar PDF" → confirma que el botón se deshabilita
+   brevemente ("Generando...") y que se abre el selector nativo de
+   guardar/compartir con un PDF válido y legible (mismo título y texto
+   que en pantalla).
+3. Cierra sesión, entra con una cuenta pendiente de aprobación (o
+   rechazada) → confirma que "Legal" también está disponible ahí
+   (`PendingApprovalScreen`, junto a Noticias/Capacítate/Prepárate) y
+   repite el paso 2.
+
 ## Mapa: Google Maps
 
 Mientras no haya una API key real, el mapa mostrará un placeholder (mismo
