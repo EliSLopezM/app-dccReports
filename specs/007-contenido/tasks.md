@@ -35,18 +35,18 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
 
 ## Presentation
 
-- [ ] **T5 — `ContentListScreen`** (RF-1, RF-2, RF-4)
+- [x] **T5 — `ContentListScreen`** (RF-1, RF-2, RF-4)
   Lista parametrizada por `ContentKind`, título/extracto/foto por item,
   tocar navega a `ContentDetailScreen`. Sin controles de gestión si
   `viewerRole` no es Admin. Widget tests: noticia vs. prepárate muestran
   solo lo suyo; estado vacío sin publicaciones.
   Hecho cuando: los widget tests pasan.
 
-- [ ] **T6 — `ContentDetailScreen`** (RF-1, RF-2)
+- [x] **T6 — `ContentDetailScreen`** (RF-1, RF-2)
   Título, foto (si existe) y cuerpo completo. Widget test básico.
   Hecho cuando: el widget test pasa.
 
-- [ ] **T7 — `ContentFormScreen` (crear/editar) y botones en la lista** (RF-3, RF-4)
+- [x] **T7 — `ContentFormScreen` (crear/editar) y botones en la lista** (RF-3, RF-4)
   Solo accesible si `viewerRole == AccountRole.admin` (reforzado también
   en que `ContentListScreen` no muestra el acceso a otros roles). Formulario
   con título, cuerpo, foto opcional (elegir/quitar). Widget tests: Admin
@@ -54,7 +54,7 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
   no ve ninguno de los tres.
   Hecho cuando: los widget tests pasan.
 
-- [ ] **T8 — `CapacitateScreen`** (RF-5, RF-6)
+- [x] **T8 — `CapacitateScreen`** (RF-5, RF-6)
   Info de requisitos + botón que abre `kCapacitateFormUrl` (parámetro
   inyectable para tests) vía `launchUrl`. Si la URL está vacía, muestra
   el mensaje de "no disponible" en vez del botón. Widget tests para
