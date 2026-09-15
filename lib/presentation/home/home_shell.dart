@@ -11,6 +11,7 @@ import '../chat/create_chat_screen.dart';
 import '../comite/comite_management_screen.dart';
 import '../content/capacitate_screen.dart';
 import '../content/content_list_screen.dart';
+import '../legal/legal_screen.dart';
 import '../map/map_screen.dart';
 import '../notifications/active_reports_bell.dart';
 import '../panel/account_detail_screen.dart';
@@ -145,6 +146,14 @@ class HomeShell extends StatelessWidget {
                   viewerRole: account.role,
                 ),
               ),
+            ),
+          ),
+          ListTile(
+            key: const Key('legal-access'),
+            leading: const Icon(Icons.gavel),
+            title: const Text('Legal'),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const LegalScreen()),
             ),
           ),
           if (account.role.canReviewAccounts) ...[

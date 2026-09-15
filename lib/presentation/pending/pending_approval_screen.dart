@@ -7,10 +7,11 @@ import '../../domain/entities/content_kind.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../content/capacitate_screen.dart';
 import '../content/content_list_screen.dart';
+import '../legal/legal_screen.dart';
 
 /// RF-4: mientras la cuenta está pendiente (o fue rechazada), solo se
-/// puede navegar a Noticias/Capacítate/Prepárate — nada de mapa,
-/// emergencias, chats ni panel.
+/// puede navegar a Noticias/Capacítate/Prepárate/Legal (spec 008, RF-3)
+/// — nada de mapa, emergencias, chats ni panel.
 class PendingApprovalScreen extends StatelessWidget {
   const PendingApprovalScreen({super.key, required this.account});
 
@@ -64,6 +65,14 @@ class PendingApprovalScreen extends StatelessWidget {
                   viewerRole: account.role,
                 ),
               ),
+            ),
+          ),
+          ListTile(
+            key: const Key('legal-access'),
+            leading: const Icon(Icons.gavel),
+            title: const Text('Legal'),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const LegalScreen()),
             ),
           ),
           const SizedBox(height: 24),

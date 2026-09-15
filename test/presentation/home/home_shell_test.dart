@@ -17,6 +17,7 @@ import 'package:app_dcc_reports/domain/repositories/participation_repository.dar
 import 'package:app_dcc_reports/presentation/content/capacitate_screen.dart';
 import 'package:app_dcc_reports/presentation/content/content_list_screen.dart';
 import 'package:app_dcc_reports/presentation/home/home_shell.dart';
+import 'package:app_dcc_reports/presentation/legal/legal_screen.dart';
 import 'package:app_dcc_reports/presentation/panel/account_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -290,5 +291,17 @@ void main() {
     await tester.tap(find.byKey(const Key('capacitate-access')));
     await tester.pumpAndSettle();
     expect(find.byType(CapacitateScreen), findsOneWidget);
+  });
+
+  testWidgets('cualquier cuenta aprobada ve "Legal" y navega a la pantalla real (spec 008, RF-3)',
+      (tester) async {
+    await _pumpHome(tester, AccountRole.voluntario);
+
+    expect(find.byKey(const Key('legal-access')), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('legal-access')));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(LegalScreen), findsOneWidget);
   });
 }

@@ -86,6 +86,7 @@ propia entrevista de clarificación antes de escribirse como `spec.md`.
 | [005](../specs/005-ciclo-vida-emergencia/spec.md) | Ciclo de vida de la emergencia | Código completo (T1-T13) y en verde; falta el recorrido manual (T14). Rama apilada sobre `spec/004-grupos-comites-chats` |
 | [006](../specs/006-perfiles-logros/spec.md) | Perfiles y logros | Código completo (T1-T8) y en verde; falta el recorrido manual (T9). Rama apilada sobre `spec/005-ciclo-vida-emergencia` |
 | [007](../specs/007-contenido/spec.md) | Noticias, Capacítate y Prepárate | Código completo (T1-T9) y en verde; falta el recorrido manual (T10). Rama apilada sobre `spec/006-perfiles-logros` |
+| [008](../specs/008-legal/spec.md) | Legal | Código completo (T1-T3) y en verde; falta el recorrido manual (T4). Rama apilada sobre `spec/007-contenido` — última spec del alcance de `docs/brief-inicial.md` |
 
 Se irán agregando filas a medida que se cierren specs, igual que en
 `amipets`.
@@ -218,12 +219,22 @@ hasta que la DCC entregue el enlace real). Los tres accesos
 todo en verde salvo **T10**, el recorrido manual — documentado en
 [`entorno-local.md`](entorno-local.md).
 
-Como las specs 001-007 están apiladas (cada una nace de la anterior, que
+La spec 008 (rama `spec/008-legal`, apilada sobre `spec/007-contenido`)
+también tiene su código completo: `LegalScreen` con el texto de
+políticas/términos (`lib/app/legal_content.dart`, placeholder hasta que
+la DCC entregue el texto definitivo) y un botón "Descargar PDF" que
+genera el PDF en el dispositivo (paquetes `pdf`/`printing`, ya estaban en
+`pubspec.yaml` sin usar) y abre el selector nativo de guardar/compartir
+— sin subir nada a Firebase Storage. Accesible tanto desde `HomeShell`
+como desde `PendingApprovalScreen`, igual que Noticias/Capacítate/
+Prepárate. Mismo estado: todo en verde salvo **T4**, el recorrido manual
+— documentado en [`entorno-local.md`](entorno-local.md). Esta es la
+**última spec** del alcance descrito en `docs/brief-inicial.md`.
+
+Como las specs 001-008 están apiladas (cada una nace de la anterior, que
 todavía no está en `main`), el orden recomendado para mergear es: probar
 T16 → mergear 001 → probar T12 → mergear 002 → probar T9 (spec 003) →
 mergear 003 → probar T18 → mergear 004 → probar T14 → mergear 005 →
 probar T9 (spec 006) → mergear 006 → probar T10 (spec 007) → mergear 007
-(o revisar las siete juntas si se prefiere).
-
-Todo lo demás (spec 008, Legal) está pendiente — ver
-`docs/brief-inicial.md` para el alcance completo y el orden propuesto.
+→ probar T4 (spec 008) → mergear 008 (o revisar las ocho juntas si se
+prefiere).

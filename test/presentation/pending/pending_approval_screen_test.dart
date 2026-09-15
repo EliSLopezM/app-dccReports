@@ -7,6 +7,7 @@ import 'package:app_dcc_reports/domain/entities/organization_info.dart';
 import 'package:app_dcc_reports/domain/repositories/auth_repository.dart';
 import 'package:app_dcc_reports/domain/repositories/content_repository.dart';
 import 'package:app_dcc_reports/presentation/content/content_list_screen.dart';
+import 'package:app_dcc_reports/presentation/legal/legal_screen.dart';
 import 'package:app_dcc_reports/presentation/pending/pending_approval_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -88,13 +89,14 @@ Future<void> _pumpPendingScreen(WidgetTester tester, AccountStatus status) {
 }
 
 void main() {
-  testWidgets('muestra los 3 accesos de contenido público y ningún acceso a Home/Panel (RF-4)',
+  testWidgets('muestra los 4 accesos de contenido público y ningún acceso a Home/Panel (RF-4, spec 008 RF-3)',
       (tester) async {
     await _pumpPendingScreen(tester, AccountStatus.pending);
 
     expect(find.text('Noticias'), findsOneWidget);
     expect(find.text('Capacítate'), findsOneWidget);
     expect(find.text('Prepárate'), findsOneWidget);
+    expect(find.text('Legal'), findsOneWidget);
     expect(find.textContaining('Mapa'), findsNothing);
     expect(find.textContaining('Panel'), findsNothing);
   });
@@ -106,6 +108,15 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(ContentListScreen), findsOneWidget);
+  });
+
+  testWidgets('tocar Legal navega a la pantalla real de Legal (spec 008, RF-3)', (tester) async {
+    await _pumpPendingScreen(tester, AccountStatus.pending);
+
+    await tester.tap(find.text('Legal'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(LegalScreen), findsOneWidget);
   });
 
   testWidgets('cuenta rechazada muestra el mensaje correspondiente', (tester) async {
