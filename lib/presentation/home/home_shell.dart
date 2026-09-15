@@ -5,12 +5,12 @@ import '../../domain/entities/account.dart';
 import '../../domain/entities/account_role.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../../domain/repositories/comite_repository.dart';
+import '../../domain/entities/content_kind.dart';
 import '../chat/chats_list_screen.dart';
 import '../chat/create_chat_screen.dart';
 import '../comite/comite_management_screen.dart';
-import '../content/capacitate_stub_screen.dart';
-import '../content/news_stub_screen.dart';
-import '../content/preparate_stub_screen.dart';
+import '../content/capacitate_screen.dart';
+import '../content/content_list_screen.dart';
 import '../map/map_screen.dart';
 import '../notifications/active_reports_bell.dart';
 import '../panel/account_detail_screen.dart';
@@ -112,24 +112,39 @@ class HomeShell extends StatelessWidget {
               ),
             ),
           ListTile(
+            key: const Key('news-access'),
             leading: const Icon(Icons.newspaper),
             title: const Text('Noticias'),
             onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => const NewsStubScreen()),
+              MaterialPageRoute(
+                builder: (_) => ContentListScreen(
+                  kind: ContentKind.noticia,
+                  viewerId: account.id,
+                  viewerRole: account.role,
+                ),
+              ),
             ),
           ),
           ListTile(
+            key: const Key('capacitate-access'),
             leading: const Icon(Icons.school),
             title: const Text('Capacítate'),
             onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => const CapacitateStubScreen()),
+              MaterialPageRoute(builder: (_) => const CapacitateScreen()),
             ),
           ),
           ListTile(
+            key: const Key('preparate-access'),
             leading: const Icon(Icons.health_and_safety),
             title: const Text('Prepárate'),
             onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => const PreparateStubScreen()),
+              MaterialPageRoute(
+                builder: (_) => ContentListScreen(
+                  kind: ContentKind.preparate,
+                  viewerId: account.id,
+                  viewerRole: account.role,
+                ),
+              ),
             ),
           ),
           if (account.role.canReviewAccounts) ...[

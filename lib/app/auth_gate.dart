@@ -36,7 +36,7 @@ class AuthGate extends StatelessWidget {
             if (account.status == AccountStatus.approved) {
               return HomeShell(account: account);
             }
-            return PendingApprovalScreen(status: account.status);
+            return PendingApprovalScreen(account: account);
           },
         );
       },

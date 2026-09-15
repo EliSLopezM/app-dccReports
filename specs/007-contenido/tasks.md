@@ -63,7 +63,7 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
 
 ## Wiring final
 
-- [ ] **T9 — Reemplazar los stubs en `HomeShell` y registrar el repositorio**
+- [x] **T9 — Reemplazar los stubs en `HomeShell` y registrar el repositorio**
   Borrar `news_stub_screen.dart`, `capacitate_stub_screen.dart`,
   `preparate_stub_screen.dart`. `HomeShell` navega a `ContentListScreen`
   (Noticias/Prepárate) y `CapacitateScreen`, pasando `viewerRole`.

@@ -1,6 +1,8 @@
 import 'package:app_dcc_reports/domain/entities/account.dart';
 import 'package:app_dcc_reports/domain/entities/account_role.dart';
 import 'package:app_dcc_reports/domain/entities/account_status.dart';
+import 'package:app_dcc_reports/domain/entities/content_kind.dart';
+import 'package:app_dcc_reports/domain/entities/content_post.dart';
 import 'package:app_dcc_reports/domain/entities/difficulty_level.dart';
 import 'package:app_dcc_reports/domain/entities/emergency_report.dart';
 import 'package:app_dcc_reports/domain/entities/meeting_point.dart';
@@ -9,8 +11,11 @@ import 'package:app_dcc_reports/domain/entities/participation.dart';
 import 'package:app_dcc_reports/domain/entities/report_status.dart';
 import 'package:app_dcc_reports/domain/repositories/account_repository.dart';
 import 'package:app_dcc_reports/domain/repositories/auth_repository.dart';
+import 'package:app_dcc_reports/domain/repositories/content_repository.dart';
 import 'package:app_dcc_reports/domain/repositories/emergency_report_repository.dart';
 import 'package:app_dcc_reports/domain/repositories/participation_repository.dart';
+import 'package:app_dcc_reports/presentation/content/capacitate_screen.dart';
+import 'package:app_dcc_reports/presentation/content/content_list_screen.dart';
 import 'package:app_dcc_reports/presentation/home/home_shell.dart';
 import 'package:app_dcc_reports/presentation/panel/account_detail_screen.dart';
 import 'package:flutter/material.dart';
@@ -165,6 +170,35 @@ class _FakeParticipationRepository implements ParticipationRepository {
   }) async {}
 }
 
+class _FakeContentRepository implements ContentRepository {
+  @override
+  Stream<List<ContentPost>> watchPosts(ContentKind kind) => Stream.value(const []);
+
+  @override
+  Future<String> create({
+    required ContentKind kind,
+    required String authorId,
+    required AccountRole authorRole,
+    required String title,
+    required String body,
+    String? localPhotoPath,
+  }) async =>
+      'id';
+
+  @override
+  Future<void> update({
+    required String postId,
+    required AccountRole authorRole,
+    required String title,
+    required String body,
+    String? localPhotoPath,
+    bool removePhoto = false,
+  }) async {}
+
+  @override
+  Future<void> delete({required String postId, required AccountRole authorRole}) async {}
+}
+
 Account _account({required AccountRole role}) {
   return Account(
     id: 'uid-1',
@@ -186,6 +220,7 @@ Future<void> _pumpHome(WidgetTester tester, AccountRole role) {
         Provider<AccountRepository>.value(value: _FakeAccountRepository()),
         Provider<EmergencyReportRepository>.value(value: _FakeEmergencyReportRepository()),
         Provider<ParticipationRepository>.value(value: _FakeParticipationRepository()),
+        Provider<ContentRepository>.value(value: _FakeContentRepository()),
       ],
       child: MaterialApp(home: HomeShell(account: _account(role: role))),
     ),
@@ -234,5 +269,26 @@ void main() {
 
     expect(find.byType(AccountDetailScreen), findsOneWidget);
     expect(find.text('Jane Doe'), findsWidgets);
+  });
+
+  testWidgets('Noticias, Capacítate y Prepárate navegan a sus pantallas reales (spec 007)',
+      (tester) async {
+    await _pumpHome(tester, AccountRole.voluntario);
+
+    await tester.tap(find.byKey(const Key('news-access')));
+    await tester.pumpAndSettle();
+    expect(find.byType(ContentListScreen), findsOneWidget);
+    await tester.pageBack();
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('preparate-access')));
+    await tester.pumpAndSettle();
+    expect(find.byType(ContentListScreen), findsOneWidget);
+    await tester.pageBack();
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('capacitate-access')));
+    await tester.pumpAndSettle();
+    expect(find.byType(CapacitateScreen), findsOneWidget);
   });
 }
