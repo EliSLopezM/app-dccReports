@@ -196,8 +196,11 @@ producto confirme o reordene antes de arrancar la spec 001:
    ambulancia (la persona llama directo), finalización (foto/nivel/razón)
    con tiempos calculados, y cierre completo de la emergencia por
    liderazgo.
-6. **Perfiles y logros**: historial de participación (consume los
-   tiempos que ya guarda la spec 005), logros, cursos y rol visibles.
+6. **Perfiles y logros** (spec 006, código completo): historial de
+   participación (consume los tiempos que ya guarda la spec 005),
+   catálogo cerrado de logros por hitos, cursos y rol visibles, y
+   perfil accesible tanto desde "Mi perfil" como tocando el nombre de
+   cualquier cuenta en un chat/comité/lista de participantes.
 7. **Noticias, Capacítate, Prepárate**: las tres secciones de contenido.
 8. **Legal**: políticas/términos + descarga en PDF.
 

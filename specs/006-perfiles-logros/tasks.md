@@ -55,7 +55,7 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
 
 ## Wiring final
 
-- [ ] **T8 — "Mi perfil" en `HomeShell`**
+- [x] **T8 — "Mi perfil" en `HomeShell`**
   Entrada visible para cualquier cuenta aprobada, navega a
   `AccountDetailScreen` con la cuenta propia. Widget test.
   Hecho cuando: `flutter analyze` y `flutter test` (suite completa) pasan
