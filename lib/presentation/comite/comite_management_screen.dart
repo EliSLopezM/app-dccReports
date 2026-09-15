@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../domain/entities/account.dart';
 import '../../domain/entities/chat.dart';
 import '../../domain/entities/comite.dart';
 import '../../domain/exceptions.dart';
+import '../../domain/repositories/account_repository.dart';
 import '../../domain/repositories/chat_repository.dart';
 import '../../domain/repositories/comite_repository.dart';
+import '../panel/account_detail_screen.dart';
 
 /// RF-5: solo el líder de [comite] entra aquí (la entrada en HomeShell ya
 /// filtra por `leaderId == account.id`).
@@ -62,16 +65,10 @@ class ComiteManagementScreen extends StatelessWidget {
                     child: Text('Miembros', style: TextStyle(fontWeight: FontWeight.bold)),
                   ),
                   for (final memberId in memberIds)
-                    // Se muestra el uid, no el nombre: AccountRepository no
-                    // tiene una búsqueda por lote de varios ids todavía.
-                    ListTile(
-                      title: Text(memberId),
-                      trailing: currentComite.delegateId == memberId
-                          ? const Icon(Icons.star, color: Colors.amber)
-                          : TextButton(
-                              onPressed: () => _assignDelegate(context, memberId),
-                              child: const Text('Hacer delegado'),
-                            ),
+                    _MemberTile(
+                      memberId: memberId,
+                      isDelegate: currentComite.delegateId == memberId,
+                      onAssignDelegate: () => _assignDelegate(context, memberId),
                     ),
                 ],
               );
@@ -79,6 +76,44 @@ class ComiteManagementScreen extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+}
+
+/// RF-6 (spec 006): resuelve el nombre real del miembro y permite tocar
+/// la fila para ver su perfil.
+class _MemberTile extends StatelessWidget {
+  const _MemberTile({
+    required this.memberId,
+    required this.isDelegate,
+    required this.onAssignDelegate,
+  });
+
+  final String memberId;
+  final bool isDelegate;
+  final VoidCallback onAssignDelegate;
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<Account?>(
+      stream: context.read<AccountRepository>().watchAccount(memberId),
+      builder: (context, snapshot) {
+        final account = snapshot.data;
+        return ListTile(
+          title: Text(account?.name ?? memberId),
+          onTap: account == null
+              ? null
+              : () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => AccountDetailScreen(account: account)),
+                  ),
+          trailing: isDelegate
+              ? const Icon(Icons.star, color: Colors.amber)
+              : TextButton(
+                  onPressed: onAssignDelegate,
+                  child: const Text('Hacer delegado'),
+                ),
+        );
+      },
     );
   }
 }

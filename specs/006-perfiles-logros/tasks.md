@@ -47,7 +47,7 @@ Cada tarea: tests primero, luego implementación mínima para pasarlos,
   historial.
   Hecho cuando: los widget tests pasan.
 
-- [ ] **T7 — Filas tocables en `EmergencyResponseScreen` y `ComiteManagementScreen`** (RF-6)
+- [x] **T7 — Filas tocables en `EmergencyResponseScreen` y `ComiteManagementScreen`** (RF-6)
   Tocar un participante o un miembro resuelve la cuenta
   (`AccountRepository.watchAccount`) y navega a `AccountDetailScreen`.
   Widget tests para ambas pantallas.
